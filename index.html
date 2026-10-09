@@ -1,0 +1,2562 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#16273B">
+<meta name="mobile-web-app-capable" content="yes">
+<title>עולם המידות של יוליה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Fredoka:wght@400;500;600&family=Varela+Round&family=Share+Tech+Mono&display=swap">
+<style>
+/* Layout: a graph-paper workbench (mm grid). Each station is an instrument card in its own color:
+   mass = apple red, volume = water blue, length = ruler gold, time = clock violet. Dark theme = blueprint. */
+:root {
+  --paper: #F3F7FA;
+  --grid: rgba(38, 104, 150, .07);
+  --grid-major: rgba(38, 104, 150, .13);
+  --card: #FFFFFF;
+  --card-2: #EEF4F8;
+  --ink: #16273B;
+  --muted: #536579;
+  --line: #D3E0EA;
+  --shadow: 0 1px 0 rgba(22, 39, 59, .06), 0 6px 18px -8px rgba(22, 39, 59, .22);
+
+  --mass: #D6443A; --mass-ink: #B5352C; --mass-soft: #FCE7E4;
+  --vol: #1683CC;  --vol-ink: #0F6AA8;  --vol-soft: #DFF0FB;
+  --len: #D79A12;  --len-ink: #8F6400;  --len-soft: #FBF1D4;
+  --time: #6450C8; --time-ink: #5442B3; --time-soft: #ECE8FA;
+
+  --good: #1C9150; --good-soft: #DDF4E6;
+  --bad: #C9413A;  --bad-soft: #FBE4E2;
+  --star: #F0AE00;
+
+  --apple: #E4473D; --apple-dk: #A92E27; --leaf: #49A84C; --stem: #6E4426;
+  --sugar: #FFFFFF; --sugar-band: #2F7FD0;
+  --kraft: #D8AE76; --kraft-dk: #A9824E;
+  --wood: #F3C54F; --wood-dk: #CF9A1B;
+  --metal: #CBD5DE; --metal-dk: #8494A4;
+  --glass: rgba(150, 196, 228, .20); --glass-line: #6E98B8;
+  --water: #3BA3E6; --water-dk: #1E7DBE; --water-hi: #9CD5F7;
+  --lcd: #C7E5AE; --lcd-ink: #1E2E17;
+  --outline: #22324A;
+  --road: #59636E; --grass: #8FCB6B;
+
+  --font-display: "Fredoka", "Varela Round", "Arial Hebrew", Arial, sans-serif;
+  --font-body: "Assistant", "Arial Hebrew", "Noto Sans Hebrew", Arial, sans-serif;
+  --font-lcd: "Share Tech Mono", "Courier New", monospace;
+
+  --r-lg: 22px; --r-md: 14px; --r-sm: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0C1F32; --grid: rgba(140, 200, 255, .06); --grid-major: rgba(140, 200, 255, .12);
+    --card: #12304A; --card-2: #17395A; --ink: #E7F0F8; --muted: #A2B7CB; --line: #29496A;
+    --shadow: 0 1px 0 rgba(0, 0, 0, .25), 0 8px 22px -10px rgba(0, 0, 0, .6);
+    --mass: #FF766A; --mass-ink: #FF9A90; --mass-soft: #3A2632;
+    --vol: #4DB7F7;  --vol-ink: #86CEFA;  --vol-soft: #133A5C;
+    --len: #F2BF45;  --len-ink: #F6CF6E;  --len-soft: #3A3322;
+    --time: #A391F6; --time-ink: #BDB0FA; --time-soft: #2A2A52;
+    --good: #48CB7F; --good-soft: #163F2F; --bad: #FF7B71; --bad-soft: #432329; --star: #FFC933;
+    --glass: rgba(200, 230, 255, .10); --glass-line: #9CC6E6; --outline: #0A1828;
+    --lcd: #B7DA9C; --road: #4A5662; --grass: #5E9E48;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0C1F32; --grid: rgba(140, 200, 255, .06); --grid-major: rgba(140, 200, 255, .12);
+  --card: #12304A; --card-2: #17395A; --ink: #E7F0F8; --muted: #A2B7CB; --line: #29496A;
+  --shadow: 0 1px 0 rgba(0, 0, 0, .25), 0 8px 22px -10px rgba(0, 0, 0, .6);
+  --mass: #FF766A; --mass-ink: #FF9A90; --mass-soft: #3A2632;
+  --vol: #4DB7F7;  --vol-ink: #86CEFA;  --vol-soft: #133A5C;
+  --len: #F2BF45;  --len-ink: #F6CF6E;  --len-soft: #3A3322;
+  --time: #A391F6; --time-ink: #BDB0FA; --time-soft: #2A2A52;
+  --good: #48CB7F; --good-soft: #163F2F; --bad: #FF7B71; --bad-soft: #432329; --star: #FFC933;
+  --glass: rgba(200, 230, 255, .10); --glass-line: #9CC6E6; --outline: #0A1828;
+  --lcd: #B7DA9C; --road: #4A5662; --grass: #5E9E48;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 60px 60px, 60px 60px, 6px 6px, 6px 6px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+}
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--vol); outline-offset: 2px; border-radius: 8px; }
+.m { direction: ltr; unicode-bidi: isolate; display: inline-block; white-space: nowrap; }
+.num { font-variant-numeric: tabular-nums; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+.st-mass { --c: var(--mass); --ci: var(--mass-ink); --cs: var(--mass-soft); }
+.st-vol  { --c: var(--vol);  --ci: var(--vol-ink);  --cs: var(--vol-soft); }
+.st-len  { --c: var(--len);  --ci: var(--len-ink);  --cs: var(--len-soft); }
+.st-time { --c: var(--time); --ci: var(--time-ink); --cs: var(--time-soft); }
+
+/* ---------- shell ---------- */
+.app { max-width: 1000px; margin: 0 auto; padding-inline: 16px; padding-block: 0 48px; }
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  display: flex; align-items: center; gap: 10px;
+  padding-block: 10px; margin-inline: -16px; padding-inline: 16px;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; background: none; border: 0; padding: 0; text-align: start; }
+.brand svg { width: 34px; height: 34px; flex: none; }
+.brand b { font-family: var(--font-display); font-weight: 600; font-size: 1.12rem; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pill {
+  display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px 5px 10px; border-radius: 99px;
+  background: var(--card); border: 1px solid var(--line); font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.pill svg { width: 20px; height: 20px; }
+.icon-btn {
+  width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+  background: var(--card); border: 1px solid var(--line); flex: none;
+}
+.icon-btn svg { width: 22px; height: 22px; }
+.icon-btn[aria-pressed="false"] { opacity: .55; }
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 8px 20px; border-radius: 14px; border: 2px solid transparent;
+  font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; line-height: 1.15;
+  background: var(--ink); color: var(--paper);
+  transition: transform .12s ease, box-shadow .12s ease, background .2s;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .18);
+  touch-action: manipulation; user-select: none;
+}
+.btn:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(0, 0, 0, .18); }
+.btn:disabled { opacity: .45; cursor: default; transform: none; }
+.btn svg { width: 22px; height: 22px; flex: none; }
+.btn.c { background: var(--c); color: #fff; }
+.st-len .btn.c { color: #2B2100; }
+.btn.soft { background: var(--cs); color: var(--ci); box-shadow: none; border-color: transparent; }
+.btn.ghost { background: var(--card); color: var(--ink); border-color: var(--line); box-shadow: none; }
+.btn.small { min-height: 40px; padding: 6px 14px; font-size: .95rem; border-radius: 12px; }
+.btn.hint { background: var(--card); color: var(--ink); border-color: var(--star); box-shadow: none; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+/* ---------- home ---------- */
+.hero { padding-block: 22px 14px; display: grid; gap: 6px; }
+.hero h1 {
+  font-family: var(--font-display); font-weight: 600; margin: 0;
+  font-size: clamp(2rem, 7vw, 3.3rem); line-height: 1.05; text-wrap: balance; letter-spacing: -.01em;
+}
+.hero h1 .tape {
+  background: linear-gradient(transparent 62%, color-mix(in srgb, var(--len) 45%, transparent) 62%);
+  padding-inline: 4px;
+}
+.hero p { margin: 0; color: var(--muted); max-width: 60ch; }
+.facts {
+  display: flex; gap: 8px; overflow-x: auto; padding-block: 6px 4px; margin-inline: -16px; padding-inline: 16px;
+  scrollbar-width: none;
+}
+.facts::-webkit-scrollbar { display: none; }
+.fact {
+  flex: none; padding: 6px 12px; border-radius: 10px; font-weight: 700; font-size: .92rem;
+  background: var(--cs); color: var(--ci); border: 1px dashed var(--c);
+}
+.stations { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 10px; }
+.st-card {
+  position: relative; display: grid; gap: 6px; align-content: start; text-align: start;
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: 14px; box-shadow: var(--shadow); min-width: 0;
+  transition: transform .15s ease;
+}
+.st-card:hover { transform: translateY(-2px); }
+.st-card:active { transform: translateY(1px); }
+.st-card .art {
+  height: 112px; border-radius: 16px; background: var(--cs); display: grid; place-items: center; overflow: hidden;
+}
+.st-card .art svg { height: 100px; width: auto; max-width: 100%; }
+.st-card h2 { margin: 4px 0 0; font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; line-height: 1.15; color: var(--ci); }
+.st-card .sub { color: var(--muted); font-size: .88rem; line-height: 1.3; }
+.meter { height: 10px; border-radius: 99px; background: var(--card-2); overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--c); border-radius: 99px; transition: width .6s ease; }
+.st-meta { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: .85rem; color: var(--muted); font-weight: 700; }
+.st-meta .stars { display: inline-flex; align-items: center; gap: 3px; color: var(--ink); }
+.st-meta svg { width: 16px; height: 16px; }
+.badges { position: absolute; top: 20px; inset-inline-start: 20px; display: flex; gap: 4px; }
+.badges svg { width: 30px; height: 30px; filter: drop-shadow(0 2px 2px rgba(0,0,0,.2)); }
+.home-note { margin-top: 18px; font-size: .9rem; color: var(--muted); }
+
+/* ---------- station ---------- */
+.st-head { display: flex; align-items: center; gap: 12px; padding-block: 16px 8px; }
+.st-head .art { width: 64px; height: 64px; flex: none; border-radius: 16px; background: var(--cs); display: grid; place-items: center; }
+.st-head .art svg { width: 54px; height: 54px; }
+.st-head h1 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: clamp(1.5rem, 5vw, 2.1rem); line-height: 1.1; color: var(--ci); }
+.st-head p { margin: 2px 0 0; color: var(--muted); font-size: .92rem; }
+.seg {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border-radius: 16px;
+  background: var(--card); border: 1px solid var(--line); margin-block: 8px 14px;
+}
+.seg button {
+  border: 0; background: transparent; border-radius: 12px; min-height: 46px; padding: 4px 6px;
+  font-family: var(--font-display); font-weight: 600; font-size: 1rem; color: var(--muted);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.seg button svg { width: 20px; height: 20px; }
+.seg button[aria-selected="true"] { background: var(--c); color: #fff; }
+.st-len .seg button[aria-selected="true"] { color: #2B2100; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.chip {
+  border: 1.5px solid var(--line); background: var(--card); border-radius: 99px; padding: 7px 14px;
+  font-weight: 700; font-size: .95rem; min-height: 40px;
+}
+.chip[aria-pressed="true"] { border-color: var(--c); background: var(--cs); color: var(--ci); }
+.panel {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow);
+  padding: 16px; display: grid; gap: 14px; min-width: 0;
+}
+.panel h3 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; }
+.panel .lead { margin: 0; color: var(--muted); }
+.stage { position: relative; border-radius: 18px; background: var(--cs); overflow: hidden; }
+.stage svg { display: block; width: 100%; height: auto; }
+.learn-grid { display: grid; gap: 14px; }
+@media (min-width: 820px) {
+  .learn-grid.two { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); align-items: start; }
+}
+.readouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.ro {
+  border-radius: 14px; background: var(--card-2); padding: 8px 12px; display: grid; gap: 0; min-width: 0;
+  border: 1.5px solid transparent; transition: border-color .3s, background .3s;
+}
+.ro small { color: var(--muted); font-weight: 700; font-size: .8rem; }
+.ro b { font-family: var(--font-display); font-weight: 600; font-size: 1.45rem; line-height: 1.2; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.ro.on { border-color: var(--c); background: var(--cs); }
+.equation {
+  font-weight: 700; font-size: 1.05rem; background: var(--card-2); border-radius: 12px; padding: 10px 12px;
+  display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; min-height: 48px;
+}
+.equation .m { font-family: var(--font-display); font-weight: 500; font-size: 1.12rem; white-space: normal; }
+.note { font-size: .85rem; color: var(--muted); margin: 0; }
+.tools { display: flex; flex-wrap: wrap; gap: 10px; }
+.item-btn {
+  display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 10px; text-align: start;
+  padding: 8px 12px; border-radius: 16px; border: 2px solid var(--line); background: var(--card);
+  min-height: 64px; flex: 1 1 200px; min-width: 0; touch-action: manipulation;
+}
+.item-btn svg.ic { width: 44px; height: 44px; }
+.item-btn b { display: block; font-family: var(--font-display); font-weight: 600; font-size: 1.02rem; line-height: 1.2; }
+.item-btn span { font-size: .85rem; color: var(--muted); }
+.item-btn:active { border-color: var(--c); background: var(--cs); }
+.item-btn .pm { display: flex; gap: 6px; grid-column: 1 / -1; }
+.item-btn.done { border-color: var(--c); }
+.stepper { display: flex; gap: 6px; }
+.stepper .btn { flex: 1; }
+.slider { width: 100%; accent-color: var(--c); height: 34px; direction: ltr; }
+
+/* milestone banner */
+.banner {
+  position: absolute; inset-inline: 12px; top: 12px; z-index: 3; pointer-events: none;
+  background: var(--card); border: 2px solid var(--c); color: var(--ink); border-radius: 16px;
+  padding: 8px 14px; text-align: center; font-family: var(--font-display); font-weight: 600; font-size: 1.25rem;
+  box-shadow: var(--shadow); opacity: 0; transform: translateY(-14px) scale(.96);
+  transition: opacity .3s ease, transform .35s cubic-bezier(.3, 1.5, .5, 1);
+}
+.banner.show { opacity: 1; transform: none; }
+.banner small { display: block; font-family: var(--font-body); font-weight: 600; font-size: .85rem; color: var(--muted); }
+
+/* svg helpers */
+.f-apple { fill: var(--apple); } .f-apple-dk { fill: var(--apple-dk); } .f-leaf { fill: var(--leaf); } .f-stem { fill: var(--stem); }
+.f-sugar { fill: var(--sugar); } .f-band { fill: var(--sugar-band); } .f-kraft { fill: var(--kraft); } .f-kraft-dk { fill: var(--kraft-dk); }
+.f-wood { fill: var(--wood); } .f-wood-dk { fill: var(--wood-dk); } .f-metal { fill: var(--metal); } .f-metal-dk { fill: var(--metal-dk); }
+.f-glass { fill: var(--glass); } .f-water { fill: var(--water); } .f-water-dk { fill: var(--water-dk); } .f-water-hi { fill: var(--water-hi); }
+.f-lcd { fill: var(--lcd); } .f-lcd-ink { fill: var(--lcd-ink); } .f-card { fill: var(--card); } .f-card2 { fill: var(--card-2); }
+.f-ink { fill: var(--ink); } .f-muted { fill: var(--muted); } .f-c { fill: var(--c); } .f-cs { fill: var(--cs); } .f-star { fill: var(--star); }
+.f-road { fill: var(--road); } .f-grass { fill: var(--grass); } .f-line { fill: var(--line); } .f-good { fill: var(--good); }
+.f-mass { fill: var(--mass); } .f-vol { fill: var(--vol); } .f-len { fill: var(--len); } .f-time { fill: var(--time); }
+.s-out { stroke: var(--outline); } .s-ink { stroke: var(--ink); } .s-muted { stroke: var(--muted); } .s-c { stroke: var(--c); }
+.s-glass { stroke: var(--glass-line); } .s-line { stroke: var(--line); } .s-card { stroke: var(--card); } .s-water { stroke: var(--water); }
+.t-ink { fill: var(--ink); } .t-muted { fill: var(--muted); } .t-c { fill: var(--ci); }
+svg text { font-family: var(--font-body); font-weight: 700; }
+svg .disp { font-family: var(--font-display); font-weight: 600; }
+svg .lcd { font-family: var(--font-lcd); }
+
+/* item drop / pour animations */
+@keyframes drop { 0% { transform: translateY(-90px); opacity: 0; } 60% { transform: translateY(4px); opacity: 1; } 80% { transform: translateY(-3px); } 100% { transform: none; } }
+.drop > g { animation: drop .5s cubic-bezier(.3, 1.2, .5, 1) both; }
+.drop { cursor: pointer; }
+@keyframes wave { from { transform: translateX(0); } to { transform: translateX(-60px); } }
+.wave { animation: wave 2.4s linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -24; } }
+.stream { stroke-dasharray: 8 4; animation: flow .35s linear infinite; }
+@keyframes gallop { 0%, 100% { transform: rotate(12deg); } 50% { transform: rotate(-12deg); } }
+.horse .leg { transform-box: fill-box; transform-origin: 50% 0; }
+.horse.run .leg.a { animation: gallop .32s ease-in-out infinite; }
+.horse.run .leg.b { animation: gallop .32s ease-in-out infinite reverse; }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+.horse.run .body { animation: bob .32s ease-in-out infinite; }
+@keyframes pop { 0% { transform: scale(.6); opacity: 0; } 70% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); } }
+.pop { animation: pop .4s cubic-bezier(.3, 1.4, .5, 1) both; transform-box: fill-box; transform-origin: center; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c) 55%, transparent); } 100% { box-shadow: 0 0 0 14px transparent; } }
+.pulse { animation: pulse .8s ease-out; }
+
+/* ---------- quiz ---------- */
+.qnav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.qdot {
+  width: 40px; height: 40px; border-radius: 12px; border: 2px solid var(--line); background: var(--card);
+  font-weight: 800; font-variant-numeric: tabular-nums; position: relative; display: grid; place-items: center; font-size: .95rem;
+}
+.qdot.done { background: var(--cs); border-color: var(--c); color: var(--ci); }
+.qdot.cur { border-color: var(--ink); box-shadow: 0 0 0 2px var(--ink) inset; }
+.qdot .mini { position: absolute; bottom: -7px; inset-inline: 0; display: flex; justify-content: center; gap: 0; }
+.qdot .mini svg { width: 11px; height: 11px; }
+.qcard { display: grid; gap: 16px; }
+.qtop { display: flex; justify-content: space-between; align-items: center; gap: 8px; color: var(--muted); font-weight: 700; font-size: .9rem; }
+.qtag { padding: 3px 10px; border-radius: 99px; background: var(--cs); color: var(--ci); }
+.qtext { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.25rem, 4.2vw, 1.6rem); line-height: 1.35; margin: 0; text-wrap: pretty; }
+.qtext b { font-weight: 600; color: var(--ci); }
+.answer-num { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.answer-num input {
+  width: 9.5em; max-width: 100%; min-height: 56px; border-radius: 14px; border: 2px solid var(--line); background: var(--card-2);
+  font-family: var(--font-display); font-weight: 600; font-size: 1.6rem; text-align: center; padding: 4px 10px; direction: ltr;
+}
+.answer-num input:focus { border-color: var(--c); outline: none; }
+.answer-num .unit { font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; }
+.opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.opt {
+  min-height: 58px; border-radius: 14px; border: 2px solid var(--line); background: var(--card);
+  font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; padding: 8px 10px; line-height: 1.25;
+}
+.opt[aria-pressed="true"] { border-color: var(--c); background: var(--cs); }
+.opt.right { border-color: var(--good); background: var(--good-soft); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.cmp { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; direction: ltr; }
+.cmp .qty {
+  min-height: 72px; border-radius: 16px; background: var(--card-2); display: grid; place-items: center; text-align: center;
+  font-family: var(--font-display); font-weight: 600; font-size: 1.35rem; padding: 6px; direction: rtl;
+}
+.cmp .sym {
+  width: 64px; height: 64px; border-radius: 50%; border: 3px dashed var(--c); display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 600; font-size: 2.1rem; color: var(--ci); background: var(--card);
+}
+.cmp-btns { display: flex; justify-content: center; gap: 12px; direction: ltr; }
+.cmp-btns .opt { width: 76px; font-size: 1.9rem; }
+.build { display: grid; gap: 12px; }
+.tray {
+  min-height: 120px; border-radius: 18px; border: 3px dashed var(--c); background: var(--cs);
+  display: flex; flex-wrap: wrap; align-content: flex-end; gap: 6px; padding: 10px; position: relative;
+}
+.tray.over { background: color-mix(in srgb, var(--c) 22%, var(--card)); }
+.tray .empty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ci); font-weight: 700; padding: 10px; text-align: center; pointer-events: none; }
+.tray .tk { border: 0; background: transparent; padding: 0; animation: pop .35s both; }
+.tray .tk svg { width: 46px; height: 46px; display: block; }
+.palette { display: flex; flex-wrap: wrap; gap: 10px; }
+.tok {
+  touch-action: none; user-select: none; display: grid; justify-items: center; gap: 2px; min-width: 92px;
+  padding: 8px 10px; border-radius: 16px; border: 2px solid var(--line); background: var(--card); font-weight: 700; font-size: .85rem;
+}
+.tok svg { width: 52px; height: 52px; pointer-events: none; }
+.tok span { pointer-events: none; }
+.ghost-drag { position: fixed; z-index: 60; pointer-events: none; width: 64px; height: 64px; transform: translate(-50%, -60%) scale(1.15); filter: drop-shadow(0 6px 8px rgba(0,0,0,.3)); }
+.total-line { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; }
+.qactions { display: flex; flex-wrap: wrap; gap: 10px; }
+.qactions .grow { flex: 1 1 160px; }
+.feedback { border-radius: 16px; padding: 12px 14px; display: grid; gap: 6px; }
+.feedback.ok { background: var(--good-soft); border: 2px solid var(--good); }
+.feedback.no { background: var(--bad-soft); border: 2px solid var(--bad); }
+.feedback.info { background: var(--card-2); border: 2px solid var(--line); }
+.feedback h4 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; }
+.feedback h4 svg { width: 26px; height: 26px; }
+.feedback p { margin: 0; }
+.earned { display: inline-flex; gap: 2px; }
+.earned svg { width: 26px; height: 26px; }
+.hintbox { border-radius: 18px; border: 2px solid var(--star); background: var(--card); padding: 12px; display: grid; gap: 10px; }
+.hintbox h4 { margin: 0; font-family: var(--font-display); font-weight: 600; display: flex; gap: 8px; align-items: center; font-size: 1.1rem; }
+.hintbox h4 svg { width: 24px; height: 24px; }
+.hintbox .viz { overflow-x: auto; border-radius: 14px; background: var(--cs); padding: 6px; }
+.hintbox .viz > svg { display: block; min-width: 300px; width: 100%; height: auto; }
+.hintbox p { margin: 0; }
+.steps { margin: 0; padding-inline-start: 1.2em; display: grid; gap: 4px; }
+.complete {
+  text-align: center; display: grid; gap: 10px; justify-items: center; padding-block: 10px;
+}
+.complete svg.medal { width: 96px; height: 96px; }
+.complete h3 { font-size: 1.5rem; }
+
+/* ---------- overlays ---------- */
+#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 70; width: 100%; height: 100%; }
+.toast {
+  position: fixed; inset-inline: 16px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 80; margin-inline: auto; max-width: 520px;
+  background: var(--ink); color: var(--paper); border-radius: 16px; padding: 12px 16px; text-align: center;
+  font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; box-shadow: var(--shadow);
+  opacity: 0; transform: translateY(20px); transition: opacity .25s, transform .3s cubic-bezier(.3, 1.4, .5, 1); pointer-events: none;
+}
+.toast.show { opacity: 1; transform: none; }
+.modal-back { position: fixed; inset: 0; z-index: 90; background: rgba(8, 18, 30, .55); display: grid; place-items: center; padding: 16px; }
+.modal { width: min(520px, 100%); max-height: 90vh; overflow: auto; background: var(--card); border-radius: 22px; padding: 18px; display: grid; gap: 14px; box-shadow: var(--shadow); }
+.modal h2 { margin: 0; font-family: var(--font-display); font-weight: 600; }
+.set-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; padding-block: 6px; border-bottom: 1px solid var(--line); }
+.set-row:last-of-type { border-bottom: 0; }
+.set-row .seg2 { display: flex; gap: 6px; }
+.howto { margin: 0; padding-inline-start: 1.2em; color: var(--muted); font-size: .92rem; display: grid; gap: 4px; }
+
+@media (max-width: 420px) {
+  body { font-size: 16px; }
+  .pill .pts { display: none; }
+  .stations { gap: 10px; }
+  .st-card { padding: 10px; }
+  .st-card .art { height: 92px; }
+  .st-card .art svg { height: 82px; }
+  .st-card h2 { font-size: 1.08rem; }
+  .st-card .sub { display: none; }
+  .seg button { font-size: .92rem; }
+  .seg button svg { display: none; }
+  .opts { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* ---------- station pieces ---------- */
+.stage svg, .hintbox svg, .hb svg { direction: ltr; }
+#lenSvg { touch-action: pan-y; cursor: ew-resize; }
+.boxes { display: flex; flex-wrap: wrap; gap: 12px; }
+.box { display: grid; gap: 4px; justify-items: center; }
+.box small { font-weight: 700; color: var(--muted); font-size: .8rem; }
+.cells { display: grid; grid-template-columns: repeat(5, 16px); gap: 3px; padding: 6px; border: 2px solid var(--line); border-radius: 10px; background: var(--card); direction: ltr; }
+.box.full .cells { border-color: var(--c); }
+.cell { width: 16px; height: 16px; border-radius: 4px; background: var(--card-2); display: block; transition: background .3s; }
+.cell.on { background: var(--c); }
+.shelf-jug { display: inline-grid; justify-items: center; gap: 0; }
+.shelf-jug svg { width: 46px; height: 46px; }
+.shelf-jug small { font-weight: 700; font-size: .78rem; color: var(--ci); }
+#shelf:empty { display: none; }
+.bottles { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+.bottle-btn { display: grid; justify-items: center; gap: 4px; padding: 8px 12px; border-radius: 16px; border: 2px solid var(--line); background: var(--card); flex: 1 1 80px; }
+.bottle-btn svg { width: auto; }
+.bottle-btn b { font-family: var(--font-display); font-weight: 600; }
+.bottle-btn[aria-pressed="true"] { border-color: var(--c); background: var(--cs); }
+.bottle-out { display: grid; gap: 10px; }
+.cups-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.cupi { display: grid; justify-items: center; animation: pop .35s cubic-bezier(.3, 1.4, .5, 1) both; }
+.cupi svg { width: 40px; height: 40px; }
+.cupi small { font-size: .75rem; font-weight: 700; color: var(--ci); }
+.zoom { background: var(--card-2); border-radius: 14px; padding: 10px 12px; display: grid; gap: 6px; }
+.zoom-t { font-weight: 700; font-size: .9rem; color: var(--muted); }
+.zoom-cells { display: grid; grid-template-columns: repeat(10, 1fr); gap: 0; height: 40px; border: 3px solid var(--outline); border-radius: 6px; overflow: hidden; direction: ltr; background: var(--wood); }
+.zoom-cells i { border-inline-end: 2px solid var(--outline); transition: background .2s; }
+.zoom-cells i:last-child { border-inline-end: 0; }
+.zoom-cells i.on { background: var(--c); }
+.st-len .zoom-cells i.on { background: var(--vol); }
+.zoom-l { display: flex; justify-content: space-between; font-size: .85rem; font-weight: 700; direction: ltr; }
+.zoom-l span { color: var(--muted); }
+.digital { font-family: var(--font-lcd); font-size: 2.2rem; background: var(--lcd); color: var(--lcd-ink); border-radius: 12px; padding: 4px 14px; direction: ltr; text-align: center; letter-spacing: .04em; border: 3px solid var(--outline); }
+.strip { display: grid; gap: 4px; }
+.cells24 { display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px; direction: ltr; }
+.cells24 i { height: 22px; border-radius: 4px; display: block; }
+.lbl24 { display: flex; justify-content: space-between; direction: ltr; font-size: .78rem; font-weight: 700; color: var(--muted); }
+.cal { display: grid; gap: 6px; }
+.cal-h, .cal-g { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.cal-h span { text-align: center; font-weight: 800; color: var(--ci); }
+.cal-g i {
+  aspect-ratio: 1; border-radius: 10px; background: var(--card); border: 2px solid var(--line); display: grid; place-items: center;
+  font-style: normal; font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; max-width: 100%;
+}
+.cal-g i.on { background: var(--c); border-color: var(--c); color: #fff; }
+.cal-g i.end { box-shadow: 0 0 0 3px var(--star) inset; }
+.cal-g i.pop { animation: pop .4s cubic-bezier(.3, 1.4, .5, 1) both; }
+.pageday { border-radius: 16px; border: 2px solid var(--c); background: var(--card); padding: 10px; text-align: center; display: grid; }
+.pageday small { color: var(--muted); font-weight: 700; }
+.pageday b { font-family: var(--font-display); font-weight: 600; font-size: 1.8rem; color: var(--ci); }
+
+/* ---------- hint visuals ---------- */
+.hblocks { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; padding: 6px; }
+.hb { display: grid; justify-items: center; gap: 2px; min-width: 0; }
+.hb > svg { width: 64px; height: 64px; }
+.hb.small > svg { width: 42px; height: 42px; }
+.hb small { font-size: .78rem; font-weight: 700; color: var(--ci); text-align: center; line-height: 1.2; }
+.hb.bar { flex: 1 1 100%; justify-items: start; }
+.hb.bar svg { height: auto; min-width: 40px; }
+.hb.box span { display: grid; place-items: center; min-width: 74px; min-height: 52px; padding: 4px 10px; border-radius: 12px; background: var(--card); border: 2px solid var(--c); font-weight: 800; color: var(--ink); }
+.hb.more { align-self: center; font-weight: 800; color: var(--ci); }
+.hb-op { align-self: center; font-family: var(--font-display); font-weight: 600; font-size: 2rem; color: var(--ci); padding-inline: 4px; }
+.hb.rowcells { flex: 1 1 100%; justify-items: stretch; }
+.cells-row { display: grid; gap: 2px; direction: ltr; }
+.cells-row.c24 { grid-template-columns: repeat(24, 1fr); }
+.cells-row.c7 { grid-template-columns: repeat(7, minmax(0, 34px)); }
+.cells-row i { height: 18px; border-radius: 4px; background: var(--card-2); border: 1px solid var(--line); display: block; }
+.cells-row i.on { background: var(--c); border-color: var(--c); }
+.grid60 { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; direction: ltr; }
+.grid60 i { font-style: normal; font-size: .68rem; font-weight: 800; background: var(--card); border: 1.5px solid var(--c); border-radius: 5px; padding: 2px 3px; text-align: center; }
+.hb > svg.hclock { width: 130px; height: 130px; }
+.laps { display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; flex: 1 1 140px; }
+.lap { padding: 4px 10px; border-radius: 99px; background: var(--card); border: 1.5px solid var(--c); font-weight: 700; font-size: .85rem; }
+.barmodel { display: grid; gap: 4px; padding: 6px; }
+.bm-total { border: 2px solid var(--ink); border-bottom: 0; height: 26px; border-radius: 8px 8px 0 0; display: grid; place-items: center; font-weight: 800; font-size: .9rem; }
+.bm-total span { background: var(--cs); padding-inline: 8px; transform: translateY(-12px); }
+.bm-row { display: flex; gap: 0; border: 2px solid var(--ink); border-radius: 8px; overflow: hidden; min-height: 48px; }
+.bm-part { background: var(--c); color: #fff; display: grid; place-items: center; text-align: center; padding: 4px; font-weight: 800; font-size: .85rem; border-inline-start: 2px solid var(--ink); min-width: 34px; }
+.bm-part:first-child { border-inline-start: 0; }
+.st-len .bm-part { color: #2B2100; }
+.bm-part.q { background: var(--card); color: var(--ink); background-image: repeating-linear-gradient(45deg, transparent 0 6px, var(--cs) 6px 12px); }
+.tline { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; direction: ltr; padding: 6px; }
+.tp { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; padding: 6px 10px; border-radius: 12px; background: var(--card); border: 2px solid var(--c); }
+.tp.q { border-style: dashed; color: var(--ci); }
+.tj { display: grid; justify-items: center; min-width: 54px; }
+.tj small { font-size: .75rem; font-weight: 800; color: var(--ci); direction: rtl; white-space: nowrap; }
+.tj i { display: block; width: 100%; height: 3px; background: var(--c); position: relative; border-radius: 2px; }
+.tj i::after { content: ''; position: absolute; right: -2px; top: -5px; border: 6.5px solid transparent; border-left-color: var(--c); border-right: 0; }
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+"use strict";
+/* ===== SVG illustration library (each drawn in a 100x100 box unless noted) ===== */
+const ART = {
+  apple: () => `
+    <path class="f-apple s-out" stroke-width="3" stroke-linejoin="round" d="M50 31C40 22 17 24 15 48C13 72 31 93 44 91C48 90 52 90 56 91C69 93 87 72 85 48C83 24 60 22 50 31Z"/>
+    <path class="f-apple-dk" opacity=".32" d="M60 33C76 35 83 52 79 67C75 81 65 87 58 87C70 76 75 55 60 33Z"/>
+    <ellipse cx="31" cy="47" rx="6" ry="11" fill="#fff" opacity=".45" transform="rotate(18 31 47)"/>
+    <path class="f-stem" d="M47 32C46 22 49 14 53 9L58 11C54 16 52 24 53 32Z"/>
+    <path class="f-leaf s-out" stroke-width="2" d="M56 19C64 8 78 7 83 13C75 22 63 25 56 19Z"/>`,
+  sugar: () => `
+    <path class="f-sugar s-out" stroke-width="3" stroke-linejoin="round" d="M25 24H75L80 91Q80 95 76 95H24Q20 95 20 91Z"/>
+    <path class="f-sugar s-out" stroke-width="3" stroke-linejoin="round" d="M25 24L31 7H69L75 24Z"/>
+    <path class="s-out" stroke-width="2" d="M33 15H67"/>
+    <rect x="21.5" y="46" width="57" height="27" class="f-band"/>
+    <text x="50" y="65" text-anchor="middle" font-size="15" fill="#fff">סוכר</text>
+    <text x="50" y="88" text-anchor="middle" font-size="12.5" fill="#1B2A41">1 ק״ג</text>`,
+  grain: () => `
+    <ellipse cx="50" cy="50" rx="34" ry="15" transform="rotate(-25 50 50)" fill="#F4EBCF" class="s-out" stroke-width="4"/>
+    <ellipse cx="40" cy="47" rx="12" ry="4" transform="rotate(-25 40 47)" fill="#fff" opacity=".7"/>`,
+  pin: () => `
+    <path d="M28 76L74 22" stroke="#8494A4" stroke-width="6" stroke-linecap="round"/>
+    <path d="M28 76L22 84" stroke="#8494A4" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="76" cy="20" r="13" class="f-apple s-out" stroke-width="3"/>
+    <circle cx="72" cy="16" r="4" fill="#fff" opacity=".6"/>`,
+  clip: () => `
+    <path d="M36 80V30A14 14 0 0 1 64 30V72A9 9 0 0 1 46 72V36A4 4 0 0 1 54 36V66" fill="none" stroke="#8494A4" stroke-width="6" stroke-linecap="round"/>
+    <path d="M36 80V30A14 14 0 0 1 64 30V72A9 9 0 0 1 46 72V36" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="2" stroke-linecap="round"/>`,
+  crate: () => `
+    <rect x="8" y="22" width="84" height="70" rx="5" class="f-wood s-out" stroke-width="3"/>
+    <path class="s-out" stroke-width="2.5" d="M8 45H92M8 68H92"/>
+    <path class="f-wood-dk" opacity=".55" d="M12 25H88V30H12ZM12 48H88V53H12ZM12 71H88V76H12Z"/>
+    <rect x="30" y="35" width="40" height="22" rx="4" fill="#FFF7E0" class="s-out" stroke-width="2"/>
+    <text x="50" y="51" text-anchor="middle" font-size="13" fill="#1B2A41">100</text>`,
+  car: () => `
+    <path class="f-vol s-out" stroke-width="3" stroke-linejoin="round" d="M6 70V56Q6 50 12 49L24 47L36 30Q39 26 45 26H66Q72 26 75 31L85 47L91 49Q95 50 95 56V70Q95 74 91 74H10Q6 74 6 70Z"/>
+    <path fill="#DDF1FF" class="s-out" stroke-width="2.5" d="M30 47L41 33Q43 31 46 31H54V47ZM59 31H65Q69 31 71 34L80 47H59Z"/>
+    <circle cx="27" cy="74" r="11" fill="#2A3442" class="s-out" stroke-width="2"/><circle cx="27" cy="74" r="4" fill="#C9D3DC"/>
+    <circle cx="74" cy="74" r="11" fill="#2A3442" class="s-out" stroke-width="2"/><circle cx="74" cy="74" r="4" fill="#C9D3DC"/>
+    <rect x="86" y="54" width="7" height="5" rx="2" fill="#FFE082"/>`,
+  sack: () => `
+    <path class="f-kraft s-out" stroke-width="3" stroke-linejoin="round" d="M30 20Q50 26 70 20L74 30Q90 58 84 84Q82 94 70 94H30Q18 94 16 84Q10 58 26 30Z"/>
+    <path class="s-out" stroke-width="3" d="M28 28Q50 34 72 28"/>
+    <path class="f-kraft-dk" d="M36 14L44 22H56L64 14Q50 18 36 14Z"/>`,
+  cup: (fill = 1) => {
+    const top = 18, bot = 90, h = (bot - top - 6) * fill;
+    return `
+    <clipPath id="cupclip"><path d="M20 ${top}H80L73 ${bot}Q72 94 68 94H32Q28 94 27 ${bot}Z"/></clipPath>
+    <g clip-path="url(#cupclip)"><rect x="10" y="${94 - h}" width="80" height="${h + 2}" class="f-water"/><rect x="10" y="${94 - h}" width="80" height="4" class="f-water-hi"/></g>
+    <path class="f-glass s-glass" stroke-width="3.5" stroke-linejoin="round" d="M20 ${top}H80L73 ${bot}Q72 94 68 94H32Q28 94 27 ${bot}Z"/>
+    <path d="M28 26L33 84" stroke="#fff" stroke-opacity=".55" stroke-width="3" stroke-linecap="round"/>`;
+  },
+  bottle: (label = '1 ל׳', fill = .85) => {
+    const h = 58 * fill;
+    return `
+    <clipPath id="btlclip"><path d="M40 8H60V22Q74 30 74 44V90Q74 95 69 95H31Q26 95 26 90V44Q26 30 40 22Z"/></clipPath>
+    <g clip-path="url(#btlclip)"><rect x="20" y="${95 - h}" width="60" height="${h}" class="f-water" opacity=".85"/></g>
+    <path class="f-glass s-glass" stroke-width="3" stroke-linejoin="round" d="M40 8H60V22Q74 30 74 44V90Q74 95 69 95H31Q26 95 26 90V44Q26 30 40 22Z"/>
+    <rect x="38" y="2" width="24" height="9" rx="2" class="f-vol s-out" stroke-width="2"/>
+    <rect x="26" y="52" width="48" height="22" fill="#fff" class="s-glass" stroke-width="1.5"/>
+    <text x="50" y="68" text-anchor="middle" font-size="13" fill="#0F4C78">${label}</text>`;
+  },
+  jug: (fill = .6) => {
+    const h = 70 * fill;
+    return `
+    <clipPath id="jugclip"><path d="M22 16H72V86Q72 94 64 94H30Q22 94 22 86Z"/></clipPath>
+    <g clip-path="url(#jugclip)"><rect x="18" y="${94 - h}" width="60" height="${h}" class="f-water"/></g>
+    <path class="f-glass s-glass" stroke-width="3.5" stroke-linejoin="round" d="M22 16H72V86Q72 94 64 94H30Q22 94 22 86Z"/>
+    <path fill="none" class="s-glass" stroke-width="5" d="M72 30Q90 32 88 52Q86 68 72 70"/>
+    <path class="s-glass" stroke-width="2" d="M22 34H32M22 52H36M22 70H32"/>
+    <path d="M14 16H30" class="s-glass" stroke-width="3.5" stroke-linecap="round"/>`;
+  },
+  pencil: () => `
+    <g transform="rotate(-35 50 50)">
+      <rect x="20" y="40" width="58" height="20" class="f-len s-out" stroke-width="3"/>
+      <path class="s-out" stroke-width="2" d="M20 47H78M20 53H78"/>
+      <path fill="#F3D9B1" class="s-out" stroke-width="3" stroke-linejoin="round" d="M78 40L96 50L78 60Z"/>
+      <path class="f-ink" d="M90 47L96 50L90 53Z"/>
+      <rect x="10" y="40" width="10" height="20" fill="#C9D3DC" class="s-out" stroke-width="3"/>
+      <rect x="2" y="40" width="9" height="20" rx="3" fill="#F48FB1" class="s-out" stroke-width="3"/>
+    </g>`,
+  ruler: () => `
+    <g transform="rotate(-20 50 50)">
+      <rect x="4" y="34" width="92" height="30" rx="4" class="f-wood s-out" stroke-width="3"/>
+      <path class="s-out" stroke-width="2.5" d="M14 34V50M24 34V44M34 34V50M44 34V44M54 34V50M64 34V44M74 34V50M84 34V44"/>
+    </g>`,
+  ant: () => `
+    <g class="f-ink"><ellipse cx="28" cy="55" rx="15" ry="12"/><ellipse cx="52" cy="55" rx="10" ry="9"/><circle cx="72" cy="50" r="10"/></g>
+    <path class="s-ink" stroke-width="3.5" fill="none" stroke-linecap="round" d="M48 62L40 80M54 63L56 82M58 61L70 78M48 48L38 32M54 47L58 30M78 42L86 28M74 41L76 26"/>`,
+  eraser: () => `
+    <g transform="rotate(-15 50 50)"><rect x="12" y="32" width="76" height="36" rx="6" fill="#F48FB1" class="s-out" stroke-width="3"/>
+    <rect x="12" y="32" width="34" height="36" rx="6" class="f-vol s-out" stroke-width="3"/></g>`,
+  desk: () => `
+    <rect x="8" y="28" width="84" height="12" rx="3" class="f-wood s-out" stroke-width="3"/>
+    <path class="s-out" stroke-width="5" stroke-linecap="round" d="M18 40V92M82 40V92"/>
+    <rect x="22" y="44" width="56" height="16" rx="2" class="f-metal s-out" stroke-width="2.5"/>`,
+  girl: () => `
+    <circle cx="50" cy="20" r="13" fill="#F6CFA8" class="s-out" stroke-width="3"/>
+    <path fill="#6B3E26" d="M36 18Q38 4 52 6Q66 6 64 20Q60 12 50 13Q42 13 36 18Z"/>
+    <path fill="#6B3E26" d="M62 14Q74 22 68 40Q66 30 60 26Z"/>
+    <path class="f-mass s-out" stroke-width="3" stroke-linejoin="round" d="M38 36H62L70 66H30Z"/>
+    <path class="s-out" stroke-width="5" stroke-linecap="round" d="M43 66V94M57 66V94M38 40L30 58M62 40L70 58"/>`,
+  door: () => `
+    <rect x="22" y="6" width="56" height="90" rx="3" class="f-wood s-out" stroke-width="3"/>
+    <rect x="30" y="14" width="40" height="32" rx="2" class="f-wood-dk" opacity=".6"/><rect x="30" y="54" width="40" height="34" rx="2" class="f-wood-dk" opacity=".6"/>
+    <circle cx="66" cy="52" r="4" class="f-ink"/>`,
+  field: () => `
+    <rect x="6" y="20" width="88" height="60" rx="4" class="f-grass s-out" stroke-width="3"/>
+    <path stroke="#fff" stroke-width="2.5" fill="none" d="M50 20V80M6 38H18V62H6M94 38H82V62H94"/><circle cx="50" cy="50" r="10" stroke="#fff" stroke-width="2.5" fill="none"/>`,
+  track: () => `
+    <rect x="6" y="22" width="88" height="56" rx="28" fill="#E0775A" class="s-out" stroke-width="3"/>
+    <rect x="20" y="34" width="60" height="32" rx="16" class="f-grass s-out" stroke-width="2.5"/>
+    <rect x="6" y="22" width="88" height="56" rx="28" fill="none" stroke="#fff" stroke-width="1.5" stroke-dasharray="5 4" transform="translate(50 50) scale(.88) translate(-50 -50)"/>`,
+  clock: (h = 10, m = 10) => {
+    const ma = m * 6, ha = (h % 12) * 30 + m / 2;
+    return `
+    <circle cx="50" cy="50" r="44" class="f-card s-out" stroke-width="5"/>
+    <circle cx="50" cy="50" r="44" fill="none" class="s-c" stroke-width="3" transform="translate(50 50) scale(.86) translate(-50 -50)" opacity=".5"/>
+    ${[0, 3, 6, 9].map(i => { const a = i * 30 * Math.PI / 180; return `<circle cx="${50 + 34 * Math.sin(a)}" cy="${50 - 34 * Math.cos(a)}" r="3.5" class="f-ink"/>`; }).join('')}
+    <path d="M50 50L50 26" class="s-ink" stroke-width="6" stroke-linecap="round" transform="rotate(${ha} 50 50)"/>
+    <path d="M50 50L50 14" class="s-ink" stroke-width="4" stroke-linecap="round" transform="rotate(${ma} 50 50)"/>
+    <circle cx="50" cy="50" r="5" class="f-c"/>`;
+  },
+  calendar: (d = '7') => `
+    <rect x="10" y="16" width="80" height="78" rx="9" class="f-card s-out" stroke-width="4"/>
+    <path d="M10 25Q10 16 19 16H81Q90 16 90 25V36H10Z" class="f-mass"/>
+    <path class="s-out" stroke-width="4" d="M10 36H90"/>
+    <path class="s-out" stroke-width="6" stroke-linecap="round" d="M30 8V22M70 8V22"/>
+    <text x="50" y="80" text-anchor="middle" font-size="38" class="disp t-ink">${d}</text>`,
+  scale: () => `
+    <rect x="12" y="60" width="76" height="32" rx="8" class="f-metal s-out" stroke-width="3"/>
+    <rect x="30" y="68" width="40" height="15" rx="3" class="f-lcd s-out" stroke-width="2"/>
+    <text x="50" y="80" text-anchor="middle" font-size="11" class="lcd" fill="#1E2E17">1000</text>
+    <rect x="6" y="52" width="88" height="9" rx="4" class="f-metal-dk s-out" stroke-width="3"/>`,
+  star: () => `<path class="f-star" d="M50 6L62 36L94 38L69 58L77 90L50 72L23 90L31 58L6 38L38 36Z"/>`,
+  starEmpty: () => `<path class="f-line" d="M50 6L62 36L94 38L69 58L77 90L50 72L23 90L31 58L6 38L38 36Z"/>`,
+  medal: () => `
+    <path d="M30 4H46L56 40H40Z" class="f-vol"/><path d="M70 4H54L44 40H60Z" class="f-mass"/>
+    <circle cx="50" cy="64" r="28" class="f-star s-out" stroke-width="3"/>
+    <circle cx="50" cy="64" r="19" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="3"/>
+    <path fill="#fff" d="M50 50L54 60L65 61L57 68L59 79L50 73L41 79L43 68L35 61L46 60Z"/>`,
+  trophy: () => `
+    <path class="f-star s-out" stroke-width="3" stroke-linejoin="round" d="M28 10H72V36Q72 58 50 60Q28 58 28 36Z"/>
+    <path fill="none" class="s-out" stroke-width="4" d="M28 18H14Q12 38 30 42M72 18H86Q88 38 70 42"/>
+    <rect x="44" y="60" width="12" height="16" class="f-star s-out" stroke-width="3"/>
+    <rect x="30" y="76" width="40" height="14" rx="3" class="f-time s-out" stroke-width="3"/>
+    <path fill="#fff" opacity=".55" d="M36 16H44V40Q38 36 36 28Z"/>`,
+  tape: () => `
+    <rect x="44" y="58" width="52" height="16" class="f-len s-out" stroke-width="3"/>
+    <path class="s-out" stroke-width="2" d="M54 58V66M64 58V70M74 58V66M84 58V70"/>
+    <circle cx="42" cy="54" r="34" class="f-mass s-out" stroke-width="4"/>
+    <circle cx="42" cy="54" r="14" class="f-card s-out" stroke-width="3"/>
+    <circle cx="42" cy="54" r="4" class="f-ink"/>`,
+  piece: (w = 60, label = '', ticks = 10) => {
+    const x = (100 - w) / 2;
+    let t = '';
+    for (let i = 1; i < ticks; i++) t += `<path d="M${x + w * i / ticks} 30V${i === ticks / 2 ? 44 : 38}" class="s-out" stroke-width="1.5"/>`;
+    return `<rect x="${x}" y="30" width="${w}" height="26" rx="3" class="f-len s-out" stroke-width="3"/>${t}
+      <text x="50" y="80" text-anchor="middle" font-size="16" class="t-ink">${label}</text>`;
+  },
+  road: (label = '', segs = 10) => {
+    let t = '';
+    for (let i = 1; i < segs; i++) t += `<path d="M${6 + 88 * i / segs} 50V58" stroke="#fff" stroke-width="2"/>`;
+    return `<rect x="4" y="26" width="92" height="34" rx="4" class="f-road"/><path d="M6 43H94" stroke="#fff" stroke-width="3" stroke-dasharray="8 6"/>${t}
+      <rect x="4" y="60" width="92" height="6" class="f-grass"/>
+      <text x="50" y="86" text-anchor="middle" font-size="16" class="t-ink">${label}</text>`;
+  },
+  pie: (frac = 1) => {
+    const a = frac * 360, r = 40, rad = (a - 90) * Math.PI / 180;
+    const wedge = frac >= 1 ? `<circle cx="50" cy="50" r="${r}" class="f-time" opacity=".75"/>`
+      : `<path d="M50 50L50 ${50 - r}A${r} ${r} 0 ${a > 180 ? 1 : 0} 1 ${50 + r * Math.cos(rad)} ${50 + r * Math.sin(rad)}Z" class="f-time" opacity=".75"/>`;
+    return `<circle cx="50" cy="50" r="44" class="f-card s-out" stroke-width="4"/>${wedge}
+      ${[0, 3, 6, 9].map(i => `<path d="M50 8V16" class="s-ink" stroke-width="4" transform="rotate(${i * 30 * 3} 50 50)"/>`).join('')}
+      <path d="M50 50V14" class="s-ink" stroke-width="4" stroke-linecap="round" transform="rotate(${a} 50 50)"/><circle cx="50" cy="50" r="5" class="f-ink"/>`;
+  },
+  sun: () => `<circle cx="50" cy="50" r="22" fill="#FFC93C"/>${[...Array(8)].map((_, i) => `<path d="M50 14V4" stroke="#FFC93C" stroke-width="6" stroke-linecap="round" transform="rotate(${i * 45} 50 50)"/>`).join('')}`,
+  moon: () => `<path fill="#F4E7B5" d="M62 12A38 38 0 1 0 88 66A30 30 0 1 1 62 12Z"/>`
+};
+
+/* horse, facing right, drawn in a 120x100 box */
+const HORSE = () => `
+  <g class="horse-in">
+    <g class="leg a"><path d="M30 60L26 92" stroke="#7A4A27" stroke-width="7" stroke-linecap="round"/></g>
+    <g class="leg b"><path d="M42 60L44 92" stroke="#7A4A27" stroke-width="7" stroke-linecap="round"/></g>
+    <g class="leg b"><path d="M74 60L72 92" stroke="#7A4A27" stroke-width="7" stroke-linecap="round"/></g>
+    <g class="leg a"><path d="M84 58L88 92" stroke="#7A4A27" stroke-width="7" stroke-linecap="round"/></g>
+    <g class="body">
+      <path d="M22 44Q8 46 6 66Q14 58 22 54Z" fill="#4A2E1A"/>
+      <ellipse cx="56" cy="50" rx="36" ry="17" fill="#A86A3A" class="s-out" stroke-width="2.5"/>
+      <path d="M80 44L92 18Q96 10 104 12L114 22Q116 28 110 30L100 30L94 50Z" fill="#A86A3A" class="s-out" stroke-width="2.5" stroke-linejoin="round"/>
+      <path d="M88 20Q84 30 80 42L86 44Q90 32 94 22Z" fill="#4A2E1A"/>
+      <circle cx="104" cy="19" r="2.6" fill="#1B1B1B"/>
+      <path d="M96 12L98 4L102 11Z" fill="#7A4A27"/>
+      <ellipse cx="44" cy="44" rx="9" ry="4" fill="#fff" opacity=".18"/>
+      <path d="M44 34Q56 28 70 34" fill="none" stroke="#E2554B" stroke-width="5" stroke-linecap="round"/>
+    </g>
+  </g>`;
+
+/* ===== UI icons (24x24, stroke currentColor) ===== */
+const UI = {
+  back: '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>',
+  next: '<path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>',
+  soundOn: '<path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  soundOff: '<path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  gear: '<circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>',
+  bulb: '<path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V17h5v-1.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" fill="#FFD54A" stroke="currentColor" stroke-width="1.8"/><path d="M9.5 19.5h5M10.5 22h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>',
+  x: '<path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>',
+  play: '<path d="M7 4.5v15l12-7.5z" fill="currentColor"/>',
+  pause: '<path d="M7 4.5h3.5v15H7zM13.5 4.5H17v15h-3.5z" fill="currentColor"/>',
+  reset: '<path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M4 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>',
+  plus: '<path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>',
+  minus: '<path d="M5 12h14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>',
+  learn: '<path d="M3 6.5Q7.5 4 12 6.5Q16.5 4 21 6.5V19Q16.5 16.5 12 19Q7.5 16.5 3 19Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 6.5V19" stroke="currentColor" stroke-width="2"/>',
+  practice: '<path d="M4 20l3.5-1L19 7.5 16.5 5 5 16.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M14.5 7l2.5 2.5" stroke="currentColor" stroke-width="2"/>',
+  challenge: '<path d="M2.5 20l6.5-11 4 6 2.5-3.5 6 8.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 9V3.5l4 1.5-4 1.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+  trash: '<path d="M5 7h14M10 7V4.5h4V7M7 7l1 13h8l1-13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+  eye: '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="currentColor"/>'
+};
+
+const svgArt = (name, cls = 'ic', ...args) => uniq(`<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true">${ART[name](...args)}</svg>`);
+const ui = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true">${UI[name]}</svg>`;
+const starSvg = (on = true) => `<svg viewBox="0 0 100 100" aria-hidden="true">${on ? ART.star() : ART.starEmpty()}</svg>`;
+/* place an ART drawing inside an SVG at (x,y) with size s */
+const place = (name, x, y, s, ...args) => uniq(`<g transform="translate(${x} ${y}) scale(${s / 100})">${ART[name](...args)}</g>`);
+
+/* clipPath ids inside repeated drawings must be unique */
+let __uid = 0;
+const uid = (p = 'u') => `${p}${++__uid}`;
+const uniq = (markup) => {
+  const map = {};
+  return markup.replace(/id="([^"]+)"/g, (_, id) => { map[id] = uid(id); return `id="${map[id]}"`; })
+    .replace(/url\(#([^)]+)\)/g, (_, id) => `url(#${map[id] || id})`);
+};
+
+const STATION_ART = {
+  mass: () => `<svg viewBox="0 0 160 120" aria-hidden="true">
+    <rect x="22" y="78" width="116" height="34" rx="10" class="f-metal s-out" stroke-width="3"/>
+    <rect x="52" y="86" width="56" height="17" rx="4" class="f-lcd s-out" stroke-width="2"/>
+    <text x="80" y="99.5" text-anchor="middle" font-size="12" class="lcd" fill="#1E2E17">1,000 g</text>
+    <rect x="14" y="70" width="132" height="10" rx="5" class="f-metal-dk s-out" stroke-width="3"/>
+    ${place('sugar', 30, 22, 48)}${place('apple', 76, 38, 32)}${place('apple', 104, 38, 32)}${place('apple', 90, 12, 30)}
+  </svg>`,
+  vol: () => `<svg viewBox="0 0 160 120" aria-hidden="true">${uniq(place('jug', 20, 14, 100, .72))}${uniq(place('cup', 104, 46, 46, .9))}</svg>`,
+  len: () => `<svg viewBox="0 0 160 120" aria-hidden="true">
+    <rect x="8" y="62" width="144" height="34" rx="5" class="f-wood s-out" stroke-width="3"/>
+    ${[...Array(15)].map((_, i) => `<path d="M${16 + i * 9.4} 62V${i % 5 === 0 ? 80 : 71}" class="s-out" stroke-width="2"/>`).join('')}
+    <g transform="translate(14 30) rotate(0)"><rect x="12" y="12" width="96" height="16" class="f-len s-out" stroke-width="3"/>
+    <path fill="#F3D9B1" class="s-out" stroke-width="3" stroke-linejoin="round" d="M108 12L126 20L108 28Z"/><path class="f-ink" d="M120 17L126 20L120 23Z"/>
+    <rect x="2" y="12" width="11" height="16" rx="3" fill="#F48FB1" class="s-out" stroke-width="3"/></g>
+  </svg>`,
+  time: () => `<svg viewBox="0 0 160 120" aria-hidden="true">${place('calendar', 92, 34, 62, '7')}${place('clock', 14, 12, 92, 10, 10)}</svg>`
+};
+
+/* ===== state, storage, formatting ===== */
+const KEY = 'yulia-measures-v1';
+const S = { sound: true, dec: ',', stars: {}, done: {}, disc: {}, last: null };
+function load() {
+  try { const raw = localStorage.getItem(KEY); if (raw) Object.assign(S, JSON.parse(raw)); } catch (e) { /* storage unavailable */ }
+}
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* storage unavailable */ }
+}
+load();
+
+const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+const h2el = (html) => { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; };
+
+/* numbers: decimal comma by default (2,5); thousands grouped with a narrow no-break space (1 000) so a comma is never ambiguous.
+   With the decimal point option: 2.5 and 1,000 (Israeli textbook style). */
+function fmt(n) {
+  let v = Math.round(n * 1e6) / 1e6;
+  const neg = v < 0; v = Math.abs(v);
+  let [ip, fp] = v.toFixed(6).replace(/0+$/, '').replace(/\.$/, '').split('.');
+  const sep = S.dec === ',' ? ' ' : ',';
+  ip = ip.replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+  return (neg ? '−' : '') + ip + (fp ? S.dec + fp : '');
+}
+function parseNum(str) {
+  if (str == null) return NaN;
+  let s = String(str).trim().replace(/[\s  ']/g, '').replace(/[−–]/g, '-');
+  if (!s) return NaN;
+  if (S.dec === '.') {
+    if (/,\d{3}(?!\d)/.test(s) && !/,\d{1,2}$/.test(s)) s = s.replace(/,/g, ''); // 1,000 → 1000
+    s = s.replace(',', '.');
+  } else {
+    s = s.replace(',', '.');
+  }
+  if (!/^-?\d*\.?\d+$|^-?\d+\.?$/.test(s)) return NaN;
+  return parseFloat(s);
+}
+const same = (a, b) => Math.abs(a - b) < 1e-7 * Math.max(1, Math.abs(b));
+
+const U = {
+  mg: { f: 1, d: 'mass', s: 'מ״ג' }, g: { f: 1e3, d: 'mass', s: 'גרם' }, kg: { f: 1e6, d: 'mass', s: 'ק״ג' }, t: { f: 1e9, d: 'mass', s: 'טון' },
+  ml: { f: 1, d: 'vol', s: 'מ״ל' }, l: { f: 1e3, d: 'vol', s: 'ליטר' },
+  mm: { f: 1, d: 'len', s: 'מ״מ' }, cm: { f: 10, d: 'len', s: 'ס״מ' }, dm: { f: 100, d: 'len', s: 'דצ״מ' }, m: { f: 1e3, d: 'len', s: 'מ׳' }, km: { f: 1e6, d: 'len', s: 'ק״מ' },
+  s: { f: 1, d: 'time', one: 'שנייה', many: 'שניות' }, min: { f: 60, d: 'time', one: 'דקה', many: 'דקות' }, h: { f: 3600, d: 'time', one: 'שעה', many: 'שעות' },
+  d: { f: 86400, d: 'time', one: 'יממה', many: 'יממות' }, day: { f: 86400, d: 'time', one: 'יום', many: 'ימים' }, w: { f: 604800, d: 'time', one: 'שבוע', many: 'שבועות' }
+};
+const un = (u, v = 2) => U[u].s || (v === 1 ? U[u].one : U[u].many);
+const qty = (v, u) => `${fmt(v)} ${un(u, v)}`;
+const conv = (v, from, to) => Math.round((v * U[from].f / U[to].f) * 1e9) / 1e9;
+/* LTR math line; an LRM after each Hebrew word keeps numbers and units in left-to-right order */
+const M = (expr) => `<span class="m">${String(expr).replace(/([\u05D0-\u05EA][\u05D0-\u05EA\u05F3\u05F4]*)/g, '$1\u200E')}</span>`;
+
+/* ===== sound (WebAudio, generated — no files) ===== */
+const Snd = {
+  ctx: null,
+  ensure() {
+    if (!S.sound) return null;
+    try {
+      if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (this.ctx.state === 'suspended') this.ctx.resume();
+    } catch (e) { return null; }
+    return this.ctx;
+  },
+  tone(f, dur = .15, type = 'sine', vol = .16, delay = 0, slide = 0) {
+    const c = this.ensure(); if (!c) return;
+    const t = c.currentTime + delay, o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t);
+    if (slide) o.frequency.exponentialRampToValueAtTime(f * slide, t + dur);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .015); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(c.destination); o.start(t); o.stop(t + dur + .05);
+  },
+  noise(dur = 1, from = 900, to = 1600, vol = .08) {
+    const c = this.ensure(); if (!c) return;
+    const len = Math.floor(c.sampleRate * dur), buf = c.createBuffer(1, len, c.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (0.6 + 0.4 * Math.sin(i / 900));
+    const src = c.createBufferSource(), bp = c.createBiquadFilter(), g = c.createGain(), t = c.currentTime;
+    bp.type = 'bandpass'; bp.Q.value = 2.5; bp.frequency.setValueAtTime(from, t); bp.frequency.linearRampToValueAtTime(to, t + dur);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .08); g.gain.setValueAtTime(vol, t + dur - .15); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    src.buffer = buf; src.connect(bp); bp.connect(g); g.connect(c.destination); src.start(t); src.stop(t + dur);
+  },
+  play(name, arg) {
+    if (!S.sound) return;
+    switch (name) {
+      case 'tap': this.tone(660, .06, 'triangle', .08); break;
+      case 'drop': this.tone(300, .18, 'sine', .2, 0, .55); this.tone(900, .05, 'triangle', .05, .02); break;
+      case 'lift': this.tone(380, .12, 'sine', .12, 0, 1.6); break;
+      case 'tick': this.tone(1800, .03, 'square', .035); break;
+      case 'pour': this.noise(arg || 1, 700, 1500, .07); break;
+      case 'ok': [523, 659, 784, 1047].forEach((f, i) => this.tone(f, .22, 'triangle', .13, i * .08)); break;
+      case 'no': this.tone(330, .16, 'sine', .12, 0); this.tone(262, .24, 'sine', .12, .14); break;
+      case 'mile': [392, 523, 659, 784, 659, 784, 1047].forEach((f, i) => this.tone(f, .2, 'triangle', .12, i * .09)); break;
+      case 'star': this.tone(1320, .12, 'sine', .08, 0); this.tone(1760, .16, 'sine', .07, .07); break;
+      case 'win': [523, 659, 784, 1047, 784, 1047, 1319].forEach((f, i) => this.tone(f, .26, 'triangle', .13, i * .11)); break;
+    }
+  }
+};
+
+/* ===== motion helpers ===== */
+const easeIO = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+const easeOut = t => 1 - Math.pow(1 - t, 3);
+function tween(ms, fn, ease = easeIO) {
+  return new Promise(res => {
+    if (REDUCED) ms = Math.min(ms, 60);
+    const t0 = performance.now();
+    const step = (now) => { const t = Math.min(1, (now - t0) / ms); fn(ease(t)); if (t < 1) requestAnimationFrame(step); else res(); };
+    requestAnimationFrame(step);
+  });
+}
+const wait = ms => new Promise(r => setTimeout(r, REDUCED ? 0 : ms));
+
+let toastTimer;
+function toast(msg) {
+  let t = $('.toast');
+  if (!t) { t = h2el('<div class="toast" role="status" aria-live="polite"></div>'); document.body.appendChild(t); }
+  t.innerHTML = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+function banner(stage, title, sub = '') {
+  let b = $('.banner', stage);
+  if (!b) { b = h2el('<div class="banner" aria-live="polite"></div>'); stage.appendChild(b); }
+  b.innerHTML = `${title}${sub ? `<small>${sub}</small>` : ''}`;
+  b.classList.remove('show'); void b.offsetWidth; b.classList.add('show');
+  clearTimeout(b._t); b._t = setTimeout(() => b.classList.remove('show'), 2800);
+}
+
+/* confetti */
+function confetti(n = 90) {
+  if (REDUCED) return;
+  let c = $('#confetti');
+  if (!c) { c = h2el('<canvas id="confetti"></canvas>'); document.body.appendChild(c); }
+  const ctx = c.getContext('2d'), W = c.width = innerWidth * devicePixelRatio, H = c.height = innerHeight * devicePixelRatio;
+  const cols = ['#E4473D', '#3BA3E6', '#F3C54F', '#7B66E0', '#49A84C', '#F48FB1'];
+  const ps = [...Array(n)].map(() => ({
+    x: W * (.2 + Math.random() * .6), y: H * .35, vx: (Math.random() - .5) * 18 * devicePixelRatio, vy: (-Math.random() * 16 - 6) * devicePixelRatio,
+    s: (5 + Math.random() * 6) * devicePixelRatio, r: Math.random() * 6, vr: (Math.random() - .5) * .4, c: cols[Math.floor(Math.random() * cols.length)]
+  }));
+  const t0 = performance.now();
+  const step = (now) => {
+    const el = now - t0; ctx.clearRect(0, 0, W, H);
+    ps.forEach(p => { p.vy += .55 * devicePixelRatio; p.x += p.vx; p.y += p.vy; p.vx *= .985; p.r += p.vr;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c; ctx.globalAlpha = Math.max(0, 1 - el / 1800); ctx.fillRect(-p.s / 2, -p.s / 3, p.s, p.s * .66); ctx.restore(); });
+    if (el < 1800) requestAnimationFrame(step); else ctx.clearRect(0, 0, W, H);
+  };
+  requestAnimationFrame(step);
+}
+
+/* pointer drag on an SVG along x (value from svg x-coordinate) */
+function svgPoint(svg, evt) {
+  const pt = svg.createSVGPoint(); pt.x = evt.clientX; pt.y = evt.clientY;
+  return pt.matrixTransform(svg.getScreenCTM().inverse());
+}
+function dragX(svg, onMove) {
+  let on = false;
+  const mv = (e) => { if (!on) return; e.preventDefault(); onMove(svgPoint(svg, e)); };
+  svg.addEventListener('pointerdown', (e) => { on = true; svg.setPointerCapture(e.pointerId); onMove(svgPoint(svg, e)); });
+  svg.addEventListener('pointermove', mv);
+  const end = () => { on = false; };
+  svg.addEventListener('pointerup', end); svg.addEventListener('pointercancel', end);
+}
+
+/* ===== stations & progress ===== */
+const STATIONS = {
+  mass: { cls: 'st-mass', name: 'משקל ומסה', sub: 'מ״ג · גרם · ק״ג · טון', disc: ['g', 'kg', 't'] },
+  vol:  { cls: 'st-vol',  name: 'נפח',        sub: 'מ״ל · ליטר',           disc: ['quarter', 'half', 'l', 'bottles'] },
+  len:  { cls: 'st-len',  name: 'אורך',       sub: 'מ״מ · ס״מ · דצ״מ · מ׳ · ק״מ', disc: ['cm', 'dm', 'm', 'km'] },
+  time: { cls: 'st-time', name: 'זמן',        sub: 'שניות · דקות · שעות · ימים · שבועות', disc: ['min', 'h', 'd', 'w'] }
+};
+const ORDER = ['mass', 'vol', 'len', 'time'];
+
+function discover(st, key, title, sub) {
+  S.disc[st] = S.disc[st] || {};
+  const isNew = !S.disc[st][key];
+  if (isNew) { S.disc[st][key] = true; save(); refreshTop(); }
+  return isNew;
+}
+function stationStats(st) {
+  const qs = [...(BANK[st].practice || []), ...(BANK[st].challenge || [])];
+  const done = qs.filter(q => S.done[q.id]).length;
+  const stars = qs.reduce((a, q) => a + (S.stars[q.id] || 0), 0);
+  const discN = Object.keys(S.disc[st] || {}).length, discT = STATIONS[st].disc.length;
+  const pDone = BANK[st].practice.every(q => S.done[q.id]);
+  const cDone = BANK[st].challenge.every(q => S.done[q.id]);
+  return { done, total: qs.length, stars, maxStars: qs.length * 3, discN, discT, pDone, cDone,
+    pct: Math.round(100 * (done + discN) / (qs.length + discT)) };
+}
+function totals() {
+  let stars = 0, disc = 0;
+  ORDER.forEach(st => { const s = stationStats(st); stars += s.stars; disc += s.discN; });
+  return { stars, points: stars * 10 + disc * 20 };
+}
+
+/* ===== shell ===== */
+const app = { view: { name: 'home' }, cleanup: null };
+function refreshTop() {
+  const t = totals();
+  const p = $('#pill'); if (p) p.innerHTML = `${starSvg()}<span>${fmt(t.stars)}</span><span class="pts" style="opacity:.55">·</span><span class="pts">${fmt(t.points)} נק׳</span>`;
+  const sb = $('#soundBtn'); if (sb) { sb.setAttribute('aria-pressed', String(S.sound)); sb.innerHTML = ui(S.sound ? 'soundOn' : 'soundOff'); }
+}
+function shell() {
+  $('#root').innerHTML = `
+  <div class="app">
+    <header class="top">
+      <button class="brand" id="homeBtn" aria-label="למסך הבית">${svgArt('tape', '')}<b>עולם המידות של יוליה</b></button>
+      <span class="pill" id="pill" aria-label="כוכבים ונקודות"></span>
+      <button class="icon-btn" id="soundBtn" aria-label="צלילים"></button>
+      <button class="icon-btn" id="setBtn" aria-label="הגדרות">${ui('gear')}</button>
+    </header>
+    <main id="main"></main>
+  </div>`;
+  $('#homeBtn').onclick = () => go({ name: 'home' });
+  $('#soundBtn').onclick = () => { S.sound = !S.sound; save(); refreshTop(); if (S.sound) Snd.play('tap'); };
+  $('#setBtn').onclick = settings;
+  refreshTop();
+}
+function go(view) {
+  if (app.cleanup) { try { app.cleanup(); } catch (e) {} app.cleanup = null; }
+  app.view = view;
+  if (view.name === 'station') { S.last = view; save(); }
+  render();
+  window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
+}
+function render() {
+  const main = $('#main');
+  if (app.view.name === 'home') return renderHome(main);
+  renderStation(main, app.view);
+}
+
+function renderHome(main) {
+  const facts = [['mass', '1 ק״ג = 1,000 גרם'], ['vol', '1 ליטר = 1,000 מ״ל'], ['len', '1 מ׳ = 100 ס״מ'], ['time', 'שעה = 60 דקות'],
+    ['mass', '1 טון = 1,000 ק״ג'], ['len', '1 ק״מ = 1,000 מ׳'], ['time', 'יממה = 24 שעות'], ['len', '1 ס״מ = 10 מ״מ']]
+    .map(([st, f]) => `<span class="fact ${STATIONS[st].cls}">${f.replace(/1,000/g, fmt(1000))}</span>`).join('');
+  const last = S.last && STATIONS[S.last.st];
+  main.innerHTML = `
+    <section class="hero">
+      <h1>שלום יוליה! ברוכה הבאה ל<span class="tape">עולם המידות</span></h1>
+      <p>ארבע תחנות מדידה. בכל תחנה עורכים ניסויים ורואים איך היחידות מתחברות, מתרגלים, ובסוף עונים על אתגרים מהחיים.</p>
+    </section>
+    <div class="facts" aria-label="עובדות מפתח">${facts}</div>
+    ${last ? `<div class="row" style="margin-top:8px"><button class="btn ghost small" id="resume">${ui('next')}להמשיך: ${STATIONS[S.last.st].name} · ${{ learn: 'לומדים', practice: 'מתרגלים', challenge: 'אתגר' }[S.last.mode]}</button></div>` : ''}
+    <section class="stations" aria-label="תחנות">
+      ${ORDER.map(st => {
+        const s = stationStats(st), meta = STATIONS[st];
+        return `<button class="st-card ${meta.cls}" data-st="${st}">
+          <div class="art">${STATION_ART[st]()}</div>
+          <div class="badges">${s.pDone ? svgArt('medal', '') : ''}${s.cDone ? svgArt('trophy', '') : ''}</div>
+          <h2>${meta.name}</h2>
+          <div class="sub">${meta.sub}</div>
+          <div class="meter" aria-hidden="true"><i style="width:${s.pct}%"></i></div>
+          <div class="st-meta"><span>${s.pct}% הושלם</span><span class="stars">${starSvg()}${s.stars}/${s.maxStars}</span></div>
+        </button>`;
+      }).join('')}
+    </section>
+    <p class="home-note">כל ההתקדמות נשמרת במכשיר הזה. אין הגבלת זמן לאף שאלה.</p>`;
+  $$('.st-card', main).forEach(b => b.onclick = () => { Snd.play('tap'); go({ name: 'station', st: b.dataset.st, mode: 'learn' }); });
+  const r = $('#resume', main); if (r) r.onclick = () => go({ ...S.last });
+}
+
+function renderStation(main, v) {
+  const meta = STATIONS[v.st];
+  main.innerHTML = `
+    <div class="${meta.cls}">
+      <div class="st-head">
+        <button class="icon-btn" id="backBtn" aria-label="חזרה למסך הבית">${ui('back')}</button>
+        <div class="art">${STATION_ART[v.st]()}</div>
+        <div><h1>${meta.name}</h1><p>${meta.sub}</p></div>
+      </div>
+      <div class="seg" role="tablist">
+        ${[['learn', 'לומדים', 'learn'], ['practice', 'מתרגלים', 'practice'], ['challenge', 'אתגר', 'challenge']]
+          .map(([k, t, ic]) => `<button role="tab" data-mode="${k}" aria-selected="${v.mode === k}">${ui(ic)}${t}</button>`).join('')}
+      </div>
+      <div id="stBody"></div>
+    </div>`;
+  $('#backBtn').onclick = () => go({ name: 'home' });
+  $$('.seg button', main).forEach(b => b.onclick = () => { Snd.play('tap'); go({ ...v, mode: b.dataset.mode, qi: undefined }); });
+  const body = $('#stBody', main);
+  if (v.mode === 'learn') app.cleanup = LEARN[v.st](body);
+  else app.cleanup = runQuiz(body, v.st, v.mode, v.qi);
+}
+
+/* discoveries strip shown under each learning station */
+function discStrip(st, labels) {
+  const got = S.disc[st] || {};
+  return `<div class="row" aria-label="גילויים">${STATIONS[st].disc.map(k =>
+    `<span class="fact" style="opacity:${got[k] ? 1 : .45};border-style:${got[k] ? 'solid' : 'dashed'}">${got[k] ? '✓ ' : ''}${labels[k]}</span>`).join('')}</div>`;
+}
+
+/* ===== settings ===== */
+function settings() {
+  const back = h2el(`<div class="modal-back" role="dialog" aria-modal="true" aria-label="הגדרות">
+    <div class="modal">
+      <h2>הגדרות</h2>
+      <div class="set-row"><span>צלילים</span><div class="seg2">
+        <button class="chip" data-snd="1" aria-pressed="${S.sound}">פועלים</button><button class="chip" data-snd="0" aria-pressed="${!S.sound}">כבויים</button></div></div>
+      <div class="set-row"><span>סימן עשרוני</span><div class="seg2">
+        <button class="chip" data-dec="," aria-pressed="${S.dec === ','}"><span class="m">2,5</span> פסיק</button><button class="chip" data-dec="." aria-pressed="${S.dec === '.'}"><span class="m">2.5</span> נקודה</button></div></div>
+      <div class="set-row"><span>איפוס כל ההתקדמות</span><button class="btn ghost small" id="resetBtn">${ui('trash')}איפוס</button></div>
+      <div>
+        <h3 style="margin:6px 0;font-family:var(--font-display);font-weight:600">שמירת המשחק בטלפון</h3>
+        <ol class="howto">
+          <li>פותחים את הקישור למשחק בדפדפן Chrome.</li>
+          <li>לוחצים על התפריט ⋮ ובוחרים „הוספה למסך הבית”.</li>
+          <li>אפשר גם לשמור את קובץ ה-HTML ולפתוח אותו בלי אינטרנט.</li>
+        </ol>
+      </div>
+      <button class="btn" id="closeSet">סגירה</button>
+    </div></div>`);
+  document.body.appendChild(back);
+  const close = () => { back.remove(); render(); refreshTop(); };
+  back.addEventListener('click', e => { if (e.target === back) close(); });
+  $('#closeSet', back).onclick = close;
+  $$('[data-snd]', back).forEach(b => b.onclick = () => { S.sound = b.dataset.snd === '1'; save(); $$('[data-snd]', back).forEach(x => x.setAttribute('aria-pressed', String(x === b))); refreshTop(); Snd.play('tap'); });
+  $$('[data-dec]', back).forEach(b => b.onclick = () => { S.dec = b.dataset.dec; save(); $$('[data-dec]', back).forEach(x => x.setAttribute('aria-pressed', String(x === b))); });
+  const rb = $('#resetBtn', back);
+  rb.onclick = () => {
+    if (rb.dataset.arm) { S.stars = {}; S.done = {}; S.disc = {}; S.last = null; save(); toast('ההתקדמות אופסה'); close(); go({ name: 'home' }); return; }
+    rb.dataset.arm = '1'; rb.innerHTML = `${ui('trash')}בטוחה? לחצי שוב`; rb.style.borderColor = 'var(--bad)';
+  };
+}
+
+/* ===== question banks =====
+   num: number answer · mc: choose (first option is correct, order is shuffled on screen)
+   cmp: choose >, <, = · build: drag items until the total is exact
+   x: an independent check expression used by the test script */
+const F = (n) => fmt(n);
+const T = (s) => M(s); // times like 17:40 are shown left-to-right
+
+const cv = (id, v, from, to, style = 0) => ({
+  id, type: 'num', v, from, to, a: conv(v, from, to), u: to, tag: 'המרה',
+  q: () => style ? `השלימי: <b>${qty(v, from)}</b> = ___ ${un(to)}` : `כמה ${un(to)} יש ב-<b>${qty(v, from)}</b>?`,
+  h: { k: 'conv', v, from, to }
+});
+const cmp = (id, l, r) => ({ id, type: 'cmp', l, r, tag: 'השוואה', q: () => 'בחרי את הסימן המתאים: &gt;, &lt; או =', h: { k: 'cmpConv', l, r } });
+
+const TOK = {
+  apple: { art: () => ART.apple(), v: 100, lab: () => '100 גרם' },
+  sugar: { art: () => ART.sugar(), v: 1000, lab: () => `1 ק״ג` },
+  cup: { art: () => ART.cup(.9), v: 250, lab: () => '250 מ״ל' },
+  b05: { art: () => ART.bottle(`${F(.5)} ל׳`, .8), v: 500, lab: () => `${F(.5)} ליטר` },
+  b1: { art: () => ART.bottle('1 ל׳', .8), v: 1000, lab: () => '1 ליטר' },
+  mbar: { art: () => ART.piece(92, '1 מ׳', 10), v: 100, lab: () => '1 מ׳ = 100 ס״מ' },
+  dmbar: { art: () => ART.piece(46, '1 דצ״מ', 10), v: 10, lab: () => '1 דצ״מ = 10 ס״מ' },
+  cmbar: { art: () => ART.piece(16, '1 ס״מ', 0), v: 1, lab: () => '1 ס״מ' },
+  kmroad: { art: () => ART.road('1 ק״מ', 10), v: 1000, lab: () => `1 ק״מ = ${F(1000)} מ׳` },
+  seg100: { art: () => ART.road('100 מ׳', 1), v: 100, lab: () => '100 מ׳' },
+  hour: { art: () => ART.pie(1), v: 60, lab: () => 'שעה' },
+  half: { art: () => ART.pie(.5), v: 30, lab: () => 'חצי שעה' },
+  quarter: { art: () => ART.pie(.25), v: 15, lab: () => 'רבע שעה' }
+};
+const build = (id, v, big, small, tokens, place, q) => ({
+  id, type: 'build', target: conv(v, big, small), tv: v, big, small, tokens, place, tag: 'גרירה',
+  q: q || (() => `גררי פריטים אל ${place} עד שיהיו בדיוק <b>${qty(v, big)}</b>.`),
+  h: { k: 'conv', v, from: big, to: small }
+});
+
+const BANK = {
+  mass: {
+    practice: [
+      cv('m1', 2.5, 'kg', 'g'),
+      cv('m2', 3, 'kg', 'g', 1),
+      cv('m3', 4000, 'g', 'kg'),
+      cv('m4', 750, 'g', 'kg', 1),
+      cv('m5', 2, 'g', 'mg'),
+      cv('m6', 3.5, 't', 'kg', 1),
+      { id: 'm7', type: 'mc', tag: 'בחירה', q: () => `<b>${qty(1500, 'kg')}</b> = ?`, opts: () => [`${F(1.5)} טון`, '15 טון', `${F(.15)} טון`, '150 טון'], h: { k: 'conv', v: 1500, from: 'kg', to: 't' }, x: 'conv(1500,"kg","t")===1.5' },
+      { id: 'm8', type: 'mc', tag: 'בחירה', q: () => `<b>${qty(500, 'mg')}</b> = ?`, opts: () => [`${F(.5)} גרם`, '5 גרם', '50 גרם', `${F(.05)} גרם`], h: { k: 'conv', v: 500, from: 'mg', to: 'g' }, x: 'conv(500,"mg","g")===0.5' },
+      cmp('m9', [2, 'kg'], [1900, 'g']),
+      cmp('m10', [.25, 'kg'], [250, 'g']),
+      cmp('m11', [3.2, 't'], [3500, 'kg']),
+      build('m12', 1.4, 'kg', 'g', ['apple', 'sugar'], 'המשקל'),
+      build('m13', 2.3, 'kg', 'g', ['apple', 'sugar'], 'המשקל'),
+      { id: 'm14', type: 'mc', tag: 'בחירה', q: () => 'איזו כמות היא <b>הכבדה ביותר</b>?', opts: () => [`${F(1.2)} ק״ג`, `${F(1150)} גרם`, `${F(1050)} גרם`, `${F(.9)} ק״ג`],
+        h: { k: 'conv', v: 1.2, from: 'kg', to: 'g', text: () => 'המירי את כל הכמויות לגרמים ואז השווי.' }, x: '1200>1150 && 1200>1050 && 1200>900',
+        sol: () => [`${F(1.2)} ק״ג = ${F(1200)} גרם, ${F(.9)} ק״ג = 900 גרם.`, `${F(1200)} גרם הוא הגדול ביותר.`] }
+    ],
+    challenge: [
+      { id: 'mc1', type: 'num', tag: 'בעיה מילולית', a: 2100, u: 'g', x: '6*150+1200',
+        q: () => `בסל יש 6 תפוחים, וכל אחד שוקל 150 גרם. יש בסל גם מלון שוקל ${F(1.2)} ק״ג. כמה גרם שוקלים כל הפירות יחד?`,
+        h: { k: 'items', rows: [{ ic: 'apple', n: 6, lab: '150 גרם' }, { op: '+' }, { box: `מלון ${F(1.2)} ק״ג` }], steps: () => [`כמה שוקלים התפוחים? ${M('6 × 150 = ?')}`, `כמה גרם הם ${F(1.2)} ק״ג?`, 'חברי את שני החלקים.'] },
+        sol: () => [M(`6 × 150 = 900`) + ' גרם', `${F(1.2)} ק״ג = ${F(1200)} גרם`, M(`900 + ${F(1200)} = ${F(2100)}`) + ' גרם'] },
+      { id: 'mc2', type: 'num', tag: 'בעיה מילולית', a: 1150, u: 'g', x: '2500-750-600',
+        q: () => `בשקית היו ${F(2.5)} ק״ג קמח. אמא השתמשה ב-750 גרם לעוגה וב-600 גרם ללחם. כמה גרם קמח נשארו בשקית?`,
+        h: { k: 'bar', total: () => `${F(2.5)} ק״ג = ? גרם`, parts: [[750, '750 גרם'], [600, '600 גרם'], [1150, '?']], steps: () => [`המירי ${F(2.5)} ק״ג לגרמים.`, 'החסירי את מה שהשתמשו בו.'] },
+        sol: () => [`${F(2.5)} ק״ג = ${F(2500)} גרם`, M(`${F(2500)} − 750 − 600 = ${F(1150)}`) + ' גרם'] },
+      { id: 'mc3', type: 'num', tag: 'בעיה מילולית', a: 80, u: 'שקים', x: '4000/50',
+        q: () => 'משאית יכולה להוביל עד 4 טון. כל שק מלט שוקל 50 ק״ג. כמה שקים לכל היותר אפשר להעמיס על המשאית?',
+        h: { k: 'items', rows: [{ ic: 'car', n: 4, lab: `1 טון = ${F(1000)} ק״ג` }, { op: ':' }, { ic: 'sack', n: 1, lab: '50 ק״ג' }], steps: () => ['כמה ק״ג הם 4 טון?', `כמה שקים של 50 ק״ג יש בטון אחד? (${M(`${F(1000)} : 50`)})`, 'ובארבעה טונות?'] },
+        sol: () => [`4 טון = ${F(4000)} ק״ג`, M(`${F(4000)} : 50 = 80`) + ' שקים'] },
+      { id: 'mc4', type: 'num', tag: 'בעיה מילולית', a: 75, u: 'g', x: '20*2+35',
+        q: () => 'בקופסה 20 שקיות תה. כל שקית שוקלת 2 גרם, והקופסה הריקה שוקלת 35 גרם. כמה גרם שוקלת הקופסה המלאה?',
+        h: { k: 'bar', total: () => 'הקופסה המלאה = ?', parts: [[40, '20 שקיות × 2 גרם'], [35, 'קופסה 35 גרם']], steps: () => ['כמה שוקלות כל השקיות יחד?', 'הוסיפי את משקל הקופסה.'] },
+        sol: () => [M('20 × 2 = 40') + ' גרם', M('40 + 35 = 75') + ' גרם'] },
+      { id: 'mc5', type: 'num', tag: 'בעיה מילולית', a: 500, u: 'גרגרים', x: '10*1000/20',
+        q: () => 'גרגר אורז שוקל בערך 20 מ״ג. כמה גרגרים יש בערך בשקית קטנה של 10 גרם אורז?',
+        h: { k: 'conv', v: 10, from: 'g', to: 'mg', steps: () => ['כמה מ״ג יש ב-10 גרם?', 'כמה פעמים 20 נכנס במספר הזה?'] },
+        sol: () => [`10 גרם = ${F(10000)} מ״ג`, M(`${F(10000)} : 20 = 500`) + ' גרגרים'] },
+      { id: 'mc6', type: 'num', tag: 'בעיה מילולית', a: 3720, u: 'kg', x: '3.6*1000+120',
+        q: () => `פילה בוגרת שוקלת ${F(3.6)} טון, והפיל הצעיר שלה שוקל 120 ק״ג. כמה ק״ג שוקלים שניהם יחד?`,
+        h: { k: 'conv', v: 3.6, from: 't', to: 'kg', steps: () => [`המירי ${F(3.6)} טון לק״ג.`, 'הוסיפי את משקל הפיל הצעיר.'] },
+        sol: () => [`${F(3.6)} טון = ${F(3600)} ק״ג`, M(`${F(3600)} + 120 = ${F(3720)}`) + ' ק״ג'] },
+      { id: 'mc7', type: 'num', tag: 'בעיה מילולית', a: 48, u: '₪', x: '(1000/250)*12',
+        q: () => '250 גרם גבינה עולים 12 ₪. כמה עולה 1 ק״ג מאותה גבינה?',
+        h: { k: 'items', rows: [{ box: '250 גרם', n: 4 }, { op: '=' }, { ic: 'sugar', n: 1, lab: `1 ק״ג = ${F(1000)} גרם` }], steps: () => ['כמה חבילות של 250 גרם יש ב-1 ק״ג?', 'כל חבילה עולה 12 ₪.'] },
+        sol: () => [M(`${F(1000)} : 250 = 4`) + ' חבילות', M('4 × 12 = 48') + ' ₪'] },
+      { id: 'mc8', type: 'mc', tag: 'בעיה מילולית', x: '3*400 > 1.1*1000',
+        q: () => `מה כבד יותר: 3 שקיות של 400 גרם, או שקית אחת של ${F(1.1)} ק״ג?`,
+        opts: () => ['3 השקיות של 400 גרם', `השקית של ${F(1.1)} ק״ג`, 'הן שוקלות אותו דבר'],
+        h: { k: 'items', rows: [{ box: '400 גרם', n: 3 }, { op: '?' }, { box: `${F(1.1)} ק״ג`, n: 1 }], steps: () => [M('3 × 400 = ?') + ' גרם', `כמה גרם הם ${F(1.1)} ק״ג?`] },
+        sol: () => [M(`3 × 400 = ${F(1200)}`) + ' גרם', `${F(1.1)} ק״ג = ${F(1100)} גרם`, `${F(1200)} גדול מ-${F(1100)}`] },
+      { id: 'mc9', type: 'num', tag: 'בעיה מילולית', a: 120, u: 'kg', x: '600-6*80',
+        q: () => 'מעלית יכולה לשאת עד 600 ק״ג. כבר יש בה 6 ארגזים, וכל ארגז שוקל 80 ק״ג. כמה ק״ג עוד אפשר להעמיס?',
+        h: { k: 'bar', total: () => '600 ק״ג', parts: [[480, '6 ארגזים × 80 ק״ג'], [120, '?']], steps: () => ['כמה שוקלים 6 הארגזים?', 'כמה חסר עד 600?'] },
+        sol: () => [M('6 × 80 = 480') + ' ק״ג', M('600 − 480 = 120') + ' ק״ג'] }
+    ]
+  },
+
+  vol: {
+    practice: [
+      cv('v1', 3, 'l', 'ml'),
+      cv('v2', 1.5, 'l', 'ml', 1),
+      cv('v3', 250, 'ml', 'l'),
+      cv('v4', 2000, 'ml', 'l', 1),
+      { id: 'v5', type: 'num', tag: 'המרה', a: 4, u: 'כוסות', x: '1000/250', q: () => 'כמה כוסות של 250 מ״ל ממלאות קנקן של <b>1 ליטר</b>?',
+        h: { k: 'items', rows: [{ ic: 'jug', n: 1, lab: `1 ליטר = ${F(1000)} מ״ל` }, { op: ':' }, { ic: 'cup', n: 1, lab: '250 מ״ל' }], steps: () => [`כמה פעמים 250 נכנס ב-${F(1000)}?`] },
+        sol: () => [`1 ליטר = ${F(1000)} מ״ל`, M(`${F(1000)} : 250 = 4`)] },
+      { id: 'v6', type: 'num', tag: 'המרה', a: 8, u: 'כוסות', x: '2000/250', q: () => 'כמה כוסות של 250 מ״ל ממלאות בקבוק של <b>2 ליטר</b>?',
+        h: { k: 'conv', v: 2, from: 'l', to: 'ml', steps: () => ['כמה כוסות יש בכל ליטר?', 'וכמה בשני ליטרים?'] },
+        sol: () => [`2 ליטר = ${F(2000)} מ״ל`, M(`${F(2000)} : 250 = 8`)] },
+      { id: 'v7', type: 'mc', tag: 'בחירה', q: () => `<b>${F(.5)} ליטר</b> = ?`, opts: () => ['500 מ״ל', '50 מ״ל', '5 מ״ל', `${F(5000)} מ״ל`], h: { k: 'conv', v: .5, from: 'l', to: 'ml' }, x: 'conv(0.5,"l","ml")===500' },
+      { id: 'v8', type: 'mc', tag: 'בחירה', q: () => `<b>${F(3750)} מ״ל</b> = ?`, opts: () => [`${F(3.75)} ליטר`, `${F(37.5)} ליטר`, `${F(.375)} ליטר`, '375 ליטר'], h: { k: 'conv', v: 3750, from: 'ml', to: 'l' }, x: 'conv(3750,"ml","l")===3.75' },
+      cmp('v9', [1.2, 'l'], [1020, 'ml']),
+      cmp('v10', [750, 'ml'], [.75, 'l']),
+      cmp('v11', [.3, 'l'], [350, 'ml']),
+      build('v12', 1.75, 'l', 'ml', ['cup', 'b05', 'b1'], 'הקנקן', () => `גררי כוסות ובקבוקים אל הקנקן עד שיהיו בו בדיוק <b>${qty(1.75, 'l')}</b>.`),
+      build('v13', 2.5, 'l', 'ml', ['cup', 'b05', 'b1'], 'הקנקן', () => `הכיני בדיוק <b>${qty(2.5, 'l')}</b> מיץ: גררי כוסות ובקבוקים אל הקנקן.`),
+      { id: 'v14', type: 'num', tag: 'המרה', a: 4200, u: 'ml', x: '4*1000+200', q: () => `השלימי: <b>4 ליטר ו-200 מ״ל</b> = ___ מ״ל`,
+        h: { k: 'conv', v: 4, from: 'l', to: 'ml', steps: () => ['המירי את 4 הליטרים למ״ל.', 'הוסיפי 200 מ״ל.'] }, sol: () => [`4 ליטר = ${F(4000)} מ״ל`, M(`${F(4000)} + 200 = ${F(4200)}`)] }
+    ],
+    challenge: [
+      { id: 'vc1', type: 'num', tag: 'בעיה מילולית', a: 750, u: 'ml', x: '1500-3*250',
+        q: () => `בבקבוק יש ${F(1.5)} ליטר מים. יוליה מזגה ממנו 3 כוסות של 250 מ״ל. כמה מ״ל מים נשארו בבקבוק?`,
+        h: { k: 'bar', total: () => `${F(1.5)} ליטר = ? מ״ל`, parts: [[250, '250'], [250, '250'], [250, '250'], [750, '?']], steps: () => [`המירי ${F(1.5)} ליטר למ״ל.`, 'כמה מ״ל נמזגו ב-3 כוסות?'] },
+        sol: () => [`${F(1.5)} ליטר = ${F(1500)} מ״ל`, M('3 × 250 = 750'), M(`${F(1500)} − 750 = 750`) + ' מ״ל'] },
+      { id: 'vc2', type: 'num', tag: 'בעיה מילולית', a: 1.5, u: 'l', x: '6*250/1000',
+        q: () => 'יוליה שותה בכל יום 6 כוסות מים של 250 מ״ל. כמה ליטר מים היא שותה ביום?',
+        h: { k: 'items', rows: [{ ic: 'cup', n: 6, lab: '250 מ״ל' }], steps: () => ['כמה מ״ל בסך הכול?', `כמה ליטר זה? (${F(1000)} מ״ל = 1 ליטר)`] },
+        sol: () => [M(`6 × 250 = ${F(1500)}`) + ' מ״ל', `${F(1500)} מ״ל = ${F(1.5)} ליטר`] },
+      { id: 'vc3', type: 'num', tag: 'בעיה מילולית', a: 16, u: 'דליים', x: '24/1.5',
+        q: () => `אקווריום מכיל 24 ליטר מים. כמה דליים של ${F(1.5)} ליטר צריך כדי למלא אותו?`,
+        h: { k: 'items', rows: [{ ic: 'jug', n: 2, lab: `${F(1.5)} ליטר` }, { op: '=' }, { box: '3 ליטר' }], steps: () => [`2 דליים של ${F(1.5)} ליטר = 3 ליטר.`, 'כמה פעמים 3 ליטר נכנסים ב-24 ליטר?', 'ובכל פעם יש 2 דליים.'] },
+        sol: () => [M('24 : 3 = 8'), M('8 × 2 = 16') + ' דליים'] },
+      { id: 'vc4', type: 'num', tag: 'בעיה מילולית', a: 1.5, u: 'l', x: '5*300/1000',
+        q: () => 'מתכון לעוגה דורש 300 מ״ל חלב. כמה ליטר חלב צריך כדי לאפות 5 עוגות?',
+        h: { k: 'items', rows: [{ box: '300 מ״ל', n: 5 }], steps: () => ['כמה מ״ל צריך ל-5 עוגות?', 'המירי לליטרים.'] },
+        sol: () => [M(`5 × 300 = ${F(1500)}`) + ' מ״ל', `${F(1500)} מ״ל = ${F(1.5)} ליטר`] },
+      { id: 'vc5', type: 'num', tag: 'בעיה מילולית', a: 250, u: 'ml', x: '2000/8',
+        q: () => 'קרטון מיץ של 2 ליטר חולק שווה בשווה בין 8 ילדים. כמה מ״ל מיץ קיבל כל ילד?',
+        h: { k: 'conv', v: 2, from: 'l', to: 'ml', steps: () => ['המירי 2 ליטר למ״ל.', 'חלקי ל-8 חלקים שווים.'] },
+        sol: () => [`2 ליטר = ${F(2000)} מ״ל`, M(`${F(2000)} : 8 = 250`) + ' מ״ל'] },
+      { id: 'vc6', type: 'num', tag: 'בעיה מילולית', a: 50, u: 'שטיפות', x: '750/15',
+        q: () => 'בקבוק נוזל כלים מכיל 750 מ״ל. בכל שטיפת כלים משתמשים ב-15 מ״ל. לכמה שטיפות יספיק הבקבוק?',
+        h: { k: 'bar', total: () => '750 מ״ל', parts: [[15, '15'], [15, '15'], [15, '15'], [705, 'עוד הרבה חלקים של 15 מ״ל…']], steps: () => [`כמה פעמים 15 נכנס ב-750? אפשר להתחיל מ-${M('15 × 10 = 150')}.`] },
+        sol: () => [M('750 : 15 = 50') + ' שטיפות'] },
+      { id: 'vc7', type: 'mc', tag: 'בעיה מילולית', x: '6 < 3*2.5',
+        q: () => `מה זול יותר: בקבוק אחד של ${F(1.5)} ליטר ב-6 ₪, או 3 בקבוקים של 500 מ״ל ב-${F(2.5)} ₪ כל אחד?`,
+        opts: () => [`הבקבוק של ${F(1.5)} ליטר`, '3 הבקבוקים הקטנים', 'המחיר זהה'],
+        h: { k: 'items', rows: [{ ic: 'bottle', n: 1, lab: `${F(1.5)} ל׳ · 6 ₪`, arg: `${F(1.5)} ל׳` }, { op: '?' }, { ic: 'bottle', n: 3, lab: `500 מ״ל · ${F(2.5)} ₪`, arg: `${F(.5)} ל׳` }], steps: () => ['האם הכמות בשני המקרים זהה?', `כמה עולים 3 בקבוקים של ${F(2.5)} ₪?`] },
+        sol: () => [`${M('3 × 500 = ' + F(1500))} מ״ל = ${F(1.5)} ליטר, אותה כמות.`, `${M('3 × ' + F(2.5) + ' = ' + F(7.5))} ₪, יותר מ-6 ₪.`] },
+      { id: 'vc8', type: 'num', tag: 'בעיה מילולית', a: 30, u: 'min', x: '1200/40',
+        q: () => `בריכה מתנפחת מכילה ${F(1200)} ליטר. בכל דקה נכנסים לבריכה 40 ליטר מים. כמה דקות יימשך מילוי הבריכה הריקה?`,
+        h: { k: 'bar', total: () => `${F(1200)} ליטר`, parts: [[40, '40'], [40, '40'], [1120, 'עוד חלקים של 40 ליטר…']], steps: () => [`כמה פעמים 40 נכנס ב-${F(1200)}?`, `רמז: ${M('40 × 10 = 400')}.`] },
+        sol: () => [M(`${F(1200)} : 40 = 30`) + ' דקות'] },
+      { id: 'vc9', type: 'num', tag: 'בעיה מילולית', a: 500, u: 'ml', x: '2000-5*300',
+        q: () => 'בסיר יש 2 ליטר מרק. מזגו ממנו 5 צלחות של 300 מ״ל כל אחת. כמה מ״ל מרק נשארו בסיר?',
+        h: { k: 'bar', total: () => '2 ליטר = ? מ״ל', parts: [[1500, '5 צלחות × 300 מ״ל'], [500, '?']], steps: () => ['המירי 2 ליטר למ״ל.', 'כמה מ״ל במרק שנמזג?'] },
+        sol: () => [`2 ליטר = ${F(2000)} מ״ל`, M(`5 × 300 = ${F(1500)}`), M(`${F(2000)} − ${F(1500)} = 500`) + ' מ״ל'] }
+    ]
+  },
+
+  len: {
+    practice: [
+      cv('l1', 5, 'cm', 'mm'),
+      cv('l2', 1.5, 'm', 'cm', 1),
+      cv('l3', 3, 'km', 'm'),
+      cv('l4', 40, 'mm', 'cm', 1),
+      cv('l5', 7, 'dm', 'cm'),
+      cv('l6', 250, 'cm', 'm'),
+      { id: 'l7', type: 'mc', tag: 'בחירה', q: () => '<b>1 מ׳</b> = ?', opts: () => ['10 דצ״מ', '100 דצ״מ', `${F(1000)} דצ״מ`, '1 דצ״מ'], h: { k: 'conv', v: 1, from: 'm', to: 'dm' }, x: 'conv(1,"m","dm")===10' },
+      { id: 'l8', type: 'mc', tag: 'בחירה', q: () => `<b>${F(2.5)} ק״מ</b> = ?`, opts: () => [`${F(2500)} מ׳`, '250 מ׳', '25 מ׳', `${F(25000)} מ׳`], h: { k: 'conv', v: 2.5, from: 'km', to: 'm' }, x: 'conv(2.5,"km","m")===2500' },
+      cmp('l9', [1, 'm'], [95, 'cm']),
+      cmp('l10', [45, 'mm'], [4.5, 'cm']),
+      cmp('l11', [800, 'm'], [1, 'km']),
+      build('l12', 1.3, 'm', 'cm', ['mbar', 'dmbar', 'cmbar'], 'הפס', () => `בני פס באורך <b>${qty(1.3, 'm')}</b>: גררי חלקים אל הפס.`),
+      { id: 'l13', type: 'mc', tag: 'הערכה', q: () => 'מה האורך המתאים ל<b>עיפרון חדש</b>?', opts: () => ['19 ס״מ', '19 מ״מ', '19 מ׳', '19 ק״מ'],
+        h: { k: 'items', rows: [{ ic: 'pencil', n: 1, lab: 'עיפרון' }, { op: '?' }, { ic: 'ruler', n: 1, lab: 'סרגל בית ספר: 30 ס״מ' }], steps: () => ['1 מ״מ הוא בערך עובי של מטבע דק. 1 מ׳ הוא בערך גובה של שולחן וחצי.', 'עיפרון קצת יותר קצר מסרגל של 30 ס״מ.'] },
+        x: 'true', sol: () => ['עיפרון חדש ארוך בערך 19 ס״מ: קצת פחות מסרגל של 30 ס״מ.'] },
+      { id: 'l14', type: 'num', tag: 'המרה', a: 325, u: 'cm', x: '3*100+25', q: () => 'השלימי: <b>3 מ׳ ו-25 ס״מ</b> = ___ ס״מ',
+        h: { k: 'conv', v: 3, from: 'm', to: 'cm', steps: () => ['המירי 3 מ׳ לס״מ.', 'הוסיפי 25 ס״מ.'] }, sol: () => ['3 מ׳ = 300 ס״מ', M('300 + 25 = 325')] },
+      build('l15', 1.2, 'km', 'm', ['kmroad', 'seg100'], 'השביל', () => `בני שביל רכיבה באורך <b>${qty(1.2, 'km')}</b>: גררי קטעי דרך אל השביל.`)
+    ],
+    challenge: [
+      { id: 'lc1', type: 'num', tag: 'בעיה מילולית', a: 1.7, u: 'km', x: '2*850/1000',
+        q: () => 'יוליה הולכת לבית הספר 850 מ׳ וחוזרת הביתה באותה הדרך. כמה ק״מ היא הולכת בסך הכול?',
+        h: { k: 'bar', total: () => 'הלוך ושוב = ? מ׳', parts: [[850, 'הלוך 850 מ׳'], [850, 'חזור 850 מ׳']], steps: () => ['כמה מטרים בסך הכול?', `המירי לק״מ: ${F(1000)} מ׳ = 1 ק״מ.`] },
+        sol: () => [M(`850 + 850 = ${F(1700)}`) + ' מ׳', `${F(1700)} מ׳ = ${F(1.7)} ק״מ`] },
+      { id: 'lc2', type: 'num', tag: 'בעיה מילולית', a: 25, u: 'cm', x: '200/8',
+        q: () => 'סרט באורך 2 מ׳ נחתך ל-8 חתיכות שוות. מה האורך של כל חתיכה בס״מ?',
+        h: { k: 'conv', v: 2, from: 'm', to: 'cm', steps: () => ['המירי 2 מ׳ לס״מ.', 'חלקי ל-8.'] },
+        sol: () => ['2 מ׳ = 200 ס״מ', M('200 : 8 = 25') + ' ס״מ'] },
+      { id: 'lc3', type: 'num', tag: 'בעיה מילולית', a: 5, u: 'הקפות', x: '2000/400',
+        q: () => 'הקפה אחת במסלול הריצה באצטדיון היא 400 מ׳. כמה הקפות צריך לרוץ כדי לעבור 2 ק״מ?',
+        h: { k: 'items', rows: [{ ic: 'track', n: 1, lab: '400 מ׳' }, { op: '…' }, { box: `2 ק״מ = ? מ׳` }], steps: () => ['המירי 2 ק״מ למטרים.', 'כמה פעמים 400 נכנס במספר הזה?'] },
+        sol: () => [`2 ק״מ = ${F(2000)} מ׳`, M(`${F(2000)} : 400 = 5`) + ' הקפות'] },
+      { id: 'lc4', type: 'num', tag: 'בעיה מילולית', a: 3750, u: 'm', x: '3*1000+750',
+        q: () => 'סוסה דהרה 3 ק״מ ועוד 750 מ׳. כמה מטרים דהרה בסך הכול?',
+        h: { k: 'conv', v: 3, from: 'km', to: 'm', steps: () => ['המירי 3 ק״מ למטרים.', 'הוסיפי 750 מ׳.'] },
+        sol: () => [`3 ק״מ = ${F(3000)} מ׳`, M(`${F(3000)} + 750 = ${F(3750)}`) + ' מ׳'] },
+      { id: 'lc5', type: 'num', tag: 'בעיה מילולית', a: 40, u: 'ספרים', x: '1.2*100/3',
+        q: () => `מדף באורך ${F(1.2)} מ׳. מסדרים עליו ספרים, ועובי כל ספר 3 ס״מ. כמה ספרים ייכנסו למדף?`,
+        h: { k: 'conv', v: 1.2, from: 'm', to: 'cm', steps: () => [`המירי ${F(1.2)} מ׳ לס״מ.`, 'כמה פעמים 3 נכנס במספר הזה?'] },
+        sol: () => [`${F(1.2)} מ׳ = 120 ס״מ`, M('120 : 3 = 40') + ' ספרים'] },
+      { id: 'lc6', type: 'num', tag: 'בעיה מילולית', a: 30, u: 'cm', x: '5*60/10',
+        q: () => 'חילזון זוחל 5 מ״מ בכל דקה. כמה ס״מ יזחל החילזון בשעה אחת?',
+        h: { k: 'items', rows: [{ box: '5 מ״מ', n: 6 }, { op: '…' }, { box: '60 דקות' }], steps: () => ['כמה דקות יש בשעה?', 'כמה מ״מ יזחל בכל הדקות?', 'המירי לס״מ: 10 מ״מ = 1 ס״מ.'] },
+        sol: () => [M('60 × 5 = 300') + ' מ״מ', '300 מ״מ = 30 ס״מ'] },
+      { id: 'lc7', type: 'mc', tag: 'בעיה מילולית', x: '4*300 > 1.1*1000',
+        q: () => `איזה מסלול ארוך יותר: 4 הקפות של 300 מ׳, או ${F(1.1)} ק״מ?`,
+        opts: () => ['4 הקפות של 300 מ׳', `${F(1.1)} ק״מ`, 'שניהם באותו אורך'],
+        h: { k: 'items', rows: [{ box: '300 מ׳', n: 4 }, { op: '?' }, { box: `${F(1.1)} ק״מ` }], steps: () => [M('4 × 300 = ?'), `כמה מטרים הם ${F(1.1)} ק״מ?`] },
+        sol: () => [M(`4 × 300 = ${F(1200)}`) + ' מ׳', `${F(1.1)} ק״מ = ${F(1100)} מ׳`, `${F(1200)} מ׳ ארוך יותר`] },
+      { id: 'lc8', type: 'num', tag: 'בעיה מילולית', a: 50, u: 'm', x: '4*12.5',
+        q: () => `גינה בצורת ריבוע, ואורך כל צלע ${F(12.5)} מ׳. מה אורך הגדר שמקיפה את כל הגינה?`,
+        h: { k: 'items', rows: [{ box: `${F(12.5)} מ׳`, n: 4 }], steps: () => ['לריבוע יש 4 צלעות שוות.', 'היקף = סכום כל הצלעות.'] },
+        sol: () => [M(`4 × ${F(12.5)} = 50`) + ' מ׳'] },
+      { id: 'lc9', type: 'num', tag: 'בעיה מילולית', a: 750, u: 'm', x: '2.4*1000-1650',
+        q: () => `מהבית לבריכה ${F(2.4)} ק״מ. יוליה כבר רכבה על אופניים ${F(1650)} מ׳. כמה מטרים נשארו לה?`,
+        h: { k: 'bar', total: () => `${F(2.4)} ק״מ = ? מ׳`, parts: [[1650, `${F(1650)} מ׳`], [750, '?']], steps: () => [`המירי ${F(2.4)} ק״מ למטרים.`, `החסירי ${F(1650)}.`] },
+        sol: () => [`${F(2.4)} ק״מ = ${F(2400)} מ׳`, M(`${F(2400)} − ${F(1650)} = 750`) + ' מ׳'] }
+    ]
+  },
+
+  time: {
+    practice: [
+      cv('t1', 2, 'h', 'min'),
+      cv('t2', 3, 'min', 's', 1),
+      cv('t3', 1.5, 'h', 'min'),
+      cv('t4', 2, 'd', 'h', 1),
+      cv('t5', 3, 'w', 'day'),
+      cv('t6', 300, 's', 'min', 1),
+      { id: 't7', type: 'mc', tag: 'בחירה', q: () => '<b>רבע שעה</b> = ?', opts: () => ['15 דקות', '25 דקות', '4 דקות', '45 דקות'], h: { k: 'conv', v: .25, from: 'h', to: 'min' }, x: 'conv(0.25,"h","min")===15' },
+      { id: 't8', type: 'mc', tag: 'בחירה', q: () => '<b>72 שעות</b> = ?', opts: () => ['3 יממות', '2 יממות', '7 יממות', '4 יממות'], h: { k: 'conv', v: 72, from: 'h', to: 'd' }, x: 'conv(72,"h","d")===3' },
+      cmp('t9', [100, 'min'], [1.5, 'h']),
+      cmp('t10', [120, 's'], [2, 'min']),
+      cmp('t11', [5, 'day'], [1, 'w']),
+      build('t12', 1.75, 'h', 'min', ['hour', 'half', 'quarter'], 'השעון', () => 'הרכיבי בדיוק <b>שעה ו-45 דקות</b>: גררי חלקי שעה אל השעון.'),
+      { id: 't13', type: 'num', tag: 'המרה', a: 80, u: 'min', x: '60+20', q: () => 'השלימי: <b>שעה ו-20 דקות</b> = ___ דקות',
+        h: { k: 'conv', v: 1, from: 'h', to: 'min', steps: () => ['כמה דקות יש בשעה?', 'הוסיפי 20 דקות.'] }, sol: () => ['שעה = 60 דקות', M('60 + 20 = 80')] },
+      { id: 't14', type: 'mc', tag: 'בחירה', q: () => 'כמה שניות יש ב<b>שעה אחת</b>?', opts: () => [`${F(3600)} שניות`, '360 שניות', '600 שניות', `${F(6000)} שניות`], h: { k: 'conv', v: 1, from: 'h', to: 's' }, x: 'conv(1,"h","s")===3600',
+        sol: () => ['שעה = 60 דקות, וכל דקה = 60 שניות.', M(`60 × 60 = ${F(3600)}`)] },
+      build('t15', 2.25, 'h', 'min', ['hour', 'half', 'quarter'], 'השעון', () => 'הרכיבי בדיוק <b>שעתיים ורבע</b>: גררי חלקי שעה אל השעון.')
+    ],
+    challenge: [
+      { id: 'tc1', type: 'mc', tag: 'בעיה מילולית', x: 'addTime("17:40",95)==="19:15"',
+        q: () => `הסרט התחיל ב-${T('17:40')} ונמשך שעה ו-35 דקות. באיזו שעה הסתיים הסרט?`,
+        opts: () => [T('19:15'), T('19:05'), T('18:75'), T('19:25')],
+        h: { k: 'timeline', pts: ['17:40', '18:00', '19:00', '?'], jumps: ['+20 דקות', '+שעה', '+15 דקות'], steps: () => [`מ-${T('17:40')} עד ${T('18:00')} עוברות 20 דקות.`, `35 דקות = 20 דקות + 15 דקות.`] },
+        sol: () => [`${T('17:40')} + 20 דקות = ${T('18:00')}`, `${T('18:00')} + שעה = ${T('19:00')}`, `${T('19:00')} + 15 דקות = ${T('19:15')}`] },
+      { id: 'tc2', type: 'num', tag: 'בעיה מילולית', a: 3, u: 'h', x: '4*45/60',
+        q: () => 'יוליה מתאמנת ברכיבה על סוסים 45 דקות בכל פעם, 4 פעמים בשבוע. כמה שעות היא מתאמנת בשבוע?',
+        h: { k: 'items', rows: [{ ic: 'pie', n: 4, lab: '45 דקות', arg: .75 }], steps: () => [M('4 × 45 = ?') + ' דקות', 'כמה שעות שלמות הן? (60 דקות = שעה)'] },
+        sol: () => [M('4 × 45 = 180') + ' דקות', M('180 : 60 = 3') + ' שעות'] },
+      { id: 'tc3', type: 'num', tag: 'בעיה מילולית', a: 12, u: 'אוטובוסים', x: '(12-8)*60/20',
+        q: () => `אוטובוס יוצא מהתחנה כל 20 דקות. הראשון יוצא ב-${T('08:00')}. כמה אוטובוסים יוצאים מ-${T('08:00')} ועד לפני ${T('12:00')}?`,
+        h: { k: 'timeline', pts: ['08:00', '08:20', '08:40', '09:00', '…'], jumps: ['+20', '+20', '+20', ''], steps: () => ['כמה אוטובוסים יוצאים בכל שעה?', `כמה שעות יש מ-${T('08:00')} עד ${T('12:00')}?`] },
+        sol: () => [M('60 : 20 = 3') + ' אוטובוסים בכל שעה', M('4 × 3 = 12') + ' אוטובוסים'] },
+      { id: 'tc4', type: 'num', tag: 'בעיה מילולית', a: 66, u: 'day', x: '9*7+3',
+        q: () => 'חופשת הקיץ נמשכה 9 שבועות ו-3 ימים. כמה ימים נמשכה החופשה?',
+        h: { k: 'conv', v: 9, from: 'w', to: 'day', steps: () => ['כמה ימים יש ב-9 שבועות?', 'הוסיפי 3 ימים.'] },
+        sol: () => [M('9 × 7 = 63') + ' ימים', M('63 + 3 = 66') + ' ימים'] },
+      { id: 'tc5', type: 'num', tag: 'בעיה מילולית', a: 95, u: 'min', x: 'minsBetween("09:50","11:25")',
+        q: () => `רכבת יצאה ב-${T('09:50')} והגיעה ב-${T('11:25')}. כמה דקות נמשכה הנסיעה?`,
+        h: { k: 'timeline', pts: ['09:50', '10:00', '11:00', '11:25'], jumps: ['? דקות', '? דקות', '? דקות'], steps: () => ['חשבי כמה דקות יש בכל קפיצה.', 'חברי את כל הקפיצות.'] },
+        sol: () => [`${T('09:50')} → ${T('10:00')}: 10 דקות`, `${T('10:00')} → ${T('11:00')}: 60 דקות`, `${T('11:00')} → ${T('11:25')}: 25 דקות`, M('10 + 60 + 25 = 95')] },
+      { id: 'tc6', type: 'num', tag: 'בעיה מילולית', a: 4800, u: 'פעימות', x: '80*60',
+        q: () => 'הלב של ילד פועם בערך 80 פעמים בדקה. כמה פעמים הוא פועם בשעה אחת?',
+        h: { k: 'conv', v: 1, from: 'h', to: 'min', steps: () => ['כמה דקות יש בשעה?', 'בכל דקה 80 פעימות.'] },
+        sol: () => ['שעה = 60 דקות', M(`60 × 80 = ${F(4800)}`) + ' פעימות'] },
+      { id: 'tc7', type: 'mc', tag: 'בעיה מילולית', x: 'addTime("08:00",4*45+3*10)==="11:30"',
+        q: () => `יום הלימודים מתחיל ב-${T('08:00')}. כל שיעור נמשך 45 דקות, ובין שיעור לשיעור יש הפסקה של 10 דקות. מתי נגמר השיעור הרביעי?`,
+        opts: () => [T('11:30'), T('11:20'), T('11:00'), T('12:00')],
+        h: { k: 'timeline', pts: ['08:00', '08:45', '08:55', '09:40', '…'], jumps: ['שיעור', 'הפסקה', 'שיעור', ''], steps: () => ['כמה שיעורים וכמה הפסקות יש עד סוף השיעור הרביעי?', M('4 × 45 + 3 × 10 = ?') + ' דקות'] },
+        sol: () => [M('4 × 45 = 180'), M('3 × 10 = 30'), M('180 + 30 = 210') + ' דקות = 3 שעות ו-30 דקות', `${T('08:00')} + 3:30 = ${T('11:30')}`] },
+      { id: 'tc8', type: 'num', tag: 'בעיה מילולית', a: 168, u: 'h', x: '7*24',
+        q: () => 'כמה שעות יש בשבוע אחד?',
+        h: { k: 'conv', v: 7, from: 'day', to: 'h', steps: () => ['כמה ימים יש בשבוע?', 'בכל יום (יממה) יש 24 שעות.'] },
+        sol: () => [M('7 × 24 = 168') + ' שעות'] },
+      { id: 'tc9', type: 'num', tag: 'בעיה מילולית', a: 19, u: 'day', x: '2*7+5',
+        q: () => 'ליום ההולדת של יוליה נשארו 2 שבועות ו-5 ימים. בעוד כמה ימים יחול יום ההולדת?',
+        h: { k: 'conv', v: 2, from: 'w', to: 'day', steps: () => ['כמה ימים יש ב-2 שבועות?', 'הוסיפי 5 ימים.'] },
+        sol: () => [M('2 × 7 = 14'), M('14 + 5 = 19') + ' ימים'] }
+    ]
+  }
+};
+/* helpers used only by the answer-check script */
+function addTime(hm, mins) { const [h, m] = hm.split(':').map(Number); const t = h * 60 + m + mins; return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`; }
+function minsBetween(a, b) { const p = s => s.split(':').map(Number); const [h1, m1] = p(a), [h2, m2] = p(b); return (h2 * 60 + m2) - (h1 * 60 + m1); }
+
+/* ===== learning stations: mass & volume ===== */
+const LEARN = {};
+
+/* boxes visual: each box = one big unit made of 10 cells (each = 1/10 of the big unit) */
+function boxesHTML(total, perBox, nBoxes, bigLabel, cellLabel) {
+  let html = '';
+  for (let b = 0; b < nBoxes; b++) {
+    const inBox = Math.max(0, Math.min(perBox, total - b * perBox));
+    const cells = [...Array(10)].map((_, i) => {
+      const f = Math.max(0, Math.min(1, inBox / (perBox / 10) - i));
+      return `<i class="cell${f >= 1 ? ' on' : ''}" style="${f > 0 && f < 1 ? `background:linear-gradient(to top, var(--c) ${f * 100}%, var(--card-2) ${f * 100}%)` : ''}"></i>`;
+    }).join('');
+    html += `<div class="box${inBox >= perBox ? ' full' : ''}"><div class="cells">${cells}</div><small>${bigLabel}</small></div>`;
+  }
+  return `<div class="boxes">${html}</div><p class="note">כל קופסה = ${bigLabel}. כל משבצת = ${cellLabel}.</p>`;
+}
+
+LEARN.mass = (root) => {
+  const LV = {
+    g: {
+      chip: 'גרם ↔ ק״ג', small: 'g', big: 'kg', mile: 1000, disc: 'kg', max: 5000, scale: 'משקל מטבח',
+      items: [
+        { k: 'apple', v: 100, name: 'תפוח', note: '≈ 100 גרם', s: 34, wf: .78, rh: .74, bf: .93, steps: [1] },
+        { k: 'sugar', v: 1000, name: 'שקית סוכר', note: '1 ק״ג', s: 56, wf: .64, rh: .9, bf: .95, steps: [1] }
+      ],
+      note: 'מודל לימודי: מסת תפוח אחד נלקחה בקירוב כ-100 גרם (תפוחים אמיתיים שונים זה מזה).'
+    },
+    mg: {
+      chip: 'מ״ג ↔ גרם', small: 'mg', big: 'g', mile: 1000, disc: 'g', max: 3000, scale: 'משקל מעבדה מדויק',
+      items: [
+        { k: 'grain', v: 20, name: 'גרגר אורז', note: '≈ 20 מ״ג', s: 18, wf: .62, rh: .34, bf: .66, steps: [1, 10] },
+        { k: 'pin', v: 100, name: 'סיכה', note: '≈ 100 מ״ג', s: 34, wf: .5, rh: .74, bf: .9, steps: [1] },
+        { k: 'clip', v: 1000, name: 'מהדק משרדי', note: '≈ 1 גרם', s: 40, wf: .44, rh: .74, bf: .84, steps: [1] }
+      ],
+      note: 'מודל לימודי: גרגר אורז ≈ 20 מ״ג, סיכה ≈ 100 מ״ג, מהדק ≈ 1 גרם (בקירוב).'
+    },
+    t: {
+      chip: 'ק״ג ↔ טון', small: 'kg', big: 't', mile: 1000, disc: 't', max: 3000, scale: 'מאזני משאיות',
+      items: [
+        { k: 'sack', v: 50, name: 'שק מלט', note: '≈ 50 ק״ג', s: 40, wf: .7, rh: .76, bf: .95, steps: [1] },
+        { k: 'crate', v: 100, name: 'ארגז גדול', note: '≈ 100 ק״ג', s: 44, wf: .86, rh: .72, bf: .93, steps: [1] },
+        { k: 'car', v: 1000, name: 'מכונית קטנה', note: '≈ 1 טון', s: 92, wf: .94, rh: .54, bf: .86, steps: [1] }
+      ],
+      note: 'מודל לימודי: המסות בקירוב. מכונית קטנה שוקלת בערך 1,000 ק״ג.'
+    }
+  };
+  let lv = 'g', counts = {}, shown = 0, lastAdded = null, raf = 0;
+
+  root.innerHTML = `
+  <div class="learn-grid two">
+    <div class="panel">
+      <div class="chips" id="lvChips">${Object.entries(LV).map(([k, L]) => `<button class="chip" data-lv="${k}" aria-pressed="${k === lv}">${L.chip}</button>`).join('')}</div>
+      <div class="stage" id="stage">
+        <svg viewBox="0 0 360 292" id="scaleSvg" role="img" aria-label="משקל עם פריטים">
+          <rect x="0" y="268" width="360" height="24" class="f-card2"/>
+          <text id="scaleName" x="180" y="22" text-anchor="middle" font-size="13" class="t-muted"></text>
+          <g id="plat">
+            <rect x="166" y="196" width="28" height="14" class="f-metal-dk"/>
+            <rect x="34" y="186" width="292" height="12" rx="6" class="f-metal-dk s-out" stroke-width="3"/>
+            <g id="pile"></g>
+          </g>
+          <rect x="26" y="206" width="308" height="62" rx="14" class="f-metal s-out" stroke-width="3"/>
+          <rect x="74" y="213" width="212" height="48" rx="7" class="f-lcd s-out" stroke-width="2.5"/>
+          <text id="lcd1" x="180" y="237" text-anchor="middle" font-size="21" class="lcd f-lcd-ink"></text>
+          <text id="lcd2" x="180" y="255" text-anchor="middle" font-size="14" class="lcd f-lcd-ink"></text>
+          <circle cx="50" cy="237" r="8" class="f-mass s-out" stroke-width="2"/><circle cx="310" cy="237" r="8" class="f-good s-out" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="readouts"><div class="ro" id="roS"><small></small><b class="num"></b></div><div class="ro" id="roB"><small></small><b class="num"></b></div></div>
+      <div class="equation" id="eq"></div>
+      <p class="note" id="lvNote"></p>
+    </div>
+    <div class="panel">
+      <h3>מה שמים על המשקל?</h3>
+      <p class="lead">לחצי על פריט כדי להניח אותו על המשקל. לחיצה על פריט שכבר על המשקל מורידה אותו.</p>
+      <div class="tools" id="items"></div>
+      <div id="boxes"></div>
+      <div class="row"><button class="btn ghost small" id="clear">${ui('reset')}ריקון המשקל</button></div>
+      <div id="disc"></div>
+    </div>
+  </div>`;
+  const svg = $('#scaleSvg', root), stage = $('#stage', root);
+  const L = () => LV[lv];
+  const total = () => L().items.reduce((a, it) => a + (counts[it.k] || 0) * it.v, 0);
+
+  function drawPile() {
+    const list = [];
+    [...L().items].sort((a, b) => b.v - a.v).forEach(it => { for (let i = 0; i < (counts[it.k] || 0); i++) list.push({ ...it, last: it.k === lastAdded && i === counts[it.k] - 1 }); });
+    const rows = []; let row = { items: [], w: 0, h: 0 };
+    list.forEach(it => {
+      const w = it.s * it.wf;
+      if (row.w + w > 270 && row.items.length) { rows.push(row); row = { items: [], w: 0, h: 0 }; }
+      row.items.push(it); row.w += w; row.h = Math.max(row.h, it.s * it.rh);
+    });
+    if (row.items.length) rows.push(row);
+    let y = 187, out = '';
+    rows.forEach(r => {
+      let x = 180 - r.w / 2;
+      r.items.forEach(it => {
+        const w = it.s * it.wf, px = x + w / 2 - it.s / 2, py = y - it.s * it.bf;
+        out += `<g class="${it.last ? 'drop' : ''}" data-k="${it.k}" role="button" aria-label="הורדת ${it.name}"><g>${place(it.k, px, py, it.s)}</g></g>`;
+        x += w;
+      });
+      y -= r.h;
+    });
+    $('#pile', svg).innerHTML = out;
+    const sink = Math.min(6, total() / L().max * 6);
+    $('#plat', svg).setAttribute('transform', `translate(0 ${sink})`);
+  }
+  function lcd(val) {
+    $('#lcd1', svg).textContent = `${fmt(Math.round(val))} ${un(L().small)}`;
+    $('#lcd2', svg).textContent = `= ${fmt(conv(Math.round(val), L().small, L().big))} ${un(L().big)}`;
+  }
+  function animateLcd() {
+    cancelAnimationFrame(raf);
+    const from = shown, to = total(), t0 = performance.now(), dur = REDUCED ? 1 : 450;
+    const step = (now) => { const t = Math.min(1, (now - t0) / dur); shown = from + (to - from) * easeOut(t); lcd(shown); if (t < 1) raf = requestAnimationFrame(step); else { shown = to; lcd(to); } };
+    raf = requestAnimationFrame(step);
+  }
+  function update(milestoneCheck = false, prev = 0) {
+    const T = total(), sm = L().small, bg = L().big;
+    drawPile(); animateLcd();
+    $('#roS small', root).textContent = `ב${un(sm) === 'גרם' ? 'גרמים' : un(sm)}`;
+    $('#roS b', root).textContent = qty(T, sm);
+    $('#roB small', root).textContent = `ב${{ kg: 'קילוגרמים', g: 'גרמים', t: 'טונות' }[bg]}`;
+    $('#roB b', root).textContent = qty(conv(T, sm, bg), bg);
+    const parts = L().items.filter(it => counts[it.k]).sort((a, b) => b.v - a.v)
+      .map(it => `${fmt(counts[it.k])} × ${fmt(it.v)} ${un(sm)}`);
+    $('#eq', root).innerHTML = T === 0
+      ? `<span>המשקל ריק. הניחי עליו פריטים.</span>`
+      : `${M(`${parts.join(' + ')} = ${fmt(T)} ${un(sm)}`)}<span>=</span>${M(`${fmt(conv(T, sm, bg))} ${un(bg)}`)}`;
+    $('#boxes', root).innerHTML = boxesHTML(T, L().mile, Math.ceil(L().max / L().mile), `1 ${un(bg)} = ${fmt(L().mile)} ${un(sm)}`, `${fmt(L().mile / 10)} ${un(sm)}`);
+    $('#items', root).querySelectorAll('[data-count]').forEach(e => e.textContent = fmt(counts[e.dataset.count] || 0));
+    $('#roB', root).classList.toggle('on', T > 0 && T % L().mile === 0);
+    if (milestoneCheck && T > prev && Math.floor(T / L().mile) > Math.floor(prev / L().mile)) {
+      const k = Math.floor(T / L().mile);
+      const exact = T % L().mile === 0;
+      setTimeout(() => {
+        banner(stage, `${fmt(k * L().mile)} ${un(sm)} = ${fmt(k)} ${un(bg, k)}`, exact ? 'בדיוק!' : `עכשיו על המשקל ${qty(T, sm)}`);
+        Snd.play('mile'); if (k === 1) confetti(60);
+      }, 380);
+      if (discover('mass', L().disc)) $('#disc', root).innerHTML = discStrip('mass', discLabels('mass'));
+    }
+  }
+  function add(k, n = 1) {
+    const it = L().items.find(i => i.k === k), prev = total();
+    if (prev + it.v * n > L().max) { toast(`המשקל הזה שוקל עד ${qty(L().max, L().small)}`); Snd.play('no'); return; }
+    counts[k] = (counts[k] || 0) + n; lastAdded = k; Snd.play('drop'); update(true, prev);
+  }
+  function remove(k) {
+    if (!counts[k]) return;
+    counts[k]--; lastAdded = null; Snd.play('lift'); update();
+  }
+  function setLevel(k) {
+    lv = k; counts = {}; shown = 0; lastAdded = null;
+    $$('#lvChips .chip', root).forEach(c => c.setAttribute('aria-pressed', String(c.dataset.lv === k)));
+    $('#scaleName', svg).textContent = L().scale;
+    $('#lvNote', root).textContent = L().note;
+    $('#items', root).innerHTML = L().items.map(it => `
+      <div class="item-btn">
+        ${svgArt(it.k)}
+        <div><b>${it.name}</b><span>${it.note}</span></div>
+        <div class="pm">
+          <button class="btn soft small" data-rm="${it.k}" aria-label="להוריד ${it.name}">${ui('minus')}</button>
+          <span class="pill" style="min-width:3.2em;justify-content:center" data-count="${it.k}">0</span>
+          ${it.steps.map(n => `<button class="btn c small" data-add="${it.k}" data-n="${n}" aria-label="להוסיף ${n} ${it.name}">${ui('plus')}${n > 1 ? fmt(n) : ''}</button>`).join('')}
+        </div>
+      </div>`).join('');
+    update();
+  }
+  $('#lvChips', root).onclick = (e) => { const b = e.target.closest('[data-lv]'); if (b) { Snd.play('tap'); setLevel(b.dataset.lv); } };
+  $('#items', root).onclick = (e) => {
+    const a = e.target.closest('[data-add]'), r = e.target.closest('[data-rm]');
+    if (a) add(a.dataset.add, +a.dataset.n); else if (r) remove(r.dataset.rm);
+  };
+  $('#pile', svg).addEventListener('click', (e) => { const g = e.target.closest('[data-k]'); if (g) remove(g.dataset.k); });
+  $('#clear', root).onclick = () => { counts = {}; lastAdded = null; Snd.play('lift'); update(); };
+  $('#disc', root).innerHTML = discStrip('mass', discLabels('mass'));
+  setLevel('g');
+  return () => cancelAnimationFrame(raf);
+};
+
+const DISC_LABELS = {
+  mass: { g: '1 גרם = 1,000 מ״ג', kg: '1 ק״ג = 1,000 גרם', t: '1 טון = 1,000 ק״ג' },
+  vol: { quarter: 'רבע ליטר = 250 מ״ל', half: 'חצי ליטר = 500 מ״ל', l: '1 ליטר = 1,000 מ״ל', bottles: '3 בקבוקים' },
+  len: { cm: '1 ס״מ = 10 מ״מ', dm: '1 דצ״מ = 10 ס״מ', m: '1 מ׳ = 100 ס״מ', km: '1 ק״מ = 1,000 מ׳' },
+  time: { min: 'דקה = 60 שניות', h: 'שעה = 60 דקות', d: 'יממה = 24 שעות', w: 'שבוע = 7 ימים' }
+};
+/* re-render discovery labels with the current number format */
+const discLabels = (st) => Object.fromEntries(Object.entries(DISC_LABELS[st]).map(([k, v]) => [k, v.replace(/1,000/g, fmt(1000))]));
+
+/* ---------------- volume ---------------- */
+LEARN.vol = (root) => {
+  const PX = 0.2, BOT = 276, CAP = 1000, MAXJ = 3; // 0.2 px per ml → 1,000 ml = 200 px
+  let level = 0, full = 0, cups = 0, busy = false, seen = {};
+  const marks = [...Array(21)].map((_, i) => {
+    const ml = i * 50, y = BOT - ml * PX, major = ml % 250 === 0 && ml > 0;
+    return `<path d="M120 ${y}H${major ? 146 : 132}" class="s-glass" stroke-width="${major ? 3 : 1.6}"/>` +
+      (major ? `<text x="112" y="${y + 5}" text-anchor="end" font-size="13" class="t-ink">${fmt(ml)} מ״ל</text>` : '');
+  }).join('');
+  const wavePath = (() => { let d = 'M100 0'; for (let x = 100; x <= 340; x += 30) d += ` Q${x + 7.5} -5 ${x + 15} 0 T${x + 30} 0`; return d + ' V5 H100 Z'; })();
+  root.innerHTML = `
+  <div class="learn-grid two">
+    <div class="panel">
+      <div class="row" id="shelf" aria-label="קנקנים מלאים"></div>
+      <div class="stage" id="stage">
+        <svg viewBox="0 0 360 300" id="volSvg" role="img" aria-label="קנקן של ליטר וכוס של 250 מ״ל">
+          <rect x="0" y="278" width="360" height="22" class="f-card2"/>
+          <defs><clipPath id="jugIn"><path d="M122 62H248V262Q248 276 234 276H136Q122 276 122 262Z"/></clipPath></defs>
+          <g id="jugG">
+            <g clip-path="url(#jugIn)">
+              <rect id="water" x="100" y="276" width="170" height="0" class="f-water" opacity=".9"/>
+              <g id="surfG" transform="translate(0 276)"><path class="wave f-water-hi" d="${wavePath}" opacity=".9"/></g>
+            </g>
+            <path class="f-glass s-glass" stroke-width="4" stroke-linejoin="round" d="M120 60H250V262Q250 278 234 278H136Q120 278 120 262Z"/>
+            <path fill="none" class="s-glass" stroke-width="7" stroke-linecap="round" d="M250 98Q292 100 290 148Q288 194 250 198"/>
+            <path d="M108 60H136" class="s-glass" stroke-width="4" stroke-linecap="round"/>
+            <path d="M232 74V250" stroke="#fff" stroke-opacity=".4" stroke-width="5" stroke-linecap="round"/>
+            ${marks}
+            <text x="185" y="52" text-anchor="middle" font-size="13" class="t-muted">קנקן: 1 ליטר</text>
+          </g>
+          <path id="stream" class="stream s-water" stroke-width="7" stroke-linecap="round" fill="none" d="" opacity="0"/>
+          <g id="cup" style="cursor:pointer" role="button" aria-label="למזוג כוס">
+            <defs><clipPath id="cupIn"><path d="M3 3H47L42 60Q41 64 37 64H13Q9 64 8 60Z"/></clipPath></defs>
+            <g clip-path="url(#cupIn)"><rect id="cupWater" x="0" y="12" width="50" height="54" class="f-water"/></g>
+            <path class="f-glass s-glass" stroke-width="3.5" stroke-linejoin="round" d="M2 2H48L43 60Q42 65 37 65H13Q8 65 7 60Z"/>
+            <path d="M10 8L14 56" stroke="#fff" stroke-opacity=".55" stroke-width="3" stroke-linecap="round"/>
+            <text x="25" y="44" text-anchor="middle" font-size="12" fill="#fff">250</text>
+          </g>
+          <text x="311" y="296" text-anchor="middle" font-size="12" class="t-muted">כוס 250 מ״ל</text>
+        </svg>
+      </div>
+      <div class="readouts">
+        <div class="ro" id="roMl"><small>במיליליטרים</small><b class="num"></b></div>
+        <div class="ro" id="roL"><small>בליטרים</small><b class="num"></b></div>
+        <div class="ro"><small>כוסות שנמזגו</small><b class="num" id="roCups"></b></div>
+      </div>
+      <div class="equation" id="eq"></div>
+      <div class="row">
+        <button class="btn c" id="pourBtn">${svgArt('cup', '', .9)}מזגי כוס</button>
+        <button class="btn ghost small" id="emptyBtn">${ui('reset')}ריקון</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>בקבוקים וכוסות</h3>
+      <p class="lead">בחרי בקבוק ובדקי כמה כוסות של 250 מ״ל יש בו.</p>
+      <div class="bottles" id="bottles">
+        ${[[.5, 74], [1, 98], [2, 128]].map(([l, hgt]) => `<button class="bottle-btn" data-l="${l}" aria-pressed="false"><svg viewBox="0 0 100 100" style="height:${hgt}px" aria-hidden="true">${uniq(ART.bottle(`${fmt(l)} ל׳`, .8))}</svg><b>${fmt(l)} ליטר</b></button>`).join('')}
+      </div>
+      <div id="bottleOut" class="bottle-out"><p class="note">בחרי בקבוק למעלה.</p></div>
+      <div id="disc"></div>
+    </div>
+  </div>`;
+  const svg = $('#volSvg', root), stage = $('#stage', root);
+  const cupG = $('#cup', svg), stream = $('#stream', svg);
+  const REST = { x: 286, y: 212, a: 0 }, POUR = { x: 236, y: 54, a: -112 };
+  const setCup = (t) => {
+    const x = REST.x + (POUR.x - REST.x) * t, y = REST.y + (POUR.y - REST.y) * t, a = REST.a + (POUR.a - REST.a) * t;
+    cupG.setAttribute('transform', `translate(${x} ${y}) rotate(${a})`);
+  };
+  const setCupWater = (f) => { const h = 54 * f; const r = $('#cupWater', svg); r.setAttribute('y', 66 - h); r.setAttribute('height', h); };
+  function drawWater() {
+    const y = BOT - level * PX;
+    $('#water', svg).setAttribute('y', y); $('#water', svg).setAttribute('height', level * PX + 2);
+    $('#surfG', svg).setAttribute('transform', `translate(0 ${y})`);
+    $('#surfG', svg).style.opacity = level > 0 ? 1 : 0;
+    const T = full * CAP + level;
+    $('#roMl b', root).textContent = qty(Math.round(T), 'ml');
+    $('#roL b', root).textContent = qty(conv(Math.round(T), 'ml', 'l'), 'l');
+  }
+  function info() {
+    const T = full * CAP + level;
+    $('#roCups', root).textContent = fmt(cups);
+    $('#eq', root).innerHTML = cups === 0 ? '<span>לחצי על הכוס או על „מזגי כוס”.</span>'
+      : `${M(`${fmt(cups)} × 250 מ״ל = ${fmt(T)} מ״ל`)}<span>=</span>${M(`${fmt(conv(T, 'ml', 'l'))} ליטר`)}`;
+    $('#shelf', root).innerHTML = full ? [...Array(full)].map(() => `<span class="shelf-jug">${svgArt('jug', '', 1)}<small>1 ליטר</small></span>`).join('') : '';
+    $('#roL', root).classList.toggle('on', T > 0 && T % 250 === 0);
+  }
+  async function pour() {
+    if (busy) return;
+    if (full * CAP + level >= MAXJ * CAP) { toast('מילאת 3 ליטר! לחצי „ריקון” כדי להתחיל מחדש.'); return; }
+    busy = true; $('#pourBtn', root).disabled = true;
+    await tween(420, setCup);
+    const from = level, sx = POUR.x - 2, top = POUR.y + 4;
+    stream.setAttribute('opacity', '1'); Snd.play('pour', .95);
+    await tween(900, t => {
+      level = from + 250 * t; drawWater(); setCupWater(1 - t);
+      stream.setAttribute('d', `M${sx} ${top} Q${sx - 3} ${top + 20} ${sx - 4} ${BOT - level * PX + 2}`);
+    }, t => t);
+    stream.setAttribute('opacity', '0');
+    level = from + 250; cups++; drawWater(); info();
+    await tween(380, t => setCup(1 - t));
+    setCupWater(1);
+    const T = full * CAP + level;
+    const say = { 250: ['רבע ליטר', 'quarter'], 500: ['חצי ליטר', 'half'], 750: ['שלושה רבעים של ליטר', null] }[level];
+    if (level === CAP) {
+      banner(stage, `${fmt(T)} מ״ל = ${fmt(T / 1000)} ליטר`, full ? `${fmt(full + 1)} קנקנים מלאים` : '4 כוסות × 250 מ״ל = 1,000 מ״ל'.replace('1,000', fmt(1000)));
+      Snd.play('mile'); if (!full) confetti(60);
+      if (discover('vol', 'l')) $('#disc', root).innerHTML = discStrip('vol', discLabels('vol'));
+      await wait(1400);
+      if (full + 1 < MAXJ) {
+        const jg = $('#jugG', svg);
+        await tween(280, t => { jg.style.opacity = String(1 - t); });
+        full++; level = 0; drawWater(); info();
+        await tween(280, t => { jg.style.opacity = String(t); });
+      }
+    } else if (say) {
+      const lit = fmt(level / 1000);
+      banner(stage, `${fmt(level)} מ״ל = ${lit} ליטר`, full ? `ובסך הכול ${fmt(T)} מ״ל = ${fmt(T / 1000)} ליטר` : say[0]);
+      Snd.play('star');
+      if (say[1] && discover('vol', say[1])) $('#disc', root).innerHTML = discStrip('vol', discLabels('vol'));
+    }
+    busy = false; $('#pourBtn', root).disabled = false;
+  }
+  cupG.addEventListener('click', pour);
+  $('#pourBtn', root).onclick = pour;
+  $('#emptyBtn', root).onclick = async () => {
+    if (busy) return; busy = true; Snd.play('pour', .5);
+    const from = level; await tween(500, t => { level = from * (1 - t); drawWater(); });
+    level = 0; full = 0; cups = 0; drawWater(); info(); busy = false;
+  };
+  $('#bottles', root).onclick = async (e) => {
+    const b = e.target.closest('[data-l]'); if (!b) return;
+    const l = +b.dataset.l, n = l * 4; seen[l] = true; Snd.play('tap');
+    $$('.bottle-btn', root).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    $('#bottleOut', root).innerHTML = `
+      <div class="equation">${M(`${fmt(l)} ליטר = ${fmt(l * 1000)} מ״ל`)}<span>=</span>${M(`${fmt(n)} × 250 מ״ל`)}</div>
+      <div class="cups-row">${[...Array(n)].map((_, i) => `<span class="cupi" style="animation-delay:${i * 90}ms">${svgArt('cup', '', 1)}<small>250</small></span>`).join('')}</div>
+      <p class="note">${fmt(n)} כוסות של 250 מ״ל ממלאות בקבוק של ${fmt(l)} ליטר.${l === .5 ? ' חצי ליטר = 500 מ״ל.' : l === 2 ? ' 2 ליטר = 2 קנקנים של ליטר.' : ''}</p>`;
+    for (let i = 0; i < n; i++) setTimeout(() => Snd.play('tick'), i * 90);
+    if (seen[.5] && seen[1] && seen[2] && discover('vol', 'bottles')) { $('#disc', root).innerHTML = discStrip('vol', discLabels('vol')); toast('בדקת את כל הבקבוקים!'); }
+  };
+  $('#disc', root).innerHTML = discStrip('vol', discLabels('vol'));
+  setCup(0); setCupWater(1); drawWater(); info();
+  return () => {};
+};
+
+/* ===== learning stations: length & time ===== */
+
+LEARN.len = (root) => {
+  const X0 = 30, W = 940;
+  const LV = {
+    mm: {
+      chip: 'מ״מ ↔ ס״מ', u: 'mm', max: 200, step: 1, steps: [1, 10], vb: '0 0 1000 300',
+      miles: [{ at: 10, t: '10 מ״מ = 1 ס״מ', s: 'עשרה מילימטרים יוצרים סנטימטר אחד', d: 'cm' },
+              { at: 100, t: '100 מ״מ = 10 ס״מ = 1 דצ״מ', s: 'עשרה סנטימטרים יוצרים דצימטר', d: 'dm' },
+              { at: 200, t: '200 מ״מ = 20 ס״מ = 2 דצ״מ', s: '' }],
+      ex: [{ n: 'נמלה', v: 4, ic: 'ant' }, { n: 'מהדק', v: 30, ic: 'clip' }, { n: 'מחק', v: 50, ic: 'eraser' }, { n: 'עיפרון חדש', v: 190, ic: 'pencil' }]
+    },
+    cm: {
+      chip: 'ס״מ ↔ מטר', u: 'cm', max: 200, step: 1, steps: [1, 10], vb: '0 0 1000 300',
+      miles: [{ at: 10, t: '10 ס״מ = 1 דצ״מ', s: '', d: 'dm' },
+              { at: 100, t: '100 ס״מ = 1 מ׳', s: 'עשרה דצימטרים = מטר אחד', d: 'm' },
+              { at: 200, t: '200 ס״מ = 2 מ׳', s: '' }],
+      ex: [{ n: 'עיפרון', v: 19, ic: 'pencil' }, { n: 'רוחב שולחן תלמיד', v: 70, ic: 'desk' }, { n: 'גובה ילדה בכיתה ו׳', v: 145, ic: 'girl' }, { n: 'גובה דלת', v: 200, ic: 'door' }]
+    },
+    m: {
+      chip: 'מטר ↔ ק״מ', u: 'm', max: 2000, step: 10, steps: [10, 100], vb: '0 0 1000 330',
+      miles: [{ at: 100, t: '100 מ׳ = קטע אחד', s: '10 קטעים כאלה יוצרים קילומטר' },
+              { at: 1000, t: '1,000 מ׳ = 1 ק״מ', s: 'הסוסה דהרה קילומטר שלם!', d: 'km' },
+              { at: 2000, t: '2,000 מ׳ = 2 ק״מ', s: '' }],
+      ex: [{ n: 'מגרש כדורגל', v: 100, ic: 'field' }, { n: 'הקפה במסלול ריצה', v: 400, ic: 'track' }, { n: '10 מגרשי כדורגל', v: 1000, ic: 'field' }, { n: 'שביל רכיבה', v: 1500, ic: 'tape' }]
+    }
+  };
+  let lv = 'mm', v = 0, exSel = null, runT = 0, animating = false;
+  root.innerHTML = `
+  <div class="panel">
+    <div class="chips" id="lvChips">${Object.entries(LV).map(([k, L]) => `<button class="chip" data-lv="${k}" aria-pressed="${k === lv}">${L.chip}</button>`).join('')}</div>
+    <p class="lead" id="lead"></p>
+    <div class="stage" id="stage"><svg id="lenSvg" role="img" aria-label="סרגל אינטראקטיבי"></svg></div>
+    <input type="range" class="slider" id="lenRange" aria-label="אורך">
+    <div class="row" id="steps"></div>
+    <div id="zoom"></div>
+    <div class="readouts" id="ro"></div>
+    <div class="equation" id="eq"></div>
+    <div>
+      <h3 style="margin-bottom:8px">דוגמאות מוכרות</h3>
+      <div class="chips" id="ex"></div>
+      <p class="note" id="exNote">המידות של החפצים בקירוב.</p>
+    </div>
+    <div id="disc"></div>
+  </div>`;
+  const svg = $('#lenSvg', root), stage = $('#stage', root), range = $('#lenRange', root);
+  const L = () => LV[lv];
+  const k = () => W / L().max;
+  const X = (val) => X0 + val * k();
+
+  function drawStatic() {
+    const lvl = L(); let s = '';
+    svg.setAttribute('viewBox', lvl.vb);
+    if (lv === 'mm') {
+      s += `<g id="obj"></g>
+        <rect x="10" y="112" width="980" height="92" rx="8" class="f-wood s-out" stroke-width="4"/>
+        <rect id="band" x="${X0}" y="112" height="24" width="0" class="f-c" opacity=".55"/>`;
+      for (let i = 0; i <= 200; i++) {
+        const x = X(i), h = i % 10 === 0 ? 44 : i % 5 === 0 ? 30 : 16;
+        s += `<path d="M${x} 112V${112 + h}" class="s-out" stroke-width="${i % 10 === 0 ? 3.2 : 1.6}"/>`;
+        if (i % 10 === 0) s += `<text x="${x}" y="194" text-anchor="middle" font-size="31" class="disp" fill="#3A2A00">${i / 10}</text>`;
+      }
+      s += `<text x="975" y="194" text-anchor="end" font-size="22" fill="#3A2A00">ס״מ</text>`;
+      [0, 1].forEach(d => {
+        const a = X(d * 100) + 4, b = X(d * 100 + 100) - 4;
+        s += `<g class="dmb" data-d="${d}"><path d="M${a} 218V236H${b}V218" fill="none" class="s-muted" stroke-width="4"/>
+          <text x="${(a + b) / 2}" y="272" text-anchor="middle" font-size="30" class="t-muted">1 דצ״מ = 10 ס״מ</text></g>`;
+      });
+    } else if (lv === 'cm') {
+      s += `<g id="obj"></g>`;
+      for (let d = 0; d < 20; d++) s += `<rect x="${X(d * 10)}" y="112" width="${10 * k()}" height="70" class="${d % 2 ? 'f-wood-dk' : 'f-wood'}" opacity="${d % 2 ? .75 : 1}"/>`;
+      s += `<rect x="${X0}" y="112" width="${W}" height="70" fill="none" class="s-out" stroke-width="4"/>
+        <rect id="band" x="${X0}" y="112" height="20" width="0" class="f-c" opacity=".55"/>`;
+      for (let i = 0; i <= 200; i++) {
+        const x = X(i), h = i % 10 === 0 ? 30 : i % 5 === 0 ? 18 : 9;
+        s += `<path d="M${x} 112V${112 + h}" class="s-out" stroke-width="${i % 10 === 0 ? 3 : 1.2}"/>`;
+        if (i % 20 === 0) s += `<text x="${x}" y="172" text-anchor="middle" font-size="28" class="disp" fill="#3A2A00">${i}</text>`;
+      }
+      [100, 200].forEach(m => s += `<path d="M${X(m)} 104V196" stroke="#D6443A" stroke-width="6"/><text x="${X(m) - (m === 200 ? 10 : 0)}" y="234" text-anchor="${m === 200 ? 'end' : 'middle'}" font-size="36" class="disp t-c">${m / 100} מ׳</text>`);
+      s += `<text x="${X0}" y="234" text-anchor="start" font-size="26" class="t-muted">0</text>
+        <text x="${X(50)}" y="234" text-anchor="middle" font-size="26" class="t-muted">כל פס צבעוני = 1 דצ״מ = 10 ס״מ</text>`;
+    } else {
+      s += `<rect x="0" y="196" width="1000" height="134" class="f-grass"/>
+        <rect x="0" y="200" width="1000" height="56" class="f-road"/>
+        <path d="M0 228H1000" stroke="#fff" stroke-width="5" stroke-dasharray="26 20"/>
+        <rect id="band" x="${X0}" y="200" height="56" width="0" class="f-c" opacity=".35"/>
+        <g id="obj"></g>`;
+      for (let i = 0; i <= 20; i++) {
+        const x = X(i * 100), big = i % 10 === 0;
+        s += `<path d="M${x} 256V${big ? 290 : 272}" class="s-out" stroke-width="${big ? 5 : 3}"/>`;
+        if (i % 5 === 0) s += `<text x="${Math.min(970, Math.max(30, x))}" y="318" text-anchor="middle" font-size="27" class="t-ink">${fmt(i * 100)}</text>`;
+      }
+      [1000, 2000].forEach(m => s += `<g transform="translate(${X(m) - (m === 2000 ? 98 : 50)} 120)"><rect width="100" height="46" rx="8" fill="#1E7A4E" stroke="#fff" stroke-width="4"/>
+        <text x="50" y="33" text-anchor="middle" font-size="29" class="disp" fill="#fff">${m / 1000} ק״מ</text></g><path d="M${X(m) - (m === 2000 ? 48 : 0)} 166V200" stroke="#5B6672" stroke-width="6"/>`);
+      s += `<g id="horseG" class="horse"><g transform="scale(.95)">${HORSE()}</g></g>`;
+    }
+    s += `<g id="handle"><path d="M0 ${lv === 'm' ? 192 : 100}V${lv === 'm' ? 260 : 210}" class="s-c" stroke-width="5"/>${lv === 'm' ? '' : `<circle cx="0" cy="96" r="17" class="f-c s-card" stroke-width="5"/>`}</g>`;
+    svg.innerHTML = s;
+    range.min = 0; range.max = lvl.max; range.step = lvl.step;
+    $('#steps', root).innerHTML = [...lvl.steps].reverse().map(n => `<button class="btn soft small" data-d="${-n}">${ui('minus')}${fmt(n)} ${un(lvl.u)}</button>`).join('') +
+      lvl.steps.map(n => `<button class="btn c small" data-d="${n}">${ui('plus')}${fmt(n)} ${un(lvl.u)}</button>`).join('');
+    $('#ex', root).innerHTML = lvl.ex.map((e, i) => `<button class="chip" data-ex="${i}" aria-pressed="false">${e.n} ≈ ${qty(e.v, lvl.u)}</button>`).join('');
+    $('#lead', root).textContent = { mm: 'גררי את הידית על הסרגל, או השתמשי בפס למטה. שימי לב לפסים הקטנים: כל אחד הוא מילימטר.', cm: 'סרט מדידה של 2 מטרים. כל פס צבעוני הוא דצימטר. גררי עד 100 ס״מ וראי מה קורה.', m: 'הסוסה דוהרת לאורך שביל של 2 ק״מ. השביל מחולק לקטעים של 100 מ׳. גררי את הסוסה.' }[lv];
+  }
+  function drawObj() {
+    const g = $('#obj', svg); if (!g) return;
+    if (!exSel) { g.innerHTML = ''; $('#exNote', root).textContent = 'בחרי חפץ וראי את האורך שלו על הסרגל. המידות בקירוב.'; return; }
+    const e = exSel, xe = X(e.v);
+    if (lv === 'mm') {
+      const len = xe - X0;
+      if (e.ic === 'pencil') g.innerHTML = `<rect x="${X0 + 34}" y="52" width="${len - 34 - 60}" height="40" class="f-len s-out" stroke-width="4"/><path d="M${X0 + 34} 72H${xe - 60}" class="s-out" stroke-width="2"/>
+          <path d="M${xe - 60} 52L${xe} 72L${xe - 60} 92Z" fill="#F3D9B1" class="s-out" stroke-width="4" stroke-linejoin="round"/><path d="M${xe - 16} 66L${xe} 72L${xe - 16} 78Z" class="f-ink"/>
+          <rect x="${X0}" y="52" width="36" height="40" rx="8" fill="#F48FB1" class="s-out" stroke-width="4"/>`;
+      else if (e.ic === 'eraser') g.innerHTML = `<rect x="${X0}" y="58" width="${len}" height="40" rx="8" fill="#F48FB1" class="s-out" stroke-width="4"/><rect x="${X0}" y="58" width="${len * .45}" height="40" rx="8" class="f-vol s-out" stroke-width="4"/>`;
+      else if (e.ic === 'clip') g.innerHTML = `<path d="M${X0 + 6} 96H${xe - 18}A16 16 0 0 0 ${xe - 18} 64H${X0 + 22}A10 10 0 0 0 ${X0 + 22} 84H${xe - 30}" fill="none" stroke="#8494A4" stroke-width="7" stroke-linecap="round"/>`;
+      else g.innerHTML = `<g transform="translate(${X0} 60) scale(${len / 100})"><g transform="translate(0 0)">${ART.ant()}</g></g><text x="${X0 + 40}" y="80" font-size="26" class="t-ink">← נמלה קטנה: ${fmt(4)} מ״מ בלבד</text>`;
+      g.innerHTML += `<path d="M${X0} 104H${xe}" class="s-c" stroke-width="3" stroke-dasharray="6 5"/>`;
+    } else {
+      const y = lv === 'm' ? 36 : 40;
+      g.innerHTML = `<path d="M${X0} ${y + 46}V${y + 30}H${xe}V${y + 46}" fill="none" class="s-c" stroke-width="5"/>
+        ${place(e.ic, Math.max(X0, Math.min(xe - 30, 930)), y - 34, 60)}`;
+    }
+    $('#exNote', root).textContent = `${e.n} ≈ ${qty(e.v, L().u)} (מידה בקירוב).`;
+  }
+  function readouts() {
+    const lvl = L(); let ro = [], eq = '';
+    if (lv === 'mm') {
+      ro = [['במילימטרים', qty(v, 'mm')], ['בסנטימטרים', qty(v / 10, 'cm')], ['בדצימטרים', qty(v / 100, 'dm')]];
+      eq = `${M(`${fmt(v)} מ״מ = ${fmt(Math.floor(v / 10))} ס״מ + ${fmt(v % 10)} מ״מ`)}`;
+    } else if (lv === 'cm') {
+      ro = [['בסנטימטרים', qty(v, 'cm')], ['בדצימטרים', qty(v / 10, 'dm')], ['במטרים', qty(v / 100, 'm')]];
+      eq = `${M(`${fmt(v)} ס״מ = ${fmt(Math.floor(v / 100))} מ׳ + ${fmt(v % 100)} ס״מ`)}<span>=</span>${M(`${fmt(v / 100)} מ׳`)}`;
+    } else {
+      ro = [['במטרים', qty(v, 'm')], ['בקילומטרים', qty(v / 1000, 'km')], ['קטעים של 100 מ׳', fmt(v / 100)]];
+      eq = `${M(`${fmt(v)} מ׳ = ${fmt(Math.floor(v / 1000))} ק״מ + ${fmt(v % 1000)} מ׳`)}<span>=</span>${M(`${fmt(v / 1000)} ק״מ`)}`;
+    }
+    $('#ro', root).innerHTML = ro.map(([a, b], i) => `<div class="ro${i === 1 && v > 0 && Number.isInteger(+((v / (lv === 'mm' ? 10 : lv === 'cm' ? 100 : 1000)).toFixed(6))) ? ' on' : ''}"><small>${a}</small><b class="num">${b}</b></div>`).join('');
+    $('#eq', root).innerHTML = eq;
+    if (lv === 'mm') {
+      const cmI = v === 0 ? 0 : Math.ceil(v / 10) - 1, inCm = v - cmI * 10;
+      $('#zoom', root).innerHTML = `<div class="zoom"><div class="zoom-t">זכוכית מגדלת: הסנטימטר מ-${fmt(cmI)} עד ${fmt(cmI + 1)} ס״מ</div>
+        <div class="zoom-cells">${[...Array(10)].map((_, i) => `<i class="${i < inCm ? 'on' : ''}"></i>`).join('')}</div>
+        <div class="zoom-l"><span>${fmt(cmI * 10)} מ״מ</span><b>${fmt(inCm)} מתוך 10 מ״מ</b><span>${fmt(cmI * 10 + 10)} מ״מ</span></div></div>`;
+    } else $('#zoom', root).innerHTML = '';
+  }
+  function setV(nv, fromAnim = false) {
+    const lvl = L(), prev = v;
+    v = Math.max(0, Math.min(lvl.max, Math.round(nv / lvl.step) * lvl.step));
+    if (v === prev && !fromAnim) return;
+    const x = X(v);
+    $('#band', svg).setAttribute('width', x - X0);
+    $('#handle', svg).setAttribute('transform', `translate(${x} 0)`);
+    const hg = $('#horseG', svg);
+    if (hg) {
+      hg.setAttribute('transform', `translate(${x - 104} 110)`);
+      hg.classList.add('run'); clearTimeout(runT); runT = setTimeout(() => hg.classList.remove('run'), 350);
+    }
+    if (lv === 'mm') $$('.dmb', svg).forEach(b => { const on = v >= (+b.dataset.d + 1) * 100; b.querySelector('path').setAttribute('class', on ? 's-c' : 's-muted'); });
+    range.value = v; readouts();
+    if (v !== prev && Math.abs(v - prev) <= lvl.steps[lvl.steps.length - 1] && lv !== 'm' && !fromAnim) Snd.play('tick');
+    lvl.miles.forEach(m => {
+      if (prev < m.at && v >= m.at) {
+        banner(stage, m.t.replace('1,000', fmt(1000)).replace('2,000', fmt(2000)), m.s);
+        Snd.play('mile');
+        if (m.d && discover('len', m.d)) { $('#disc', root).innerHTML = discStrip('len', discLabels('len')); if (m.at !== 10) confetti(50); }
+      }
+    });
+  }
+  async function animateTo(target) {
+    if (animating) return; animating = true;
+    const from = v; await tween(Math.min(1400, 300 + Math.abs(target - from) / L().max * 1400), t => setV(from + (target - from) * t, true));
+    setV(target, true); animating = false;
+  }
+  function setLevel(nl) {
+    lv = nl; v = 0; exSel = null;
+    $$('#lvChips .chip', root).forEach(c => c.setAttribute('aria-pressed', String(c.dataset.lv === nl)));
+    drawStatic(); setV(0, true); drawObj();
+  }
+  $('#lvChips', root).onclick = e => { const b = e.target.closest('[data-lv]'); if (b) { Snd.play('tap'); setLevel(b.dataset.lv); } };
+  range.oninput = () => setV(+range.value);
+  $('#steps', root).onclick = e => { const b = e.target.closest('[data-d]'); if (b) setV(v + +b.dataset.d); };
+  $('#ex', root).onclick = e => {
+    const b = e.target.closest('[data-ex]'); if (!b) return;
+    exSel = L().ex[+b.dataset.ex]; Snd.play('tap');
+    $$('#ex .chip', root).forEach(c => c.setAttribute('aria-pressed', String(c === b)));
+    drawObj(); animateTo(exSel.v);
+  };
+  dragX(svg, p => { if (!animating) setV((p.x - X0) / k()); });
+  $('#disc', root).innerHTML = discStrip('len', discLabels('len'));
+  setLevel('mm');
+  return () => clearTimeout(runT);
+};
+
+/* ---------------- time ---------------- */
+LEARN.time = (root) => {
+  let tab = 'clock', raf = 0, stop = [];
+  root.innerHTML = `
+    <div class="chips" id="tabs">
+      <button class="chip" data-t="clock" aria-pressed="true">שניות · דקות · שעות</button>
+      <button class="chip" data-t="day" aria-pressed="false">יממה: 24 שעות</button>
+      <button class="chip" data-t="week" aria-pressed="false">שבוע: 7 ימים</button>
+    </div>
+    <div id="tbody"></div>
+    <div id="disc" style="margin-top:14px"></div>`;
+  const body = $('#tbody', root);
+  const refreshDisc = () => $('#disc', root).innerHTML = discStrip('time', discLabels('time'));
+  const arc = (r, deg) => {
+    if (deg <= 0.01) return '';
+    if (deg >= 359.99) return `M150 ${150 - r}A${r} ${r} 0 1 1 149.99 ${150 - r}Z`;
+    const a = (deg - 90) * Math.PI / 180, x = 150 + r * Math.cos(a), y = 150 + r * Math.sin(a);
+    return `M150 ${150 - r}A${r} ${r} 0 ${deg > 180 ? 1 : 0} 1 ${x} ${y}`;
+  };
+  const clockFace = (id) => {
+    let s = `<circle cx="150" cy="150" r="141" fill="none" class="s-line" stroke-width="9"/>
+      <path id="${id}SecArc" fill="none" stroke="#E4473D" stroke-width="9" stroke-linecap="round" d=""/>
+      <circle cx="150" cy="150" r="132" class="f-card s-out" stroke-width="5"/>
+      <path id="${id}MinArc" fill="none" class="s-c" stroke-width="7" opacity=".35" d=""/>`;
+    for (let i = 0; i < 60; i++) {
+      const big = i % 5 === 0, a = i * 6;
+      s += `<path d="M150 ${big ? 26 : 28}V${big ? 44 : 36}" class="s-ink" stroke-width="${big ? 4 : 1.8}" transform="rotate(${a} 150 150)"/>`;
+    }
+    for (let n = 1; n <= 12; n++) { const a = n * 30 * Math.PI / 180; s += `<text x="${150 + 92 * Math.sin(a)}" y="${150 - 92 * Math.cos(a) + 9}" text-anchor="middle" font-size="26" class="disp t-ink">${n}</text>`; }
+    s += `<g id="${id}H"><path d="M150 166V92" class="s-ink" stroke-width="10" stroke-linecap="round"/></g>
+      <g id="${id}M"><path d="M150 170V44" class="s-ink" stroke-width="6.5" stroke-linecap="round"/></g>
+      <g id="${id}S"><path d="M150 178V36" stroke="#E4473D" stroke-width="3" stroke-linecap="round"/><circle cx="150" cy="150" r="5" fill="#E4473D"/></g>
+      <circle cx="150" cy="150" r="9" class="f-ink"/><circle cx="150" cy="150" r="3.5" fill="#E4473D"/>`;
+    return s;
+  };
+  const pad = n => String(n).padStart(2, '0');
+
+  function clockTab() {
+    let T = 0, playing = false, speed = 1, last = 0, lastBanner = 0, dragging = false, lastAng = 0;
+    body.innerHTML = `
+    <div class="learn-grid two">
+      <div class="panel">
+        <div class="stage" id="stage" style="display:grid;place-items:center;padding-block:10px">
+          <svg viewBox="0 0 300 300" id="clk" style="max-width:340px;touch-action:none;cursor:grab" role="img" aria-label="שעון מחוגים">${clockFace('c')}</svg>
+        </div>
+        <div class="row" style="justify-content:center">
+          <button class="btn c" id="play">${ui('play')}הפעלה</button>
+          <button class="btn ghost small" id="rst">${ui('reset')}איפוס</button>
+        </div>
+        <div class="chips" id="speeds" style="justify-content:center;margin:0">
+          ${[[1, 'רגיל'], [10, 'פי 10'], [60, 'פי 60'], [600, 'פי 600']].map(([s, t]) => `<button class="chip" data-s="${s}" aria-pressed="${s === 1}">${t}</button>`).join('')}
+        </div>
+        <p class="note" style="text-align:center">אפשר גם לגרור את מחוג הדקות באצבע סביב השעון.</p>
+      </div>
+      <div class="panel">
+        <h3>כמה זמן עבר?</h3>
+        <div class="digital" id="dig">0:00:00</div>
+        <div class="readouts" id="ro"></div>
+        <div class="equation" id="laps"></div>
+        <div class="row">
+          <button class="btn soft small" id="lapS">סיבוב של מחוג השניות</button>
+          <button class="btn soft small" id="lapM">סיבוב של מחוג הדקות</button>
+        </div>
+        <p class="note">מחוג השניות (האדום) מקיף את השעון ב-60 שניות. מחוג הדקות מקיף אותו ב-60 דקות.</p>
+      </div>
+    </div>`;
+    const svg = $('#clk', body), stage = $('#stage', body);
+    function draw() {
+      const s = T % 60, mAll = T / 60, hAll = T / 3600;
+      $('#cS', svg).setAttribute('transform', `rotate(${s * 6} 150 150)`);
+      $('#cM', svg).setAttribute('transform', `rotate(${(mAll % 60) * 6} 150 150)`);
+      $('#cH', svg).setAttribute('transform', `rotate(${(hAll % 12) * 30} 150 150)`);
+      $('#cSecArc', svg).setAttribute('d', arc(141, s * 6));
+      $('#cMinArc', svg).setAttribute('d', arc(122, (mAll % 60) * 6));
+      const t = Math.floor(T), H = Math.floor(t / 3600), Mi = Math.floor(t % 3600 / 60), Se = t % 60;
+      $('#dig', body).textContent = `${H}:${pad(Mi)}:${pad(Se)}`;
+      $('#ro', body).innerHTML = `
+        <div class="ro"><small>בשניות</small><b class="num">${fmt(t)}</b></div>
+        <div class="ro"><small>בדקות</small><b class="num">${fmt(Math.floor(t / 60))}</b><small>${Se ? `ועוד ${fmt(Se)} שניות` : 'בדיוק'}</small></div>
+        <div class="ro"><small>בשעות</small><b class="num">${fmt(H)}</b><small>${Mi || Se ? `ועוד ${fmt(Mi)} דקות${Se ? ` ו-${fmt(Se)} שניות` : ''}` : 'בדיוק'}</small></div>`;
+      $('#laps', body).innerHTML = `<span>מחוג השניות השלים <b>${fmt(Math.floor(t / 60))}</b> סיבובים = ${fmt(Math.floor(t / 60))} דקות.</span>
+        <span>מחוג הדקות השלים <b>${fmt(H)}</b> סיבובים = ${fmt(H)} שעות.</span>`;
+    }
+    function check(prev) {
+      const now = performance.now();
+      if (Math.floor(T / 3600) > Math.floor(prev / 3600)) {
+        const h = Math.floor(T / 3600);
+        banner(stage, h === 1 ? '60 דקות = שעה אחת' : `${fmt(h * 60)} דקות = ${fmt(h)} שעות`, 'מחוג הדקות השלים סיבוב שלם'); Snd.play('mile'); lastBanner = now;
+        if (discover('time', 'h')) { refreshDisc(); confetti(50); }
+      } else if (Math.floor(T / 60) > Math.floor(prev / 60) && !dragging) {
+        const m = Math.floor(T / 60);
+        if (speed <= 60 && now - lastBanner > 1600) { banner(stage, m === 1 ? '60 שניות = דקה אחת' : `${fmt(m * 60)} שניות = ${fmt(m)} דקות`, 'מחוג השניות השלים סיבוב'); lastBanner = now; if (speed <= 10) Snd.play('star'); }
+        if (discover('time', 'min')) refreshDisc();
+      }
+      if (speed === 1 && playing && Math.floor(T) > Math.floor(prev)) Snd.play('tick');
+    }
+    function loop(now) {
+      if (playing) { const dt = Math.min(.1, (now - last) / 1000); const prev = T; T += dt * speed; draw(); check(prev); }
+      last = now; raf = requestAnimationFrame(loop);
+    }
+    const setPlay = (p) => { playing = p; $('#play', body).innerHTML = p ? `${ui('pause')}עצירה` : `${ui('play')}הפעלה`; };
+    $('#play', body).onclick = () => { Snd.ensure(); setPlay(!playing); };
+    $('#rst', body).onclick = () => { setPlay(false); T = 0; draw(); };
+    $('#speeds', body).onclick = e => { const b = e.target.closest('[data-s]'); if (!b) return; speed = +b.dataset.s; $$('#speeds .chip', body).forEach(c => c.setAttribute('aria-pressed', String(c === b))); Snd.play('tap'); };
+    const lap = async (add, ms) => { setPlay(false); const from = T; let prev = T; await tween(ms, t => { prev = T; T = from + add * t; draw(); check(prev); }); T = from + add; draw(); };
+    $('#lapS', body).onclick = () => lap(60, 1600);
+    $('#lapM', body).onclick = () => lap(3600, 3000);
+    const ang = (e) => { const p = svgPoint(svg, e); return (Math.atan2(p.x - 150, -(p.y - 150)) * 180 / Math.PI + 360) % 360; };
+    svg.addEventListener('pointerdown', e => { dragging = true; setPlay(false); svg.setPointerCapture(e.pointerId); lastAng = ang(e); });
+    svg.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const a = ang(e); let d = a - lastAng; if (d > 180) d -= 360; if (d < -180) d += 360; lastAng = a;
+      const prev = T; T = Math.max(0, T + d * 10); // 6° of the minute hand = 60 s
+      if (Math.floor(T / 60) !== Math.floor(prev / 60)) Snd.play('tick');
+      draw(); check(prev);
+    });
+    const end = () => { dragging = false; };
+    svg.addEventListener('pointerup', end); svg.addEventListener('pointercancel', end);
+    draw(); last = performance.now(); raf = requestAnimationFrame(loop);
+    stop.push(() => cancelAnimationFrame(raf));
+  }
+
+  function dayTab() {
+    let H = 0, playing = false;
+    const skyAt = (h) => {
+      const stops = [[0, [11, 22, 64]], [5, [24, 36, 92]], [6, [240, 150, 120]], [7.5, [140, 200, 240]], [12, [104, 182, 240]], [16.5, [140, 200, 240]], [18.3, [242, 146, 107]], [19.5, [42, 47, 106]], [24, [11, 22, 64]]];
+      for (let i = 0; i < stops.length - 1; i++) {
+        const [a, ca] = stops[i], [b, cb] = stops[i + 1];
+        if (h >= a && h <= b) { const t = (h - a) / (b - a); return `rgb(${ca.map((c, j) => Math.round(c + (cb[j] - c) * t)).join(',')})`; }
+      }
+      return 'rgb(11,22,64)';
+    };
+    const stars = [...Array(26)].map((_, i) => `<circle cx="${(i * 97) % 360}" cy="${12 + (i * 53) % 110}" r="${i % 3 ? 1.4 : 2.2}" fill="#fff"/>`).join('');
+    body.innerHTML = `
+    <div class="learn-grid two">
+      <div class="panel">
+        <div class="stage" id="stage">
+          <svg viewBox="0 0 360 210" id="sky" role="img" aria-label="שמיים ביום ובלילה">
+            <rect id="skyR" width="360" height="210"/>
+            <g id="stars">${stars}</g>
+            <g id="sun">${place('sun', -26, -26, 52)}</g>
+            <g id="moon">${place('moon', -22, -22, 44)}</g>
+            <path d="M0 170Q60 140 130 160T260 152T360 160V210H0Z" class="f-grass"/>
+            <g transform="translate(250 112)"><rect x="0" y="22" width="64" height="46" class="f-card s-out" stroke-width="3"/><path d="M-6 24L32 -4L70 24Z" class="f-mass s-out" stroke-width="3" stroke-linejoin="round"/>
+              <rect id="win" x="12" y="34" width="16" height="16" class="s-out" stroke-width="2.5"/><rect x="38" y="40" width="14" height="28" class="f-wood s-out" stroke-width="2.5"/></g>
+          </svg>
+        </div>
+        <input type="range" class="slider" id="hr" min="0" max="24" step="0.25" value="0" aria-label="שעה ביממה">
+        <div class="strip" id="strip"></div>
+        <div class="row"><button class="btn c" id="play">${ui('play')}יממה שלמה</button><button class="btn ghost small" id="rst">${ui('reset')}לחצות</button></div>
+      </div>
+      <div class="panel">
+        <div class="row" style="align-items:center;gap:14px">
+          <svg viewBox="0 0 300 300" id="mini" style="width:120px;height:120px;flex:none" aria-hidden="true">${clockFace('d')}</svg>
+          <div><div class="digital" id="dig">00:00</div><p class="note" id="part"></p></div>
+        </div>
+        <div class="readouts" id="ro"></div>
+        <p class="note">מחוג השעות מקיף את השעון פעמיים ביממה: ${M('2 × 12 = 24')} שעות.</p>
+      </div>
+    </div>`;
+    const svg = $('#sky', body), stage = $('#stage', body), mini = $('#mini', body);
+    $('#dS', mini).style.display = 'none'; $('#dSecArc', mini).style.display = 'none';
+    function draw() {
+      $('#skyR', svg).setAttribute('fill', skyAt(H));
+      const night = H < 5.5 || H > 19 ? 1 : (H < 7 ? (7 - H) / 1.5 : H > 17.5 ? (H - 17.5) / 1.5 : 0);
+      $('#stars', svg).setAttribute('opacity', Math.max(0, Math.min(1, night)));
+      const pos = (t) => [30 + 300 * t, 172 - 140 * Math.sin(Math.PI * t)];
+      const sunT = (H - 6) / 12, moonT = ((H - 18 + 24) % 24) / 12;
+      const [sx, sy] = pos(Math.max(0, Math.min(1, sunT))), [mx, my] = pos(Math.max(0, Math.min(1, moonT)));
+      $('#sun', svg).setAttribute('transform', `translate(${sx} ${sy})`); $('#sun', svg).style.opacity = sunT >= 0 && sunT <= 1 ? 1 : 0;
+      $('#moon', svg).setAttribute('transform', `translate(${mx} ${my})`); $('#moon', svg).style.opacity = moonT >= 0 && moonT <= 1 ? 1 : 0;
+      $('#win', svg).setAttribute('fill', night > .4 ? '#FFD54A' : '#9CD5F7');
+      const hh = Math.floor(H), mm = Math.round((H - hh) * 60);
+      $('#dig', body).textContent = `${pad(hh % 24 === 0 && H >= 24 ? 24 : hh)}:${pad(mm)}`;
+      $('#part', body).textContent = H < 5 || H >= 21 ? 'לילה' : H < 12 ? 'בוקר' : H < 17 ? 'צהריים ואחר הצהריים' : 'ערב';
+      $('#dM', mini).setAttribute('transform', `rotate(${(H * 60 % 60) * 6} 150 150)`);
+      $('#dH', mini).setAttribute('transform', `rotate(${(H % 12) * 30} 150 150)`);
+      $('#dMinArc', mini).setAttribute('d', arc(122, (H % 12) * 30));
+      $('#strip', body).innerHTML = `<div class="cells24">${[...Array(24)].map((_, i) => { const f = Math.max(0, Math.min(1, H - i)); const nightCell = i < 6 || i >= 18;
+        return `<i style="background:${f > 0 ? `linear-gradient(to left, var(${nightCell ? '--time' : '--len'}) ${f * 100}%, var(--card-2) ${f * 100}%)` : 'var(--card-2)'}"></i>`; }).join('')}</div>
+        <div class="lbl24"><span>0</span><span>6</span><span>12</span><span>18</span><span>24</span></div>`;
+      const laps = Math.floor(H / 12);
+      $('#ro', body).innerHTML = `
+        <div class="ro${H === 24 ? ' on' : ''}"><small>שעות מאז חצות</small><b class="num">${fmt(H)}</b></div>
+        <div class="ro"><small>בדקות</small><b class="num">${fmt(H * 60)}</b></div>
+        <div class="ro"><small>סיבובים של מחוג השעות</small><b class="num">${fmt(laps)}</b><small>${H % 12 ? `ועוד ${fmt(H % 12)} שעות` : ''}</small></div>`;
+      $('#hr', body).value = H;
+    }
+    function setH(nh) {
+      const prev = H; H = Math.max(0, Math.min(24, nh)); draw();
+      if (prev < 12 && H >= 12) { banner(stage, '12 שעות', 'מחוג השעות השלים סיבוב אחד'); Snd.play('star'); }
+      if (prev < 24 && H >= 24) { banner(stage, '24 שעות = יממה אחת', 'מחוג השעות הקיף את השעון פעמיים'); Snd.play('mile'); if (discover('time', 'd')) { refreshDisc(); confetti(60); } }
+    }
+    $('#hr', body).oninput = e => setH(+e.target.value);
+    $('#rst', body).onclick = () => { playing = false; setH(0); };
+    $('#play', body).onclick = async () => {
+      if (playing) return; playing = true; if (H >= 24) setH(0);
+      const from = H; await tween((24 - from) / 24 * 10000, t => { if (playing) setH(from + (24 - from) * t); }, t => t);
+      playing = false;
+    };
+    stop.push(() => { playing = false; });
+    draw();
+  }
+
+  function weekTab() {
+    const names = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'], letters = ['א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ש׳'];
+    let n = 0, busy = false;
+    body.innerHTML = `
+    <div class="learn-grid two">
+      <div class="panel">
+        <div class="stage" id="stage" style="padding:12px">
+          <div class="cal">
+            <div class="cal-h">${letters.map(l => `<span>${l}</span>`).join('')}</div>
+            <div class="cal-g" id="cal"></div>
+          </div>
+        </div>
+        <div class="row">
+          <button class="btn c" id="next">${ui('plus')}יום הבא</button>
+          <button class="btn soft" id="week">שבוע שלם</button>
+          <button class="btn ghost small" id="rst">${ui('reset')}איפוס</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="pageday" id="page"><small>היום</small><b>—</b></div>
+        <div class="readouts" id="ro"></div>
+        <div class="equation" id="eq"></div>
+        <p class="note">בישראל השבוע מתחיל ביום ראשון ומסתיים בשבת.</p>
+      </div>
+    </div>`;
+    const stage = $('#stage', body);
+    function draw(popLast = false) {
+      $('#cal', body).innerHTML = [...Array(28)].map((_, i) => `<i class="${i < n ? 'on' : ''}${popLast && i === n - 1 ? ' pop' : ''}${i < n && i % 7 === 6 && i < n ? ' end' : ''}">${i < n ? i + 1 : ''}</i>`).join('');
+      $('#page', body).innerHTML = n ? `<small>יום ${fmt(n)}</small><b>יום ${names[(n - 1) % 7]}</b>` : `<small>עוד לא התחלנו</small><b>—</b>`;
+      const w = Math.floor(n / 7), d = n % 7;
+      $('#ro', body).innerHTML = `
+        <div class="ro"><small>ימים</small><b class="num">${fmt(n)}</b></div>
+        <div class="ro${n && !d ? ' on' : ''}"><small>שבועות</small><b class="num">${fmt(w)}</b><small>${d ? `ועוד ${fmt(d)} ימים` : n ? 'בדיוק' : ''}</small></div>
+        <div class="ro"><small>שעות</small><b class="num">${fmt(n * 24)}</b></div>`;
+      $('#eq', body).innerHTML = n ? M(`${fmt(n)} × 24 = ${fmt(n * 24)}`) + '<span>שעות</span>' : '<span>לחצי „יום הבא”.</span>';
+    }
+    function step() {
+      if (n >= 28) { toast('הלוח מלא: 28 ימים = 4 שבועות'); return false; }
+      n++; draw(true); Snd.play('tick');
+      if (n % 7 === 0) {
+        banner(stage, n === 7 ? '7 ימים = שבוע אחד' : `${fmt(n)} ימים = ${fmt(n / 7)} שבועות`, n === 28 ? 'בערך חודש' : ''); Snd.play('mile');
+        if (discover('time', 'w')) { refreshDisc(); confetti(50); }
+      }
+      return true;
+    }
+    $('#next', body).onclick = () => { if (!busy) step(); };
+    $('#week', body).onclick = async () => { if (busy) return; busy = true; for (let i = 0; i < 7; i++) { if (!step()) break; await wait(240); } busy = false; };
+    $('#rst', body).onclick = () => { if (!busy) { n = 0; draw(); } };
+    draw();
+  }
+
+  function show(t) {
+    stop.forEach(f => f()); stop = [];
+    tab = t; $$('#tabs .chip', root).forEach(c => c.setAttribute('aria-pressed', String(c.dataset.t === t)));
+    ({ clock: clockTab, day: dayTab, week: weekTab })[t]();
+  }
+  $('#tabs', root).onclick = e => { const b = e.target.closest('[data-t]'); if (b) { Snd.play('tap'); show(b.dataset.t); } };
+  refreshDisc(); show('clock');
+  return () => { stop.forEach(f => f()); };
+};
+
+/* ===== visual hints ===== */
+const PAIRS = {
+  'kg/g': { t: 'icon', ic: 'sugar', name: 'שקית סוכר של 1 ק״ג', many: 'שקיות', fic: 'apple', fstep: 100 },
+  'g/mg': { t: 'icon', ic: 'clip', name: 'מהדק של 1 גרם', many: 'מהדקים', fic: 'pin', fstep: 100 },
+  't/kg': { t: 'icon', ic: 'car', name: 'מכונית של 1 טון', many: 'מכוניות', fic: 'crate', fstep: 100 },
+  'l/ml': { t: 'icon', ic: 'jug', name: 'קנקן של 1 ליטר', many: 'קנקנים', fic: 'cup', fstep: 250 },
+  'cm/mm': { t: 'bar', name: 'סנטימטר', many: 'סנטימטרים' },
+  'dm/cm': { t: 'bar', name: 'דצימטר', many: 'דצימטרים' },
+  'm/cm': { t: 'bar', name: 'מטר', many: 'מטרים' },
+  'm/dm': { t: 'bar', name: 'מטר', many: 'מטרים' },
+  'km/m': { t: 'bar', name: 'קילומטר', many: 'קילומטרים', road: true },
+  'min/s': { t: 'clock', hand: 's', name: 'סיבוב של מחוג השניות', many: 'סיבובים' },
+  'h/min': { t: 'clock', hand: 'm', name: 'סיבוב של מחוג הדקות', many: 'סיבובים' },
+  'h/s': { t: 'grid', name: 'שעה', many: 'שעות' },
+  'd/h': { t: 'day', name: 'יממה', many: 'יממות' },
+  'day/h': { t: 'day', name: 'יום', many: 'ימים' },
+  'w/day': { t: 'week', name: 'שבוע', many: 'שבועות' }
+};
+
+function barBlock(frac, r, small, big, road, partLab) {
+  const w = 300 * frac, segs = Math.round(10 * frac);
+  let t = '';
+  for (let i = 0; i < segs; i++) {
+    const x = 5 + i * 30;
+    t += road ? `<rect x="${x}" y="8" width="${Math.min(30, w - i * 30)}" height="28" class="f-road" stroke="#fff" stroke-width="1.5"/>`
+      : `<rect x="${x}" y="10" width="${Math.min(30, w - i * 30)}" height="24" class="${i % 2 ? 'f-wood-dk' : 'f-wood'}"/>`;
+  }
+  if (road) t += `<path d="M5 22H${5 + w}" stroke="#fff" stroke-width="2.5" stroke-dasharray="7 5"/>`;
+  const lab = frac >= 1 ? `1 ${un(big, 1)} = ${fmt(r)} ${un(small)}` : (partLab || `${fmt(frac)} ${un(big)}`);
+  return `<div class="hb bar"><svg viewBox="0 0 ${Math.max(60, w + 10)} 44" style="width:${Math.max(60, w + 10) / 310 * 100}%" aria-hidden="true">
+    ${t}<rect x="5" y="${road ? 8 : 10}" width="${w}" height="${road ? 28 : 24}" fill="none" class="s-out" stroke-width="2.5"/></svg><small>${lab}</small></div>`;
+}
+function cellsBlock(n, filled, label, cls) {
+  return `<div class="hb rowcells"><div class="cells-row ${cls}">${[...Array(n)].map((_, i) => `<i class="${i < filled ? 'on' : ''}"></i>`).join('')}</div><small>${label}</small></div>`;
+}
+function clockSvg(id) {
+  let s = `<circle cx="150" cy="150" r="138" class="f-card s-out" stroke-width="6"/><path id="${id}arc" fill="none" class="s-c" stroke-width="10" opacity=".45" d=""/>`;
+  for (let i = 0; i < 12; i++) s += `<path d="M150 22V44" class="s-ink" stroke-width="6" transform="rotate(${i * 30} 150 150)"/>`;
+  return `<svg viewBox="0 0 300 300" class="hclock" aria-hidden="true">${s}<g id="${id}hand"><path d="M150 168V40" stroke-width="7" stroke-linecap="round" class="${id.endsWith('s') ? '' : 's-ink'}" ${id.endsWith('s') ? 'stroke="#E4473D"' : ''}/></g><circle cx="150" cy="150" r="10" class="f-ink"/></svg>`;
+}
+function arcD(r, deg) {
+  if (deg <= .01) return '';
+  if (deg >= 359.99) return `M150 ${150 - r}A${r} ${r} 0 1 1 149.99 ${150 - r}Z`;
+  const a = (deg - 90) * Math.PI / 180;
+  return `M150 ${150 - r}A${r} ${r} 0 ${deg > 180 ? 1 : 0} 1 ${150 + r * Math.cos(a)} ${150 + r * Math.sin(a)}`;
+}
+
+function convHint(v, from, to, extraSteps, text) {
+  const big = U[from].f >= U[to].f ? from : to, small = big === from ? to : from;
+  const r = U[big].f / U[small].f, vb = conv(v, from, big);
+  const whole = Math.floor(vb + 1e-9), frac = Math.round((vb - whole) * 1e6) / 1e6;
+  const P = PAIRS[`${big}/${small}`];
+  const partLab = from === big ? `${fmt(frac)} ${un(big)}` : `${fmt(Math.round(frac * r * 1e6) / 1e6)} ${un(small)} מתוך ${fmt(r)} ${un(small)}`;
+  let viz = '', mount = null;
+  const cap = (n) => Math.min(n, 12);
+  if (P.t === 'icon') {
+    for (let i = 0; i < cap(whole); i++) viz += `<div class="hb">${svgArt(P.ic, '', ...(P.ic === 'jug' ? [1] : []))}<small>${fmt(r)} ${un(small)}</small></div>`;
+    if (whole > 12) viz += `<div class="hb more">… ועוד ${fmt(whole - 12)}</div>`;
+    if (frac) {
+      const n = Math.round(frac * r / P.fstep * 1e6) / 1e6;
+      if (from === big && Number.isInteger(n) && n <= 12) {
+        if (whole) viz += `<div class="hb-op">+</div>`;
+        for (let i = 0; i < n; i++) viz += `<div class="hb small">${svgArt(P.fic, '', ...(P.fic === 'cup' ? [.9] : []))}<small>${fmt(P.fstep)} ${un(small)}</small></div>`;
+      } else if (P.ic === 'jug') viz += `<div class="hb">${svgArt('jug', '', frac)}<small>${partLab}</small></div>`;
+      else viz += barBlock(frac, r, small, big, false, partLab);
+    }
+  } else if (P.t === 'bar') {
+    for (let i = 0; i < cap(whole); i++) viz += barBlock(1, r, small, big, P.road);
+    if (frac) viz += barBlock(frac, r, small, big, P.road, partLab);
+  } else if (P.t === 'day') {
+    for (let i = 0; i < cap(whole); i++) viz += cellsBlock(24, 24, `${P.name} ${i + 1} = 24 שעות`, 'c24');
+    if (frac) viz += cellsBlock(24, Math.round(frac * 24), `חלק מ${P.name}`, 'c24');
+  } else if (P.t === 'week') {
+    for (let i = 0; i < cap(whole); i++) viz += cellsBlock(7, 7, `שבוע ${i + 1} = 7 ימים`, 'c7');
+  } else if (P.t === 'grid') {
+    viz = `<div class="hb"><div class="grid60">${[...Array(60)].map(() => '<i>60</i>').join('')}</div><small>60 דקות, ובכל דקה 60 שניות</small></div>`;
+  } else if (P.t === 'clock') {
+    const id = uid('hc') + (P.hand === 's' ? 's' : 'm');
+    viz = `<div class="hb">${clockSvg(id)}<small>${P.hand === 's' ? 'מחוג השניות' : 'מחוג הדקות'}</small></div><div class="laps" id="${id}laps"></div>`;
+    mount = (root) => {
+      let alive = true;
+      const hand = $(`#${id}hand`, root), arcEl = $(`#${id}arc`, root), laps = $(`#${id}laps`, root);
+      const total = Math.min(vb, 6), unitLab = P.hand === 's' ? '60 שניות' : '60 דקות';
+      (async () => {
+        for (let i = 0; i < Math.ceil(total - 1e-9) && alive; i++) {
+          const part = Math.min(1, total - i);
+          await tween(1300 * part, t => { if (!alive) return; const d = 360 * part * t; hand.setAttribute('transform', `rotate(${d} 150 150)`); arcEl.setAttribute('d', arcD(126, d)); }, t => t);
+          if (!alive) return;
+          laps.insertAdjacentHTML('beforeend', `<span class="lap pop">${part >= 1 ? `סיבוב ${fmt(i + 1)}: ${unitLab}` : `${fmt(part)} סיבוב`}</span>`);
+          Snd.play('tick');
+          await wait(250);
+        }
+        if (vb > 6 && alive) laps.insertAdjacentHTML('beforeend', `<span class="lap">… וכך הלאה, עד ${fmt(vb)} סיבובים</span>`);
+      })();
+      return () => { alive = false; };
+    };
+  }
+  const objName = P.t === 'clock' ? P.name : P.name;
+  const lines = [];
+  if (text) lines.push(text());
+  if (P.t === 'grid') lines.push('בשעה יש 60 דקות, ובכל דקה יש 60 שניות. כמה שניות בסך הכול?');
+  else if (from === big) lines.push(`כל ${objName} = ${fmt(r)} ${un(small)}. יש כאן ${fmt(vb)} ${P.many}. כמה ${un(small)} בסך הכול? (מיחידה גדולה לקטנה <b>כופלים</b>)`);
+  else lines.push(`${fmt(r)} ${un(small)} = 1 ${un(big, 1)}. כמה קבוצות של ${fmt(r)} יש ב-${fmt(v)}? (מיחידה קטנה לגדולה <b>מחלקים</b>)`);
+  return { viz: `<div class="hblocks">${viz}</div>`, lines, steps: extraSteps, mount };
+}
+
+function itemsHint(rows) {
+  return `<div class="hblocks">${rows.map(r => {
+    if (r.op) return `<div class="hb-op">${r.op}</div>`;
+    const n = r.n || 1, show = Math.min(n, 8);
+    let g = '';
+    for (let i = 0; i < show; i++) {
+      g += r.box ? `<div class="hb box"><span>${r.box}</span></div>`
+        : `<div class="hb">${svgArt(r.ic, '', ...(r.arg !== undefined ? [r.arg] : r.ic === 'jug' ? [.8] : r.ic === 'cup' ? [.9] : []))}<small>${r.lab || ''}</small></div>`;
+    }
+    if (n > 8) g += `<div class="hb more">× ${fmt(n)}</div>`;
+    return g;
+  }).join('')}</div>`;
+}
+function barHint(total, parts) {
+  const sum = parts.reduce((a, p) => a + p[0], 0);
+  return `<div class="barmodel"><div class="bm-total"><span>${total()}</span></div>
+    <div class="bm-row">${parts.map(([v, l]) => `<div class="bm-part${l.includes('?') ? ' q' : ''}" style="flex:${v / sum} 1 0"><span>${l}</span></div>`).join('')}</div></div>`;
+}
+function timelineHint(pts, jumps) {
+  return `<div class="tline">${pts.map((p, i) => `<span class="tp${p === '?' ? ' q' : ''}">${p}</span>${i < jumps.length ? `<span class="tj">${jumps[i] ? `<small>${jumps[i]}</small>` : ''}<i></i></span>` : ''}`).join('')}</div>`;
+}
+
+function renderHint(q, box) {
+  const h = q.h; let viz = '', lines = [], steps = h.steps ? h.steps() : null, mount = null;
+  if (h.k === 'conv') ({ viz, lines, mount } = convHint(h.v, h.from, h.to, null, h.text));
+  else if (h.k === 'cmpConv') {
+    const [a, b] = [h.l, h.r], bigQ = U[a[1]].f >= U[b[1]].f ? a : b, other = bigQ === a ? b : a;
+    ({ viz, mount } = convHint(bigQ[0], bigQ[1], other[1]));
+    lines = [`המירי את <b>${qty(bigQ[0], bigQ[1])}</b> ל${un(other[1])} ואז השווי ל-${qty(other[0], other[1])}.`];
+  } else if (h.k === 'items') viz = itemsHint(h.rows);
+  else if (h.k === 'bar') viz = barHint(h.total, h.parts);
+  else if (h.k === 'timeline') viz = timelineHint(h.pts, h.jumps);
+  box.innerHTML = `<div class="hintbox"><h4>${ui('bulb')}רמז</h4><div class="viz">${viz}</div>
+    ${lines.map(l => `<p>${l}</p>`).join('')}${steps ? `<ol class="steps">${steps.map(s => `<li>${s}</li>`).join('')}</ol>` : ''}</div>`;
+  return mount ? mount(box) : null;
+}
+
+/* ===== solutions ===== */
+function convSol(v, from, to) {
+  const big = U[from].f >= U[to].f ? from : to, small = big === from ? to : from, r = U[big].f / U[small].f, a = conv(v, from, to);
+  return from === big
+    ? [`מיחידה גדולה ליחידה קטנה כופלים ב-${fmt(r)}:`, `${M(`${fmt(v)} × ${fmt(r)} = ${fmt(a)}`)}`, `${qty(v, from)} = ${qty(a, to)}`]
+    : [`מיחידה קטנה ליחידה גדולה מחלקים ב-${fmt(r)}:`, `${M(`${fmt(v)} : ${fmt(r)} = ${fmt(a)}`)}`, `${qty(v, from)} = ${qty(a, to)}`];
+}
+const cmpAnswer = (q) => { const a = q.l[0] * U[q.l[1]].f, b = q.r[0] * U[q.r[1]].f; return Math.abs(a - b) < 1e-9 ? '=' : a > b ? '>' : '<'; };
+function solution(q) {
+  if (q.sol) return q.sol();
+  if (q.type === 'num' && q.from) return convSol(q.v, q.from, q.to);
+  if (q.type === 'mc' && q.h.k === 'conv') return convSol(q.h.v, q.h.from, q.h.to);
+  if (q.type === 'cmp') {
+    const s = U[q.l[1]].f <= U[q.r[1]].f ? q.l[1] : q.r[1];
+    const a = conv(q.l[0], q.l[1], s), b = conv(q.r[0], q.r[1], s), sign = cmpAnswer(q);
+    return [`נמיר הכול ל${un(s)}: ${qty(q.l[0], q.l[1])} = ${qty(a, s)}, ${qty(q.r[0], q.r[1])} = ${qty(b, s)}.`, M(`${qty(q.l[0], q.l[1])} ${sign} ${qty(q.r[0], q.r[1])}`)];
+  }
+  if (q.type === 'build') {
+    let rest = q.target; const parts = [];
+    [...q.tokens].sort((a, b) => TOK[b].v - TOK[a].v).forEach(k => { const n = Math.floor(rest / TOK[k].v + 1e-9); if (n) { parts.push(`${fmt(n)} × ${TOK[k].lab()}`); rest -= n * TOK[k].v; } });
+    return [`${qty(q.tv, q.big)} = ${qty(q.target, q.small)}`, `לדוגמה: ${parts.join(' + ')}`];
+  }
+  return [];
+}
+
+/* ===== quiz engine ===== */
+function seededOrder(id, n) {
+  let h = 0; for (const c of id) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  const idx = [...Array(n).keys()];
+  for (let i = n - 1; i > 0; i--) { h = (h * 1103515245 + 12345) >>> 0; const j = h % (i + 1); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+  return idx;
+}
+const unitText = (u, v = 2) => U[u] ? un(u, v) : u;
+
+function runQuiz(body, st, mode, qi) {
+  const list = BANK[st][mode];
+  const allDone = () => list.every(q => S.done[q.id]);
+  let idx = qi != null ? qi : list.findIndex(q => !S.done[q.id]);
+  let showComplete = idx < 0; if (idx < 0) idx = 0;
+  let hintCleanup = null, sess = {};
+  const cleanHint = () => { if (hintCleanup) { try { hintCleanup(); } catch (e) {} hintCleanup = null; } };
+
+  function nav() {
+    return `<div class="qnav" role="tablist" aria-label="שאלות">${list.map((q, i) => {
+      const s = S.stars[q.id] || 0;
+      return `<button class="qdot${S.done[q.id] ? ' done' : ''}${i === idx && !showComplete ? ' cur' : ''}" data-i="${i}" aria-label="שאלה ${i + 1}${S.done[q.id] ? ', נפתרה' : ''}">${i + 1}
+        ${S.done[q.id] ? `<span class="mini">${[0, 1, 2].map(k => starSvg(k < s)).join('')}</span>` : ''}</button>`;
+    }).join('')}</div>`;
+  }
+  function complete() {
+    const s = stationStats(st), stars = list.reduce((a, q) => a + (S.stars[q.id] || 0), 0);
+    const nextSt = ORDER[(ORDER.indexOf(st) + 1) % ORDER.length];
+    body.innerHTML = `${nav()}<div class="panel complete">
+      <svg class="medal" viewBox="0 0 100 100" aria-hidden="true">${mode === 'practice' ? ART.medal() : ART.trophy()}</svg>
+      <h3>כל הכבוד, יוליה!</h3>
+      <p>סיימת את כל ${mode === 'practice' ? 'התרגילים' : 'האתגרים'} בתחנת ${STATIONS[st].name} וצברת ${fmt(stars)} מתוך ${fmt(list.length * 3)} כוכבים.</p>
+      <p class="note">אפשר לחזור לשאלות ולנסות לשפר את הכוכבים.</p>
+      <div class="row" style="justify-content:center">
+        ${mode === 'practice' ? `<button class="btn c" id="toCh">${ui('challenge')}לאתגר</button>` : ''}
+        <button class="btn ghost" id="toNext">לתחנה הבאה: ${STATIONS[nextSt].name}</button>
+      </div></div>`;
+    bindNav();
+    const tc = $('#toCh', body); if (tc) tc.onclick = () => go({ name: 'station', st, mode: 'challenge' });
+    $('#toNext', body).onclick = () => go({ name: 'station', st: nextSt, mode: 'learn' });
+  }
+  function bindNav() {
+    $$('.qdot', body).forEach(b => b.onclick = () => { Snd.play('tap'); showComplete = false; idx = +b.dataset.i; show(); });
+  }
+  function show() {
+    cleanHint();
+    if (showComplete) return complete();
+    const q = list[idx]; sess[q.id] = sess[q.id] || { tries: 0, hint: false, sol: false, solved: false };
+    const ss = sess[q.id];
+    S.last = { name: 'station', st, mode, qi: idx }; save();
+    let ans = '';
+    if (q.type === 'num') ans = `<div class="answer-num"><input id="inp" type="text" inputmode="decimal" autocomplete="off" enterkeyhint="done" aria-label="התשובה" placeholder="?"><span class="unit">${unitText(q.u)}</span></div>`;
+    if (q.type === 'mc') { const o = q.opts(); ans = `<div class="opts">${seededOrder(q.id, o.length).map(i => `<button class="opt" data-o="${i}">${o[i]}</button>`).join('')}</div>`; }
+    if (q.type === 'cmp') ans = `<div class="cmp"><div class="qty">${qty(q.l[0], q.l[1])}</div><div class="sym" id="sym">?</div><div class="qty">${qty(q.r[0], q.r[1])}</div></div>
+      <div class="cmp-btns">${['&gt;', '&lt;', '='].map((s, i) => `<button class="opt" data-c="${['>', '<', '='][i]}" aria-label="${['גדול מ', 'קטן מ', 'שווה ל'][i]}">${s}</button>`).join('')}</div>`;
+    if (q.type === 'build') ans = `<div class="build">
+      <div class="palette" id="pal">${q.tokens.map(k => `<button class="tok" data-k="${k}" aria-label="הוספת ${TOK[k].lab()}"><svg viewBox="0 0 100 100" aria-hidden="true">${uniq(TOK[k].art())}</svg><span>${TOK[k].lab()}</span></button>`).join('')}</div>
+      <div class="tray" id="tray" aria-label="${q.place}"><span class="empty">גררי לכאן (או הקישי על פריט)</span></div>
+      <div class="row" style="justify-content:space-between"><span class="total-line" id="tot"></span><button class="btn ghost small" id="trayClear">${ui('reset')}ניקוי</button></div></div>`;
+    body.innerHTML = `${nav()}
+      <div class="panel qcard">
+        <div class="qtop"><span>${mode === 'practice' ? 'תרגיל' : 'אתגר'} ${idx + 1} מתוך ${list.length}</span><span class="qtag">${q.tag}</span></div>
+        <p class="qtext">${q.q()}</p>
+        ${ans}
+        <div class="qactions">
+          ${q.type === 'num' || q.type === 'build' ? `<button class="btn c grow" id="check">${ui('check')}בדיקה</button>` : ''}
+          <button class="btn hint" id="hintBtn" aria-expanded="false">${ui('bulb')}רמז</button>
+          <button class="btn ghost small" id="solBtn" hidden>${ui('eye')}הצגת הפתרון</button>
+        </div>
+        <div id="hint"></div>
+        <div id="fb" aria-live="polite"></div>
+      </div>`;
+    bindNav();
+    $('#hintBtn', body).onclick = () => {
+      const box = $('#hint', body), btn = $('#hintBtn', body);
+      if (box.innerHTML) { cleanHint(); box.innerHTML = ''; btn.setAttribute('aria-expanded', 'false'); return; }
+      ss.hint = true; Snd.play('star'); btn.setAttribute('aria-expanded', 'true');
+      hintCleanup = renderHint(q, box);
+      box.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'nearest' });
+    };
+    $('#solBtn', body).onclick = () => { ss.sol = true; feedback('info', 'הפתרון', solution(q)); $('#solBtn', body).hidden = true; };
+    if (q.type === 'num') {
+      const inp = $('#inp', body);
+      inp.addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
+      $('#check', body).onclick = check;
+    }
+    if (q.type === 'mc') $$('.opt', body).forEach(b => b.onclick = () => { if (ss.solved) return; const ok = b.dataset.o === '0'; b.classList.add(ok ? 'right' : 'wrong'); result(ok, null, b); });
+    if (q.type === 'cmp') $$('.cmp-btns .opt', body).forEach(b => b.onclick = () => {
+      if (ss.solved) return; const ok = b.dataset.c === cmpAnswer(q);
+      $('#sym', body).textContent = b.dataset.c; b.classList.add(ok ? 'right' : 'wrong'); result(ok);
+    });
+    if (q.type === 'build') { setupBuild(q); $('#check', body).onclick = check; }
+    if (ss.solved) feedback('ok', 'נפתר', solution(q), S.stars[q.id] || 0, true);
+
+    function check() {
+      if (ss.solved) return;
+      if (q.type === 'num') {
+        const val = parseNum($('#inp', body).value);
+        if (isNaN(val)) { toast('כתבי מספר בתיבה'); return; }
+        const ok = same(val, q.a);
+        let tip = null;
+        if (!ok) {
+          if (q.from) {
+            const r = U[q.from].f / U[q.to].f;
+            if (r > 1 && same(val, q.v / r)) tip = 'נראה שחילקת. מיחידה גדולה ליחידה קטנה <b>כופלים</b>.';
+            else if (r < 1 && same(val, q.v / r)) tip = 'נראה שכפלת. מיחידה קטנה ליחידה גדולה <b>מחלקים</b>.';
+          }
+          if (!tip) {
+            const ratio = val / q.a;
+            if ([10, 100, 1000, .1, .01, .001].some(x => same(ratio, x))) tip = 'הספרות נכונות, אבל הגודל לא. בדקי כמה אפסים צריך או איפה הנקודה העשרונית.';
+            else tip = val < q.a ? 'המספר שלך קטן מדי.' : 'המספר שלך גדול מדי.';
+          }
+        }
+        result(ok, tip);
+      } else if (q.type === 'build') {
+        const tot = buildTotal();
+        if (!tot) { toast('עוד לא גררת פריטים'); return; }
+        const ok = tot === q.target;
+        result(ok, ok ? null : tot < q.target ? `חסרים עוד ${qty(q.target - tot, q.small)}.` : `יש ${qty(tot - q.target, q.small)} יותר מדי. הוציאי פריט בלחיצה עליו.`);
+      }
+    }
+    function result(ok, tip) {
+      if (ok) {
+        ss.solved = true;
+        const stars = ss.sol ? 1 : ss.tries === 0 && !ss.hint ? 3 : ss.tries <= 1 ? 2 : 1;
+        const before = allDone();
+        S.stars[q.id] = Math.max(S.stars[q.id] || 0, stars); S.done[q.id] = true; save(); refreshTop();
+        Snd.play('ok'); for (let i = 0; i < stars; i++) setTimeout(() => Snd.play('star'), 450 + i * 160);
+        confetti(stars === 3 ? 100 : 50);
+        feedback('ok', ['', 'נכון!', 'יופי, נכון!', 'מצוין! תשובה נכונה'][stars], solution(q), stars);
+        $('.qnav', body).outerHTML = nav();
+        bindNav();
+        if (!before && allDone()) setTimeout(() => toast(mode === 'practice' ? 'קיבלת מדליה! סיימת את כל התרגילים.' : 'קיבלת גביע! סיימת את כל האתגרים.'), 900);
+      } else {
+        ss.tries++; Snd.play('no');
+        feedback('no', 'עוד לא. נסי שוב', [tip || (q.type === 'cmp' ? 'המירי את שתי הכמויות לאותה יחידה ואז השווי.' : 'אפשר להיעזר ברמז.')]);
+        if (ss.tries >= 2) $('#solBtn', body).hidden = false;
+      }
+    }
+  }
+  function feedback(kind, title, lines, stars = 0, quiet = false) {
+    const fb = $('#fb', body);
+    const st3 = kind === 'ok' ? `<span class="earned">${[0, 1, 2].map(i => `<span class="${quiet ? '' : 'pop'}" style="animation-delay:${i * 160}ms;display:inline-block">${starSvg(i < stars)}</span>`).join('')}</span>` : '';
+    fb.innerHTML = `<div class="feedback ${kind}">
+      <h4>${kind === 'ok' ? ui('check') : kind === 'no' ? ui('x') : ui('eye')}${title} ${st3}</h4>
+      ${lines.map(l => `<p>${l}</p>`).join('')}
+      ${kind === 'ok' ? `<div class="row"><button class="btn c" id="nextQ">${allDone() ? 'סיום' : 'לשאלה הבאה'}${ui('next')}</button></div>` : ''}
+    </div>`;
+    const n = $('#nextQ', fb);
+    if (n) n.onclick = () => {
+      Snd.play('tap');
+      if (allDone()) { showComplete = true; show(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+      let j = list.findIndex((q, i) => i > idx && !S.done[q.id]);
+      if (j < 0) j = list.findIndex(q => !S.done[q.id]);
+      if (j < 0) j = (idx + 1) % list.length;
+      idx = j; show(); window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' });
+    };
+    if (!quiet) fb.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'nearest' });
+  }
+
+  /* drag-and-drop build questions */
+  let trayItems = [];
+  const buildTotal = () => trayItems.reduce((a, k) => a + TOK[k].v, 0);
+  function setupBuild(q) {
+    trayItems = [];
+    const tray = $('#tray', body), pal = $('#pal', body);
+    function drawTray() {
+      tray.innerHTML = trayItems.length ? trayItems.map((k, i) => `<button class="tk" data-i="${i}" aria-label="הוצאת ${TOK[k].lab()}"><svg viewBox="0 0 100 100" aria-hidden="true">${uniq(TOK[k].art())}</svg></button>`).join('')
+        : `<span class="empty">גררי לכאן (או הקישי על פריט)</span>`;
+      const t = buildTotal();
+      $('#tot', body).innerHTML = `סה״כ: ${qty(t, q.small)}${t ? ` = ${qty(conv(t, q.small, q.big), q.big)}` : ''}`;
+    }
+    tray.onclick = e => { const b = e.target.closest('.tk'); if (b && !sess[q.id].solved) { trayItems.splice(+b.dataset.i, 1); Snd.play('lift'); drawTray(); } };
+    $('#trayClear', body).onclick = () => { if (!sess[q.id].solved) { trayItems = []; drawTray(); } };
+    const addTok = (k) => {
+      if (sess[q.id].solved) return;
+      if (trayItems.length >= 30) { toast('יש כבר הרבה פריטים. נסי פריטים גדולים יותר.'); return; }
+      trayItems.push(k); Snd.play('drop'); drawTray();
+    };
+    $$('.tok', pal).forEach(btn => {
+      let start = null, ghost = null, moved = false;
+      btn.addEventListener('pointerdown', e => { start = { x: e.clientX, y: e.clientY }; moved = false; btn.setPointerCapture(e.pointerId); });
+      btn.addEventListener('pointermove', e => {
+        if (!start) return;
+        if (!moved && Math.hypot(e.clientX - start.x, e.clientY - start.y) > 8) {
+          moved = true; ghost = h2el(`<svg class="ghost-drag" viewBox="0 0 100 100">${uniq(TOK[btn.dataset.k].art())}</svg>`); document.body.appendChild(ghost);
+        }
+        if (ghost) {
+          ghost.style.left = e.clientX + 'px'; ghost.style.top = e.clientY + 'px';
+          const r = tray.getBoundingClientRect(); tray.classList.toggle('over', e.clientX > r.left && e.clientX < r.right && e.clientY > r.top && e.clientY < r.bottom);
+        }
+      });
+      const end = (e, cancel) => {
+        if (!start) return;
+        const r = tray.getBoundingClientRect(), over = e.clientX > r.left && e.clientX < r.right && e.clientY > r.top && e.clientY < r.bottom;
+        if (!cancel && (!moved || over)) addTok(btn.dataset.k);
+        if (ghost) ghost.remove(); ghost = null; start = null; tray.classList.remove('over');
+      };
+      btn.addEventListener('pointerup', e => end(e, false));
+      btn.addEventListener('pointercancel', e => end(e, true));
+      btn.addEventListener('click', e => { if (e.detail === 0) addTok(btn.dataset.k); });
+    });
+    drawTray();
+  }
+
+  show();
+  return () => { cleanHint(); $$('.ghost-drag').forEach(g => g.remove()); };
+}
+
+/* ===== boot ===== */
+document.documentElement.setAttribute('lang', 'he');
+document.documentElement.setAttribute('dir', 'rtl');
+shell();
+render();
+
+</script>
+</body>
+</html>
